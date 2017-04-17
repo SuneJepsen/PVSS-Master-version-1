@@ -1,0 +1,134 @@
+\section{Modular arithmetic}
+Modular arithmetic, is a simple way of performing arithmetic in a finite set of integers.
+
+%**************************************Definition Modulo Operation Start
+\begin{defi}[\textbf{Modulo Operation}]
+Let \begin{math} a, r,m \in  \mathbb{Z}\end{math} (where \begin{math} \mathbb{Z}\end{math} is a set of all integers) and \begin{math} m > 0\end{math}. We write A 
+\begin{center} \begin{math} a \equiv r \ mod \ m\end{math} \end{center}
+if \begin{math}m \end{math} divides \begin{math} a - r \end{math}.\\
+\begin{math}m \end{math} is called the modulus and \begin{math}r \end{math} is called the remainder.
+\end{defi}
+%**************************************Definition Modulo Operation End
+
+\parahead{Computing the remainder} By example we can compute the remainder according to the definition. Given: \begin{math} a, m \in \mathbb{Z} \end{math} we compute the remainder by the following fomular:  \begin{math} a = qm +r \end{math}. The remainder is computed by how many times the quotient can be multiplied with the modulo. This example shows that the remainder is not unique. \\\\
+\begin{math}42 = 4 * 9 +6 \implies r = 6 \end{math}, by definition \begin{math} (42-6) = 36 \end{math}, \begin{math} 9| 36 \end{math}\\
+\begin{math}42 = 3 * 9 +15 \implies r = 15 \end{math}, by definition \begin{math} (42-15) = 27 \end{math}, \begin{math} 9| 27 \end{math}\\
+\begin{math}42 = 5 * 9 +(-3) \implies r = -3 \end{math}, by definition \begin{math} (42-(-3)) = 45 \end{math}, \begin{math} 9| 45 \end{math}\\\\
+
+\parahead{Equivalence classes} Above can also be written with the modulo operator. Here we show that all have different remainder but are in the same equivalence class modulo \textit{9}. This means that all members of a given equivalence class behave equivalently. Note also that one can compute with negative integers.
+
+\begin{center}
+\begin{math}42 = 6 \ mod \ 9 \end{math}\\
+\begin{math}42 = 15 \ mod \ 9 \end{math}\\
+\begin{math}42 = -3 \ mod \ 9 \end{math}\\
+\end{center}
+
+\parahead{Computing the inverse}
+As we will see later, computing the inverse becomes an important part in this protocol for how to divide modulo an integer arithmetically. For this we have the Extended Euclidean algorithm which allows us to compute modular inverses given to positive integers. \\
+
+
+\noindent
+\parahead{Extended Euclidean algorithm} The first two lines (6-7) in the algorithm is the standard Euclidean Algorithm. It turns out that if we give the Extended Euclidean Algorithm $gcd(n,a)$, where $n$ is the modulo integer and $a$ is an integer, then the $t$ parameter will be the inverse of $a$. 
+
+%**************************************Pseudocode Euclidean algorithm start
+\begin{center}
+\begin{algorithm}[H]
+\caption{Extended Euclidean Algorithm (EEA)\label{alg}}
+
+\SetKwRepeat{Do}{do}{while}
+
+\KwIn{positive integers $r_0 $ and $r_1 $ with $r_0 $ > $r_1 $}
+\KwOut{gcd($r_0 $, $r_1 $), as well as s and t such that gcd($r_0$, $r_1$) = $s * r_0+t * r_1 $.}
+
+\textbf{Initialization:} \\
+$
+\begin{array}{ll}
+    s_0 = 1   & t_0 = 0 \\
+    s_1 = 0   & t_1 = 1 \\
+      i = 1     &           \\
+\end{array}                 
+$
+
+\Begin{
+    \Do{$r_i \neq 0 $}{
+    $i = i+1 $\\
+    $r_i = r_{i-2} \ mod \ r_{i-1} $\\
+    \begin{math} \mathbf{ q_{i-1} = ( r_{i-2}-r_{i} ) / r_{i-1} }  \end{math}\\
+    $s_i = s_{i-2}-q_{i-1} * s_{i-1} $\\
+    $t_i = t_{i-2}-q_{i-1} * t_{i-1} $
+    }
+
+\Return{ \\
+    gcd($r_0 $, $r_1 $) = $r_{i-1} $\\
+    s = $s_{i-1} $\\
+    t = $t_{i-1} $
+    }
+}
+\end{algorithm}
+\end{center}
+
+
+%**************************************Pseudocode Euclidean algorithm end
+
+\parahead{Euclidean algorithm} The regular Euclidean algorithm works that given to integers $r_0 = 973$ and $r_1 = 301$, then the gcd is computed as 
+
+\begin{center}
+\begin{tabular}{|ll|lll| } 
+\hline
+$973$ & $= 3 \cdot 301 +70$& $gcd(973,301)$ & $= gcd(301,70)$ & \\ 
+\hline
+$301$ & $= 4 \cdot 70+21$ & $gcd(301,70)$ & $= gcd(70,21)$ &\\ 
+\hline
+$70$ & $= 3 \cdot 21+7$ & $gcd(70,21)$ & $= gcd(21,7)$ & \\ 
+\hline
+$21$ & $= 3 \cdot 7+0$ & $gcd(21,7)$ & $= gcd(7,0)$ & $= 7$ \\ 
+\hline
+\end{tabular}
+\end{center}
+
+\noindent
+The core observation from this process is that we can reduce the problem of finding the gcd of two given numbers to that of the gcd of two smaller numbers.\\
+
+\parahead{Example Extended Euclidean algorithm} On the left-hand side, we compute the standard Euclidean algorithm, i.e., we compute new remainders $r_2$, $r_3$, ... Also, we have to compute the integer quotient $q_{i-1}$ in every iteration. On the right-hand side we compute the coefficients $s_i$ and $t_i$ such that $r_i = s_i r_0 + t_i r_1$. 
+\begin{center}
+\begin{tabular}{|l|l|p{5cm}| } 
+\hline
+$i$ & $r_{i-2} = q_{i-1} \cdot r_{i-1}+r_i$ & $r_i = [s_i]r_0 +[t_i]r_1$ \\ 
+\hline
+$2$ & $973 = 3 \cdot 301 +70$& $r_2=70= [1] 973 + [-3]301$ \\ 
+\hline
+$3$ & $301 = 4 \cdot 70+21$ & $r_3= 21= 301-4 \cdot 70$ \newline $ r_3 = 301 -4(973-3 \cdot 301)$ \newline $r_3 = [-4]973 + [13]301$\\
+\hline
+$4$ & $70 = 3 \cdot 21+7$ & $r_4= 70 - 3 \cdot 21$ \newline $r_4=(973-3 \cdot 301) -3(4 \cdot 973 + 13 \cdot 301)$ \newline $r_4=[13]973+[42] 301$  \\ 
+\hline
+\end{tabular}
+\end{center}
+
+\noindent
+To understand the how the EEA works we observe that the righthand side is always constructed with the help of the previous linear combinations. We will now derive recursive formulae for computing $s_i$ and $r_i$ in every iteration. Assume we are in iteration with index i. 
+
+\begin{infobox}[The two previous iterations we computed the values]
+$r_{i - 2} = [s_{i-2}]r_0 +[t_{i-2}]r_1$\\
+$r_{i-1} = [s_{i-1}]r_0 +[t_{i-1}]r_1$
+\end{infobox}
+
+\noindent
+In the current iteration i we first compute the quotient $q_{i-1}$ and the new remainder $r_i$ from $r_{i-1}$ and $r_{i-2}$:
+
+\begin{infobox}[Current iteration $i$]
+$r_{i-2} = q_{i-1} \cdot r_{i-1}+r_i$.\\
+This equation can be rewritten as:\\
+$r_i = r_{i-2}-q_{i-1} \cdot r_{i-1}$.
+\end{infobox}
+
+
+\noindent
+The goal is to represent the new remainder $r_i$ as a linear combination of $r_0$ and $r_1$ as $r_i = [s_i]r_0 +[t_i]r_1$. The core step for achieving this is by substitute $r_{i-2}$ and $r_{i-1}$ by the following.
+
+\noindent
+\begin{infobox}[Substitute $r_{i-2}$ and $r_{i-1}$]
+$r_i = (s_{i-2}r_0+t_{i-2}r_1)-q_{i-1}(s_{i-1}r_0+t_{i-1}r_1)$\\
+If we rearrange the terms we obtain the desired result:\\
+$r_i = [s_{i-2}-q_{i-1}s_{i-1}]r_0 +[t_{i-2}-q_{i-1}t_{i-1}]r_1$\\
+$r_i = [s_i]r_0 +[t_i]r_1$
+\end{infobox}

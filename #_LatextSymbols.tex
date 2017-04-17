@@ -1,0 +1,139 @@
+\documentclass{article}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm} 
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[danish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[vlined]{algorithm2e}
+\usepackage{pgfplots}
+
+\newcommand{\svec}{\ensuremath{\mathbf{s}}\xspace}
+
+
+\begin{document}
+\begin{math}
+\frac{abc}{xyz}
+ \end{math}    
+ 
+
+Figur \ref{fig:DLEQ_1}
+
+% Information vedr.  pgfplots // grafer: 
+% https://www.maths.adelaide.edu.au/anthony.roberts/LaTeX/pgfplotBasics.pdf
+
+\begin{tikzpicture}
+\begin{axis}[
+        xmin=0, xmax=4,
+        ymin=0, ymax=4,
+        axis lines=center,
+        axis on top=true,
+        domain=0:1,
+        title style={at={(0.5,-0.15)},anchor=north},
+        title={\textbf{Kaspers graf}},
+    ]
+    \addplot[
+        scatter,
+        only marks,
+        point meta=explicit symbolic,
+        scatter/classes={a={black}},
+    ]
+    table[meta=label] {
+        x       y       label
+        1       2       a
+        2       4       a
+        3       3       a
+        4       4       a
+    };
+\end{axis}
+\end{tikzpicture} 
+ 
+ 
+\begin{figure}[H]
+	\begin{center}
+ 	\begin{tabular}{ l c r }
+		\bf{HB+ Protokol} \\
+		\\
+		Offentlig parameter: $k, \tau, q$ \\
+		Hemmelig nøgle: $\svec_1, \svec_2 \in \{0,1\}^n$ \\
+		Parameter: $L = 0$ \\
+		Følgende procedure gentages $q$ gange \\
+		\hline
+		\bf{Læser} & & \multicolumn{1}{l}{\bf{Tag}} \\
+		& & \multicolumn{1}{l}{Vælger udfordringen $\bvec \in_R \{0,1\}^n$} \\
+		& $\overset{\bvec}{\leftarrow}$ & \\
+		Vælger udfordringen $\avec \in_R \{0,1\}^k$ & & \\
+		& $\overset{\avec}{\rightarrow}$ & \\
+		& & \multicolumn{1}{l}{$e \in_{\ber} \{0,1\}$} \\
+		& & \multicolumn{1}{l}{Beregner svaret $r \leftarrow \dotp{\avec}{\svec_1} \oplus \dotp{\bvec}{\svec_2} \oplus e$ } \\
+		& $\overset{r}{\leftarrow}$ &  \\
+		Hvis $r = \dotp{\avec}{\svec_1} \oplus \dotp{\bvec}{\svec_2}$ så tælle vi $L = L + 1$ & & \\
+		\hline
+		Tag'et blive accepteret hvis $L > (1-\tau)q$ & &
+	\end{tabular}
+	\end{center}
+	\caption{HB+ protokol}
+	\label{fig:HB+}
+\end{figure} 
+
+\clearpage
+\begin{center}
+\begin{algorithm}[H]
+\KwIn{a set $V$ of $q$ queries $(v_i, c_i) \in \{0,1\}^{k+1}$ from the LPN Oracle, values $a, b$ such that $k = ab$}
+\KwOut{values $\svec_1,...\svec_b$}
+\SetKw{KwAnd}{and}
+\SetKw{KwOr}{or}
+\Begin{
+Partitions the positions $a$ into disjoint $q_1 \cup...\cup q_{a-1}$ with $q_i$ of size $b$\;
+\For{$i=1$ to $a-1$}{
+  Partition $V = V_1 \cup ... \cup V_{2^b}$ s.t.vectors in $V_j$ have the same bit values on $q_i$\;
+  \For{\textbf{each} $V_j$}{
+    Choose a random $(v^*,c^*) \in V_j$ as a representative vector\;
+    Replace each $(v,c)$ by $(v,c) \oplus (v^*,c^*), (v,c) \in V_j$ for $(v,c) \neq (v^*,c^*)$\;
+    Discard $(v^*,c^*)$ from $V_j$\;
+  }
+  $V = V_1 \cup ... \cup V_{2^b}$\; 
+  }
+$f(x)=\sum_{i} 1_{v'_i}=x(-1)^{c'_i}$\;
+$f(v)=\sum_{x} (-1)^{\dotp{v}{x}}f(x)$\;
+$(\svec_1,...,\svec_b) = arg max(f(v))$
+\Return{$\svec_1,...,\svec_b$}
+}
+\caption{LF1 Algoritmen som beskreven i [3]}
+\end{algorithm}
+\end{center}
+
+
+\begin{thebibliography}{9}
+
+\bibitem{levfou05}
+  Eric Levieil and Pierre-Alain Fouque,
+  \emph{An improved LPN algorithm},
+  Paris Cedex 05, France, 2005.
+  
+\bibitem{BKW03}
+  A. Blum, A. Kalai and H. Wasserman.
+  \emph{Noise-tolerant Learning, the Parity Problem, and the statistical Query Problem},
+  Journal of the ACM 50,4, July 2003, pp. 506-519.
+  
+\bibitem{BOTRVA}
+  Sonia Bogos, Florian Tramér, and Serge Vaudenay
+  \emph{On Solving LPN using BKW and Variants},
+  {IACR} Cryptology ePrint Archive, 2015.  
+  
+
+\end{thebibliography}
+ 
+\end{document}
+
+
+
+
+
+    
+
+

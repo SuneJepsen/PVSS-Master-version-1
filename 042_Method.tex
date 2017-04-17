@@ -1,0 +1,33 @@
+\section{Method}
+To ensure structure the sections will be contructed based one or more of the following 3 methods.
+\begin{enumerate}
+    \item \textbf{General structure}  \\
+    Informal description\\
+    Definition\\
+    Example\\
+    Proof    
+    \item \textbf{Zero-knowledge proof}
+    \item \textbf{Pseudo code} 
+\end{enumerate}
+
+\parahead{General structure} The general rule will be that every section will start informal description of the subject. Here we will give a informal description of why this it is relevant to our rapport. After that a more formal description will come. Their will be parts where the formality will require a more in depth explanation. To avoid disruption we then put this formality last in the section.    
+
+
+\parahead{Zero knowledge proof} In cryptography, a zero-knowledge proof or zero-knowledge protocol is a method by which one party (the prover) can prove to another party (the verifier) that a given statement is true, without conveying any information apart from the fact that the statement is indeed true. A zero-knowledge proof must satisfy following three properties:
+
+%-----------------------------------------------zero knowledge
+\begin{itemize}
+\item  \textnormal{\textbf{(Completeness:)}} If the prover is honest it should pass or if the statement is true, the honest verifier (that is, one following the protocol properly) will be convinced of this fact by an honest prover.
+\item    \textnormal{\textbf{(Soundness:)}} If the statement is false then it should fail with large probability or if the statement is false, no cheating prover can convince the honest verifier that it is true, except with some small probability..
+\item   \textnormal{\textbf{(Zero-knowledge:)}} If the statement is true, no cheating verifier learns anything other than the fact that the statement is true. In other words, just knowing the statement (not the secret) is sufficient to imagine a scenario showing that the prover knows the secret. This is formalized by showing that every cheating verifier has some simulator that, given only the statement to be proved (and no access to the prover), can produce a transcript that "looks like" an interaction between the honest prover and the cheating verifier. In the PVSS protocol the receiver doesn't learn the \begin{math}x_i \end{math}.
+\end{itemize}
+%-----------------------------------------------zero knowledge
+
+\parahead{Pseudo code} We will use pseudocode as an informal technique to outline the structure of our algorithms. This technique aims to describe a solution so that it is easy to read for humans.\\
+
+\parahead{Indistinguishable}
+The DLEQ proof involves this concept where the one cant distinguish between two values with the probability less than... Need reference..\\
+\textcolor{red}{Sune: Måske droppes eller diskussion}
+
+
+

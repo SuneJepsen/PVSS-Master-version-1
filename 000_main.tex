@@ -1,0 +1,121 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm} 
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage[vlined]{algorithm2e} % lib for pseudo code
+\usepackage{float}  % lib for pseudo code
+\usepackage[T1]{fontenc}
+\usepackage{pgfplots}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{array}
+\usepackage{mdframed}
+
+\RestyleAlgo{boxruled}
+\LinesNumbered
+
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\graphicspath{ {Graphics/Images/} }
+
+\usepackage{newunicodechar}
+\newunicodechar{∙}{\cdotp}
+
+\newcommand{\parahead}[1]{{\vspace*{6pt}\noindent\textbf{#1}\xspace\xspace\xspace\xspace}}
+
+\newcommand{\heading}[1]{{\vspace{6pt}\noindent\sc{#1}}}
+
+% Command for making <--> arrow with text above
+\makeatletter
+\newcommand\xleftrightarrow[2][]{%
+  \ext@arrow 9999{\longleftrightarrowfill@}{#1}{#2}}
+\newcommand\longleftrightarrowfill@{%
+  \arrowfill@\leftarrow\relbar\rightarrow}
+\makeatother
+
+\newcommand{\vectorbound}{\ensuremath{\kappa}}
+\newcommand{\secretbound}{\ensuremath{\nu}}
+\newcommand{\E}{\ensuremath{\textnormal{E}}}
+\newcommand{\Var}{\ensuremath{\textnormal{Var}}}
+\newcommand{\U}[1]{\ensuremath{\mathcal{U}(#1)\xspace}}
+\newcommand{\abs}[1]{\ensuremath{|#1|}\xspace}
+\newcommand{\dotp}[2]{\ensuremath{\left\langle {#1},{#2}\right\rangle}\xspace}
+
+\newcommand{\shortvec}[1]{\tilde{\mathbf{#1}}\xspace}
+\renewcommand{\vec}[1]{\mathbf{#1}\xspace}
+\newcommand{\cemph}[1]{\color{yellow9}{\bf #1}\xspace}
+\newcommand{\chig}{\ensuremath{\chi_{\alpha,q}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}\xspace}
+\newcommand{\Zq}{\ensuremath{\Z_q}\xspace}
+\newcommand{\ZqStar}{\ensuremath{\Z_q^*}\xspace}
+\newcommand{\Zp}{\ensuremath{\mathbb{Z}_p}\xspace}
+\newcommand{\Ldis}{L_{\mathbf{s},\chi}^{(n)}\xspace}
+\newcommand{\sample}{\ensuremath{\leftarrow_{\$}}}
+\renewcommand{\O}[1]{\ensuremath{{\mathcal{O}\left(#1\right)}}\xspace}
+\newcommand{\round}[1]{\ensuremath{\left\lfloor{#1}\right\rceil}\xspace}
+\newcommand{\Bdis}[1]{B_{\mathbf{s},\chi}(b,#1,p)\xspace}
+\newcommand{\Bdissm}[1]{B_{small,\mathbf{s},\chi}(b,#1,p)\xspace}
+\def\polyfactor{n\, \log_2^2 n}
+\newcommand{\bigO}[1]{\ensuremath{\mathcal{O}\left(#1\right)}\xspace}
+\newcommand{\svec}{\ensuremath{\mathbf{s}}\xspace} % command for pseudo code
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[subsection]
+\newtheorem{lemma}{Lemma}[subsection]
+%\newmdtheoremenv[frametitlerule=true, frametitlebackgroundcolor=gray!20]{defi}
+
+\mdfdefinestyle{defstyle}{frametitlerule=true, frametitlerulewidth=0px}
+\mdtheorem[style=defstyle]{defi}{Definition}[subsection]
+
+\mdtheorem[style=defstyle]{infobox}{}[subsection]
+
+\title{Draft 1}
+\author{Kasper and  Sune}
+\date{February 2017}
+
+\begin{document}
+
+\maketitle
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.1]{Ignacio.jpg}
+    \caption{Ignacio Cascudo}
+\end{figure}
+
+\input{010_abstract.tex}
+
+\input{020_introduction.tex}
+
+\input{030_Motivation.tex}
+
+\input{040_Hypothesis.tex}
+
+\input{042_Method.tex}
+
+\input{043_Overview.tex}
+
+\input{044_Notation.tex}
+
+\input{045_Modular_Arithmetic.tex}
+
+\input{047_Group_Theory.tex}
+
+\input{050_Assumptions.tex}
+
+\input{060_Shamir_Secret_Sharing.tex}
+
+\clearpage
+\input{070_Special_PVSS_Protocol.tex}
+
+\clearpage
+\input{200_Voter_Application.tex}
+
+\clearpage
+\input{990_Bibliography.tex}
+\end{document}

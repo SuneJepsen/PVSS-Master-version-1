@@ -1,0 +1,275 @@
+\section{Mathematical tools}
+The following section will be about the cryptographic assumptions which are used in the PVSS protocol. We will also describe some techniques which will be used in practical part of coding the protocol.
+
+%------------------------------------------------------------------------------------
+\subsection{One-way function and The Discrete logarithm problem} % and One way functions
+%------------------------------------------------------------------------------------
+
+\parahead{One-way function} One-way functions are easy to compute but it is very difficult to compute their inverse functions. Thus, having data $x$ it is easy to calculate $f(x)$ but,  
+knowing only the result of $f(x)$ it is hard to calculate the value of $x$. We say a function $f(x)$ is easy to compute if this can be done in polynomial running time. 
+In order to be useful in practical crypto schemes, the computation of $f(x)$ should be fast enough that it does not lead to unacceptably slow execution times in an application. The inverse
+computation of $f(x)$ should be so computationally intensive that it is not feasible to evaluate it in any reasonable time period. We define a One-way function as \\
+
+\begin{defi}[One-way function]
+A function $f()$ is a one-way function if:      \\
+1. $y = f (x)$ is computationally easy           \\
+2. $x = f^{-1}(y)$ is computationally infeasible    
+\end{defi}
+
+\noindent
+An example of a one-way function is $n = pq$ where $p$ and $q$ are primes, it is easy to compute $n$ given $p$ and $q$ but hard to find $p$ and $q$ given only $n$. 
+Inverting this function requires finding the factors of $n$.
+An other example of a one-way function is Discrete logarithm. \\
+
+
+\parahead{Discrete logarithm (DL)} A discrete logarithm is a integer $a$ exponent that solves $g^a=c$, where $g$ is a generator and $c$ is a element of a cyclic group. Given $a$ its easy to compute, but given only $g$ and $c$ its very hard to find $a$. We define discrete logarithm as \\
+
+\begin{defi}[Discrete logarithm (DL) problem]
+Given a group $G$, generator $g$ and $c \in G$, find integer $a$, such that $g^a = c$
+\end{defi}
+
+\noindent
+An example of the DL problem could be the following. Given a group $G = \Z_47^*$, an generator $g=5$, and an element $c = 41$ find a integer $a$ to solve: 
+
+\begin{center}
+$
+\begin{array}{l}
+     5^a \stackrel{?}{=} 41 \ mod \ 47 \\
+     \\
+     \text{To solve this DL problem we need to find} \\
+     a = 15 \ as \ 5^{15} = 41 \ mod \ 47
+\end{array}
+$
+\end{center}
+
+\noindent
+To solve this DL problem we could just tried all possible solution of \\
+$ \{g^0, g^1, g^2,...,g^{46}\} \ mod \ 47$ until we find the correct answer. However it is easy to see that given a large enough group this would be ineffective, actually the DL problem is believed to be notoriously hard, for instance in $\Z_p^*$ for large prime $p$. \\
+
+\noindent
+We use the DL problem in the following
+
+% Comment out since Kl dont know if we need this. 
+\iffalse
+    \begin{defi}[Computational Diffie-Hellman (CDH) problem]
+    \begin{math}g\in\Z_p, \ g\neq1 \end{math}\\
+    Given \begin{math}(g,g^a,g^b)\end{math} find(compute)  \begin{math}(g^{a*b})\end{math} is hard problem.\\
+    Definition: Need a reference?? \\
+    \textcolor{red}{Kasper}
+    \end{defi}
+\fi
+
+\parahead{Diffie-Hellman problem (DHP)}
+One of the best known application of the DL problem is in the Diffie-Hellman problem an in particular in the Diffie-Hellman key exchange. Though the Diffie-Hellman key exchange is not used in the PVSS protocol we will use it to illustrate the DHP.
+
+
+\begin{figure}[H]
+    \centering        
+    
+    $
+    \begin{array}{l}
+    \hline                      \
+    \textbf{Diffie-Hellman Key Exchange}      \\
+    \hline                      \\
+    \text{Public: a group G and a generator g}      \\
+    \\
+	\begin{array}{L{1.1cm}lcl}
+        & \text{\textsf{Alice}} & \text{\textsf{Eve}}_{Adversery} & \text{\textsf{Bob}} \\
+        \hline
+        Step \ 1    &           \begin{array}{l}
+                                   Chose: \ a \in_R G        \\ 
+                                   Compute: \ A = g^a         
+                                \end{array}     & \xrightarrow{\hspace{3em} A \hspace{3em}}  & \\
+        Step \ 2    &                           & \xleftarrow{\hspace{3em} B \hspace{3em}}       &                                                    \begin{array}{l}
+                                                            Chose: \ b \in_R G \\
+                                                            Compute: \ B = g^b
+                                                        \end{array} \\
+                    \\
+        Step \ 3    &   \begin{array}{ll} 
+                            C &= (B)^a      \\
+                              &= (g^b)^a    \\
+                              &= g^{ab}
+                        \end{array}   &     \xleftrightarrow{\hspace{0.5em}encrypt_C(message)\hspace{0.5em}} & \begin{array}{ll} 
+                            C &= (A)^b      \\
+                              &= (g^a)^b    \\
+                              &= g^{ab}     
+                        \end{array}     \\                                                 
+        \hline
+    \end{array}
+    \end{array}
+    $    
+    \caption{Diffie-Hellman Key Exchange}
+	\label{fig:Diffie_Hellman_KeyExchange}
+\end{figure}
+
+\noindent
+As shown in step 1 Alice is independently from Bob choosing an random element from the group G and using this to create a DL problem A which is sent to Bob. In step 2 Bob is doing the procedure as Alice and sends a DL problem B to Bob. In step 3 they both independently from each other using the received DL problems to create a key C. Both Alice and Bob will compute the same value C which can be used as a key in a cryptographic scheme. \\
+
+\noindent
+If we look at the exchange from Eve's point of view, we can see that Eve knows the public elements G and g aswell as A and B from step 1 and 2. If Eve can compute $C = g^{ab}$ then Eve would be able to decrypt any message sent between Alice and Bob. We define this problem as. \\
+
+\begin{defi}[Computational Diffie-Hellman (CDH) problem]
+Given a group $G$, generator $g$ and $A = g^a$, $B = g^b$, where $a,b$ is are randomly independently chosen from $\Zp$, compute $C=g^{ab}$ 
+\end{defi}
+
+\noindent
+If Eve knows an efficient algorithm to solve the DL problem, then Eve would also be able to solve the CDH problem. Finding $a$ from $A = g^a$ or $b$ from $B = g^b$ then Eve can easily compute $C$ the same way that Alice and Bob was able to. which leads us to  
+
+\begin{lemma}
+The CDH problem is no harder then the DL problem
+\end{lemma}
+
+\noindent
+It is not known if the opposite direction is true in general, but in some groups, the problems are equivalent. The CDH problem have another property namely if given a group element and the claim that this solves a CDH instance, then is not easy to verify that the solution is correct unless  we can solve the DL problem.  
+
+
+
+
+We would need to decide if, given $g^a, g^b, g^c$, it holds that $c = ab \ mod \ p$. This leads us to the final related problem \\
+
+\parahead{Decisional Diffie-Hellman (DDH) problem} The idea with DDH is that given a instance of the CDH problem plus an group element which is either a correct CDH solution, or is a random element. Then we are to guess which case we are in. We define the DDH problem as \\
+
+\iffalse
+    \begin{defi}[Decisional Diffie-Hellman (DDH) problem]
+    \begin{math}g\in\Z_p, \ g\neq1 \end{math}\\ 
+    Given \begin{math}(g,g^a,g^b,g^c)\end{math} decide if  \begin{math}(a*b=c)\end{math} is hard problem.\\
+    Definition: Need a reference??
+    \end{defi}
+\fi 
+
+\begin{defi}[Decisional Diffie-Hellman (DDH) problem] 
+    Given a group $G$, a generator $g$ and $A = g^a$, $B = g^b$ and $C = g^c$, where $a$ and $b$ are randomly and independently chosen from $\Z_p$ and where $c$ is chosen either as $c = ab$ or uniformly random from $\Zp$. Now guess which of the two cases we are in.   
+\end{defi}
+
+The DDH problem essentially comes down to deciding if $\delta = CDH(G,g,\beta,\gamma)$. This can however also happen when $c$ is randomly chosen but only with by a very small probability $1 / p$. 
+\noindent
+We use $DDH(G,g,\beta,\gamma) \in \{0,1\}$ to denote the solution, where $DDH(G,g,\beta,\gamma) = 1$ if $CDH(G,g,\beta,\gamma) = \delta$ and $DDH(G,g,\beta,\gamma) = 0$ if $CDH(G,g,\beta,\gamma) \neq \delta$.
+
+We can see that if we can solve the CDH problem then we can solve the DDH problem simply by computing $g^{ab}$ and comparing it with $g^c$. So we have 
+
+\begin{lemma}
+The DDH problem is no harder then CDH problem
+\end{lemma}
+
+
+\parahead{In the PVSS protocol}  
+\textcolor{red}{Needs some more filling :)}
+
+The security of the PVSS protocol can be reduced down to the hardness of the DL problem. Which means that if there can be found a efficient algorithm to solve the DL problem with large expoents then the entire PVSS protocol is insecure. In the next subsection we will look at known algorithms for solving the DL problem. 
+
+
+%------------------------------------------------------------------------------------
+\subsection{Known algorithms for solving the Discrete Logarithm Problem}
+%------------------------------------------------------------------------------------
+\begin{enumerate}
+    \item \textbf{Brute-force / Exhausted search} \\
+    Running time: \bigO{n}
+    
+    \item \textbf{Square-root attacks} \\
+    The Square-root attacks works in any group. \\
+    Running time: \bigO{\sqrt{n}}
+    
+    \begin{enumerate}
+        \item Baby-steps Giant-steps algorithm
+        \item Pollard's rho algorithm
+    \end{enumerate}
+    \item \textbf{Index-Calculus attacks} \\
+    Index-Calculus attacks are the best known attack against DLP, but it only
+    works in certain groups, in particularly $\Z_p^* $ and $ GF(2^m)^* $. \\
+    
+    This means in practice that $p$ needs to between $ 2^{1024} $ to $ 2^{2048} $
+\end{enumerate}
+
+\noindent
+\parahead{Baby-steps Giant-steps algorithm} Kasper Lemming er sej!!
+
+\textcolor{red}{Kasper is working on this}
+
+
+
+%------------------------------------------------------------------------------------
+\subsection{Hash function}
+%------------------------------------------------------------------------------------
+Hash functions is a function that takes a message of arbitrary size and outputs a digest hash value of a fixed size. The hash functions used in this project is hash function, which means that they are considered as one-way function. we define cryptographic hash function, denote just as hash functions onward, as.
+
+\begin{defi}[Hash function]
+\begin{enumerate}
+    \item Takes a message of arbitrary size and outputs a value of fixed size
+    \item Is deterministic so the same message always results in the same hash
+    \item Is quick to compute the hash value for any given message
+    \item Is collision resistant, mean it is infeasible to find two inputs $x$ and $x'$ such that $H(x) = H(x')$, and $x \neq x'$
+    \item A small change to a message should change the hash value so extensively that the new hash value appears uncorrelated with the old hash value
+\end{enumerate}
+\end{defi}
+
+A function hash function: $\{0,1\}^{\leq L} \rightarrow \{0,1\}^\ell$ is called collision resistant if it is hard to find $x \in \{0,1\}^{\leq L}$ and $x' \in \{0,1\}^{\leq L}$ such that $x \neq x'$ and $H(x)=H(x')$ - the value $(x,x')$ is called a collision. Here $\{0,1\}^{\leq L}$ denotes the set of bitstrings of length at most $L$. If $L \geq \ell$, then of course collisions exist, so they can be found given enough time, which is fine as we only ask that they are computationally hard to find.  
+
+%------------------------------------------------------------------------------------
+\subsection{Homomorphic Secret Sharing}
+%------------------------------------------------------------------------------------
+A homomorphism is a transformation from one algebraic structure into another of the same type so that the structure is preserved. Importantly, this means that for every kind of manipulation of the original data, there is a corresponding manipulation of the transformed data.\\
+
+\noindent 
+A homomorphic encryption scheme is a crypto system that allows computations to be performed on data without decrypting it. It is an encrypting scheme which allows computations to be carried out on ciphertext, thus generating an encrypted result which, when decrypted, matches the result of operations performed on the plaintext.\\
+
+\noindent
+\parahead{Homomorphic Secret Sharing} is a type of secret sharing algorithm in which the secret is encrypted via homomorphic encryption. In the PVSS scheme we use this property that one can sum the shares which are equal to the sum of the secrets.
+
+\begin{defi}[Homomorphic Secret Sharing]
+\begin{math}s\rightarrow (s_i,...,s_n)\end{math}\\
+\begin{math}u\rightarrow (u_i,...,u_n) \end{math}\\
+\begin{math}s+u\rightarrow (s_i+u_i,...,s_n+u_n) \end{math}\\
+\textcolor{red}{Ignacio: We need a formal definition. In "Introduction to Modern Cryptography" there are explanation on Homomorphic encryption page.499. It is correct understood that we use the property of Homomorphic Secret Sharing in section 12.3 }
+\end{defi}
+
+
+%------------------------------------------------------------------------------------
+\subsection{Fiat Sharmir}
+%------------------------------------------------------------------------------------
+The Fiat–Shamir heuristic is a technique in cryptography for taking an interactive proof of knowledge into a non interactive proof (signature scheme). This way, some fact (for example, knowledge of a certain number secret to the public) can be proven without revealing underlying information. This means that transforming a interactive proof into a non-interactive proof. Instead of the verifier creates a challenge the prover creates a challenge, on some previous data, based on a hash function.
+
+\begin{figure}[H]
+    \centering        
+    
+    $
+    \begin{array}{l}
+    \hline                      \
+    \textbf{Fiat Sharmir}      \\
+    \hline                      \\
+    \text{Public: identification schemes} \ Gen_{id}, P_1, P_2, V       \\
+    \text{The Signer: Private key} \ sk \text{, public key} \ pk \text{, message} \ m \in \{1,0\}  \\
+    \\
+	\begin{array}{L{1.1cm}lcl}
+        & \text{\textsf{Signer}}_{sk,pk, m} & & \text{\textsf{Verifier}} \\
+        \hline
+        Step \ 1    &           \begin{array}{l}
+                                    (I,st) \leftarrow P_1(sk)             \\ 
+                                    r := H(I,m)      \\ 
+                                    s := P_2(sk,st,r)    
+                                \end{array}     &                                   & \\
+                    &                           &                                   & \\
+        Step \ 2    &                           &       \xrightarrow{\hspace{1em} r, \ s, \ pk \hspace{1em}} & \begin{array}{l}
+                                                            Compute: \\ 
+                                                            I := V(pk,r,s) \\ \\
+                                                            Outputs: \\ 
+                                                            1 \ \text{if and only if} \ H(I,m) \stackrel{?}{=} r \\
+                                                        \end{array} \\
+        \hline
+    \end{array}
+    \end{array}
+    $    
+    \caption{Fiat Sharmir}
+	\label{fig:Fiat__Sharmir}
+\end{figure}
+
+\begin{defi}[Fiat Sharmir]
+\textcolor{red}{Ignacio: We need a formal definition}
+\textcolor{red}{Ignacio: explanation of identification schemes to signatures 453 - 456 (Introduction to Modern Cryptography) }
+\end{defi}
+
+
+\noindent
+
+
+
+

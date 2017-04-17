@@ -1,0 +1,59 @@
+%-----------------------------------------------Definition of group start
+\section{Groups theory}
+This protocol uses modulo, because when we computing numbers we want to reduce the result into a group. A group is defined by satisfying certain properties. The \begin{math} \circ \end{math} should be seen as either addition or multiplication operator between to numbers. 
+\begin{defi}[\textbf{Group}]
+A \textnormal{group} is a set \begin{math}\mathbb{G}\end{math} along with a binary operation \begin{math}\circ \end{math} for which the following conditions hold:.
+\begin{itemize}
+\item \textnormal{\textbf{(Closure:)}}  \begin{math} For \ all \ g, \ h \in \mathbb{G},\ g \circ h \in \mathbb{G} \end{math}.
+\item \textnormal{\textbf{(Existence of an identity:)}} \begin{math} There \ exists \ an \end{math} \textnormal{identity} \begin{math} e \in \mathbb{G} \end{math} such that for  all \begin{math} g \in \mathbb{G}, e \circ g = g =g \circ e \end{math}
+\item \textnormal{\textbf{(Existence of Inverses:)}} For all \begin{math}g \in \mathbb{G}\end{math} there exists an element \begin{math}h \in \mathbb{G}\end{math} such that \begin{math}g \circ h = e =h \circ g \end{math} such that an h is called an \textnormal{inverse} of g.
+\item \textnormal{\textbf{(Associativity:)}} For all \begin{math}g_1, g_2, g_3 \in \mathbb{G}, (g_1 \circ g_2) \circ g_3 = g_1 \circ( g_2 \circ g_3) \end{math}
+\end{itemize}
+When \begin{math}\mathbb{G}\end{math} has a finite number of elements, we say \begin{math}\mathbb{G}\end{math} is a finite group and let
+\begin{math}| \mathbb{G}|\end{math} denote the order of the group; that is, the number of elements in \begin{math}\mathbb{G}\end{math}. \\
+A group \begin{math}\mathbb{G}\end{math} with operation \begin{math}\circ\end{math} is abelian if the following holds:
+\begin{itemize}
+\item \textnormal{\textbf{(Commutativity:)}} For all \begin{math}g, h \in \mathbb{G}, g \circ h = h \circ g \end{math}
+\end{itemize}
+\end{defi}
+%-----------------------------------------------Definition of group end
+
+\parahead{Closure} Closure means that we always do computation in the set. The modulo operation ensures that we always reduce computations into a closed set.
+
+\parahead{Existence of Inverses} All properties holds for reel number. The inverse means that we want to compute a number such that \begin{math}a\ * a^{-1} \ mod \ q = 1 \end{math}  For the integers we have to ensure that the greatest commend divisor is 1 to ensure the inverse property. By example we see the following \begin{math} \Z_4 = \{0,1,2,3\}\end{math}. We cancel the \begin{math}0\end{math} because \textcolor{red}{(What is the correct formulation)???} We cancel \begin{math}2\end{math} because \begin{math}gcd(2,4)=2\end{math}. We end up with the following \begin{math} \Z_4^* = \{1,3\}\end{math}. If we take a prime we know that the gcd holds for every number up to the prime. So  \begin{math} \Z_7 = \{0,1,2,3,4,5,6\}\end{math} becomes \begin{math} \Z_7^* = \{1,2,3,4,5,6\}\end{math}.
+
+\parahead{Existence of an identity} There should always be a neutral element. When the operation is mulitplication the neutral element is $1$ and when the operation i addition the neutral element is $0$.
+
+\parahead{Associativity} By example one can show that associativity holds. If we take $ \Z_{10}^*$ with the following two expressions $ (3*7 \ mod \ 10)* 9 \ mod \ 10 $ and  $ 3 * ( 7*9 \ mod \ 10) \ mod \ 10) $. This can be reduced to $ (3*7 \ mod \ 10)* 9 \ mod \ 10 = 1 * 9 \ mod \ 10 = 9 \ mod \ 10$. This can be reduced to $ 3 * ( 7*9 \ mod \ 10) \ mod \ 10) = 3 * 3 \ mod \ 10 = 9 \ mod \ 10 $.  \\\\
+Question: \textcolor{red}{Why cant we do this protocol in the reel numbers)???}\textcolor{orange}{Pga. det er påkrævet at vi arbejder med Cyclic groups, så $ \Z_p^* $ og $ GF(2^m)^* $ og $ Ellipticcurves $, se  }
+
+\parahead{Field} The protocol uses finite field because the protocol uses Shamir secret sharing. But before we can explain a finite field we should know a field. A field is a  algebraic structure which forms an additive group and multiplicative group  respectively with group operation addition and multiplication. Remember that a field also contains subtraction and division operator. Addition can be formulated through addition of a negative number. Division can be formulated as a multiplication between number and an inverse.  
+%-----------------------------------------------Definition of finite start
+\begin{defi}[\textbf{Field}]
+A field F is a set of elements with the following properties:
+\begin{itemize}
+\item  All elements of $F$ form an additive group with the group operation $+$ and the neutral element $0$.
+\item  All elements of $F$ except $0$ form a multiplicative group with the group operation $*$ and the neutral element $1$.
+\item When the two group operations are mixed, the distributivity law holds, i.e., for all $a,b,c \in F: a(b+c) = (ab)+(ac)$.
+\end{itemize}
+\end{defi}
+%-----------------------------------------------Definition of finite end
+\parahead{Finite field} A finite field is when one does operation in the set the result stays in the set. When we do operation e.g. do multiplication and uses modulo we will stay in the set.
+%-----------------------------------------------Definition of finite fields start
+\begin{defi}[\textbf{Finite fields}]
+A finite field is a field $F$ which contains a finite number of elements. The order of $F$ is the number of elements in $F$.
+\end{defi}
+%-----------------------------------------------Definition of finite fields end
+\textcolor{red}{Question: how should we interpret "The order of $F$ is the number of elements in $F$"???}\\
+\textcolor{orange}{I believe that the order is the number where the group for the first time equals 1 see: https://youtu.be/aeOzBCbwxUo?t=50m56s} \\
+
+\parahead{Cyclic group} A cyclic group is if the group contains at least one element (generator) with the order of the cardinality (number of elements) of the group. This can also be formulated as the maximum cycle length which is $p-1$, which means when the generator begins to repeat the elements it is said to be cyclic.
+
+\parahead{Generators} An example of a generator could be the following. Let \begin{math}q=5\end{math} and \begin{math} \Z_q^*\end{math} be a group with \begin{math} \Z_q^* = \{1,2,3,...,q-1\}\end{math}. It can be seen that \begin{math} g=2\end{math} is a generator because,  \begin{math}2^1=2,\ 2^2=4,\ 2^3=8 \ (mod\ 5)=3,\ 2^4=16 \ (mod \ 5)=1 \end{math}, generates every element in the group. Here we see that $2$ have the maximum order $ord(2)=4$ of the group which i $4$ and therefor this group is said to be cyclic. \\\\
+\textcolor{red}{Question: I know one can do cryptosystems with cyclic groups but how is that related to pvss protocol???}
+%-----------------------------------------------Definition of group start
+\begin{defi}[\textbf{Cyclic Group}]
+A group $G$ which contains an element $ \alpha $ with maximum order $ord( \alpha ) = |G|$ is said to be cyclic. Elements with maximum order are called generator.
+\end{defi}
+%-----------------------------------------------Definition of group end
+
