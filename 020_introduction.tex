@@ -1,15 +1,21 @@
 \section{Introduction}
-\parahead{A MPC protocol}  allows several parties to compute some function on some private inputs, in such a way that they learn the result but not the inputs from the other players.  The challenge with MPC protocol is that it assumes that everyone is honest and sends correct data. \\
+
+\parahead{Secret sharing} allows several parties to compute some function on some private inputs, in such a way that they learn the result but not the inputs from the other parties. When more than two parties want to share something secret, then they need some tools “Protocols” to make it possible. We will describe the sharing and the reconstruction of the secret from the shares - and how this can technically be possible. 
+
+\parahead{A Multiparty computation protocol (MPC)} is a protocol which uses secret sharing and allows several parties to compute some function on some private inputs, in such a way that they learn the result but not the inputs from the other players.  The challenge with MPC protocol is that it assumes that everyone is honest and sends correct data. This is whats called secure against passive corruption. In the Verifiable secret sharing protocol (VSS) which uses secret sharing. Here the protocol allows the involved participants to verify their shares as consistent.   \\
 
 
-\parahead{In the Public verifiable secret sharing (PVSS protocol)} there is mechanisms to verify the correctness of the transmitted data.\\\\
+\begin{infobox}[Verifiable secret sharing]
+\begin{enumerate}
+\item A dealer sending incorrect shares to some or all of the participants
+\item Participants submitting incorrect shares during the reconstruction protocol
+\end{enumerate}
+\end{infobox}
 
-\parahead{Secret sharing protocol} allows several parties to compute some function on some private inputs, in such a way that they learn the result but not the inputs from the other parties. When more than two parties want to share something secret, then they need some tools “Protocols” to make it possible. In this section we will look at secret sharing. We will look at sharing and reconstructing the secret from the shares - and how this can technically be possible. 
+\parahead{In the Public verifiable secret sharing (PVSS protocol)} is an extension to the VSS protocol where the goal is not just that the participants can verify their own shares, but that anybody can verify the correctness of the transmitted data. One of its application is a electronic voting application. To get a good understanding of the protocol we will describe the formal parts behind the protocol. \\
 
-\parahead{Practical implementation} with focus on architecture. Skalerbarhed. Sikkerhed. Test. Performence. \\
+\parahead{Practical implementation} In second part we will design and implement with distributed voting solution which implements the protocol. In this solution we will have focus on designing a secure and scalable distributed architecture. Using known software design principle from Bass, Bærbak and Nyggard, we discuss and reflect on different solutions. Since this is a electronic voter application our solution will contain a user friendly interface for a broad user group. Here we will use known interaction design principles from Benyon.
 
 
-
-\noindent
-Man skal ikke være i tvivl om hvad vi vil arbejde med efter vores introduktionen, motivation og hypotese
+Many software developer has a tendency to focus on implementation and architecture of their system and forget...
 

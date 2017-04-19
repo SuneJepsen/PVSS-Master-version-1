@@ -14,7 +14,9 @@ To ensure structure the sections will be contructed based one or more of the fol
 
 
 \parahead{Zero knowledge proof} In cryptography, a zero-knowledge proof or zero-knowledge protocol is a method by which one party (the prover) can prove to another party (the verifier) that a given statement is true, without conveying any information apart from the fact that the statement is indeed true. A zero-knowledge proof must satisfy following three properties:
-
+\begin{defi}[\textbf{Zero knowledge definition}]
+\textcolor{red}{Ignacio: need some formal definition on this subject. I couldnt find anything in Introduction to Modern Cryptography }
+\end{defi}
 %-----------------------------------------------zero knowledge
 \begin{itemize}
 \item  \textnormal{\textbf{(Completeness:)}} If the prover is honest it should pass or if the statement is true, the honest verifier (that is, one following the protocol properly) will be convinced of this fact by an honest prover.
@@ -22,6 +24,8 @@ To ensure structure the sections will be contructed based one or more of the fol
 \item   \textnormal{\textbf{(Zero-knowledge:)}} If the statement is true, no cheating verifier learns anything other than the fact that the statement is true. In other words, just knowing the statement (not the secret) is sufficient to imagine a scenario showing that the prover knows the secret. This is formalized by showing that every cheating verifier has some simulator that, given only the statement to be proved (and no access to the prover), can produce a transcript that "looks like" an interaction between the honest prover and the cheating verifier. In the PVSS protocol the receiver doesn't learn the \begin{math}x_i \end{math}.
 \end{itemize}
 %-----------------------------------------------zero knowledge
+
+
 
 \parahead{Pseudo code} We will use pseudocode as an informal technique to outline the structure of our algorithms. This technique aims to describe a solution so that it is easy to read for humans.\\
 
