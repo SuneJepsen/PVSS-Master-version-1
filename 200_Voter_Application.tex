@@ -1,35 +1,4 @@
-\section{Security}
-Passive corruption is that a player (semihonest) gets access to information which the player is not entitled to, e.g. if a player ask another player about his information and tries to compare the information and get some more information in that way. Active corruption happens when the players (malicious) try to send values that they are not supposed to send - so the players deviate from the protocol. By using secret sharing we can prevent passive corruption, because the scheme guaranties that if t-players are corrupted then they will not be able to gain anything. The scheme can be made secure against active cheating, but we will not look at the details of this case in this project.
-We will look at the auction scheme where the farmers are not supposed to know other bids than their own. Therefor we will be concentrating on the passive corruption. 
-When we are referring to an adversary, we mean a Monolithic Adversary who corrupts a set of players. This is the strongest form of corruption. Let us say we have 10 players and two adversaries. The first adversary corrupts one of the players and the other corrupts 2 players. Imagine if there was one adversary who corrupts three players. Then it would be the case that this adversary would have access to more information than the first situation with 2 adversaries.
 \section{Simple voter application}
-
-\begin{center}
-\begin{algorithm}[H]
-\KwIn{a set $V$ of $q$ queries $(v_i, c_i) \in \{0,1\}^{k+1}$ from the LPN Oracle, values $a, b$ such that $k = ab$}
-\KwOut{values $\svec_1,...\svec_b$}
-\SetKw{KwAnd}{and}
-\SetKw{KwOr}{or}
-\Begin{
-Partitions the positions $a$ into disjoint $q_1 \cup...\cup q_{a-1}$ with $q_i$ of size $b$\;
-\For{$i=1$ to $a-1$}{
-  Partition $V = V_1 \cup ... \cup V_{2^b}$ s.t.vectors in $V_j$ have the same bit values on $q_i$\;
-  \For{\textbf{each} $V_j$}{
-    Choose a random $(v^*,c^*) \in V_j$ as a representative vector\;
-    Replace each $(v,c)$ by $(v,c) \oplus (v^*,c^*), (v,c) \in V_j$ for $(v,c) \neq (v^*,c^*)$\;
-    Discard $(v^*,c^*)$ from $V_j$\;
-  }
-  $V = V_1 \cup ... \cup V_{2^b}$\; 
-  }
-$f(x)=\sum_{i} 1_{v'_i}=x(-1)^{c'_i}$\;
-$f(v)=\sum_{x} (-1)^{\dotp{v}{x}}f(x)$\;
-$(\svec_1,...,\svec_b) = arg max(f(v))$
-\Return{$\svec_1,...,\svec_b$}
-}
-\caption{LF1 Algoritmen som beskreven i [3]}
-\end{algorithm}
-\end{center}
-
 
 
 \noindent

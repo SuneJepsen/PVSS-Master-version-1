@@ -29,7 +29,7 @@ This section will start by explaining our requirements for our implementation an
 \end{infobox}
 
 \noindent
-In the following we will describe the central parts of the protocol. We will use terms as Tallying which in this context those who counts the votes.
+In the following we will describe the central parts of the protocol. We will use terms as Bulletin board which is keen of public board where all the public values gets posted. Tallying is in this context those who counts the votes.
 
 \subsection{Initialization}
 
@@ -39,7 +39,7 @@ In the following we will describe the central parts of the protocol. We will use
 One can see that if \begin{math}q\end{math} is a prime say \begin{math}q=5\end{math}, then \begin{math}2^5 \ mod \ 5 = 32 \ mod \ 5 = 2\end{math}. For this to be true, we take the square of numbers modulo a prime in this form \begin{math}2q+1\end{math}. This is also called a strong prime. By using this mathematical structure this property holds. We can choose \begin{math}b=a^2\end{math}. Then we see the property holds \begin{math}b^{2q} = 1 \ mod \ 2q+1\end{math}. By example it is clear that \begin{math}(2^2)^5 \ mod \ 11 = 1024 \ mod \ 11 = 1\end{math}. Fermat little theorem states that \begin{math}b^{q-1} \ mod \ q = 1\end{math} where \begin{math}q\end{math} is prime. So we know if we pick our \begin{math}q\end{math} and \begin{math}b\end{math} (as a square)  in this form \begin{math}(b^{2})^{q+1-1} \ mod \ 2q+1 =1 =  b^{2q} \ mod \ 2q+1 =1\end{math} the property holds.
 
 \noindent
-\begin{infobox}[The bulleting board generates]
+\begin{infobox}[The bulleting board generates all system parameters]
 Public elements:\\
 \begin{math}f \in_R \{1,...,2q\} \rightarrow g= f^2 \ mod\ 2q+1\end{math}\\
 \begin{math}F \in_R \{1,...,2q\}\rightarrow G= F^2 \ mod\ 2q+1 \wedge G\neq1\end{math}\\
@@ -63,7 +63,7 @@ Every voter either votes "no" or "yes" corresponding to 0 or 1. The voter select
 
 
 \noindent
-\begin{infobox}[The voter computes]
+\begin{infobox}[The voter creates a random polynomial of degree at most $t$ and computes the shares]
 Vote: \begin{math}v\in\{0,1\} \end{math}\\
 Random value: \begin{math} s\in_R \Z_q \end{math}\\ 
 Shamir Secret Sharing: \begin{math} p(x)=s+\alpha_1x^1+\alpha_2x^2+,...,+\alpha_{t-1}x^{t-1}, \ \alpha_j\in_R \Z_q  \end{math}\\
@@ -73,19 +73,16 @@ Secret Shares: \begin{math} p(0)=s,\ p(1),\ p(2),...,\ p(n) \end{math}
 \subsection{Ballot casting}
 The  Ballot casting consists of \textit{distribution of the shares} and \textit{verification of the shares}. First the voter votes and then creates a random value. Two proofs are included by the voter a $DLEQ$ and a $PROOF_U$.\\
 
-\noindent
 \parahead{Shamir Secret Sharing} The \begin{math}p(i)\end{math} is the secret where we use Shamir Secret Sharing. The \begin{math}\alpha_j\end{math} is all the coefficients. The \begin{math}X_i\end{math} means the i'th tallier. \\
 
-\noindent
 \parahead{DLEQ} With DLEQ we prove that the exponent are equal \begin{math}X_i=g^{p(i)}  \land Y_i=y_i^{p(i)} \end{math} without revealing \begin{math}{p(i)} \end{math}. Note that there has been no communcation between the the player for now. We will present an interactive and a non-interactive proof of the DLEQ between the voter and the verifier.\\
 
-\noindent
 \parahead{\begin{math} PROOF_U \end{math}} With \begin{math} PROOF_U \end{math} the voter proofs "consistency" and that the vote is either 1 or 0.\\
 
 \noindent
 Note that the contruction of $Y_i$ is a hard problem to solve as we discussed in the discrete logarithm section. 
 
-\begin{infobox}[Distribution of the shares by every voter]
+\begin{infobox}[The voter distributes the encrypted share with a $PROOF_U$ and a $DLEQ$ proof]
 The following gets publish to the bulleting board\\
 \begin{math}Y_i=y_i^{p(i)} \end{math}, \begin{math}1\leq i\leq n\end{math} (Encryption of the share) \\ 
 \begin{math}C_j=g^{\alpha_j},\ j=\{0,1,2,3,....,t-1 \} \end{math} \\ 
@@ -96,12 +93,12 @@ The following gets publish to the bulleting board\\
 
 
 
-\parahead{Example} For clarification an example on \begin{math}X_i\end{math} calculations to tallier 1, tallier 2 and tallier 3.\\
-Tallier 1: \begin{math}X_1=\prod\limits_{j=0}^{t-1} C_j^{i^j} = C_0^{1^0} * C_1^{1^1} * C_2^{1^2}\end{math}\\
-Tallier 2: \begin{math}X_2=\prod\limits_{j=0}^{t-1} C_j^{i^j} = C_0^{2^0} * C_1^{2^1} * C_2^{2^2}\end{math}\\
-Tallier 3: \begin{math}X_3=\prod\limits_{j=0}^{t-1} C_j^{i^j} = C_0^{3^0} * C_1^{3^1} * C_2^{3^2}\end{math}
-
-
+\parahead{Example} For clarification an example on \begin{math}X_i\end{math} calculations to tallier 1, tallier 2 and tallier 3.
+\begin{center}
+Tallier 1: \begin{math}X_1=\prod\limits_{j=0}^{t-1} C_j^{i^j} = C_0^{1^0}  \cdot  C_1^{1^1}  \cdot  C_2^{1^2}\end{math}\\
+Tallier 2: \begin{math}X_2=\prod\limits_{j=0}^{t-1} C_j^{i^j} = C_0^{2^0}  \cdot  C_1^{2^1}  \cdot  C_2^{2^2}\end{math}\\
+Tallier 3: \begin{math}X_3=\prod\limits_{j=0}^{t-1} C_j^{i^j} = C_0^{3^0}  \cdot  C_1^{3^1}  \cdot  C_2^{3^2}\end{math}
+\end{center}
 
 \subsection{Tallying}
 Tallying is the process of counting the votes. Here the tallier uses their private keys to collectively compute the final tally, based on the valid ballots.\\
@@ -110,24 +107,30 @@ Tallying is the process of counting the votes. Here the tallier uses their priva
 \noindent
 \parahead{Homomorphic secret sharing} property ensures that each tallier will  be able to multiply the shares and decrypt. Note that \textit{i} is referring to tallier 1, tallier  2 and tallier 3 and \textit{j} is referring to voter 1, voter 2 and voter 3.:\\
 
-\begin{infobox}[The tallier decrypts the shares]
-\begin{math}Y_i^*=(\prod\limits_{j=1}^{m} Y_{ij}) \ (mod\ 2*q+1) =y_i^{\sum\limits_{j=1}^m p_j(i)}\end{math}\\ \\
+\begin{infobox}[The tallier decrypts the shares and publishes a $DLEQ$ proof]
+\begin{math}Y_i^*=(\prod\limits_{j=1}^{m} Y_{ij}) \ (mod\ 2 \cdot q+1) =y_i^{\sum\limits_{j=1}^m p_j(i)}\end{math}\\ \\
 Following can be reduced by using the talliers private key. Note that we are raising to the multiplicative inverse of the private key in  \textit{q}:\\\\
 \begin{math}y_i^{\sum\limits_{j=1}^m p_j(i)}=(G^{x_i})^{\sum\limits_{j=1}^m p_j(i)} = G^{x_i \sum\limits_{j=1}^m p_j(i)}= (G^{x_i \sum\limits_{j=1}^m p_j(i)})^{\frac{1}{x_i}}= G^{ \sum\limits_{j=1}^m p_j(i)}   \end{math}
 \end{infobox}
 
 
-\parahead{Example} on the multiplcation of the $Y_{ij}$\\
+\noindent
+Note that besides decrypting the shares the tallier will publish a $DLEQ$ proof which shows that the decrypting was done correct. See figure \ref{fig:DLEQ_by_talliers} of the $DLEQ$ proof. Also note that we computing the inverse of the key $x_i$. To compute the inverse we will use Extended Euclidean algorithm.
+
+\parahead{Example} on the multiplcation of the $Y_{ij}$
+\begin{center}
 Voter 1: \begin{math}Y_{1,1}=y_{1,1}^{p_1(1)} \end{math}, \begin{math}Y_{2,1}=y_{2,1}^{p_2(2)} \end{math},.., \begin{math}Y_{n,1}=y_n^{p_n(n)} \end{math}\\
 Voter 2: \begin{math}Y_{1,2}=y_{1,2}^{p_1(1)} \end{math}, \begin{math}Y_{2,2}=y_{2,2}^{p_2(2)} \end{math},.., \begin{math}Y_{n,2}=y_n^{p_n(n)} \end{math}\\
 Voter \textit{m}: \begin{math}Y_{1,m}=y_{1,m}^{p_1(1)} \end{math}, \begin{math}Y_{2,m}=y_{2,m}^{p_2(2)} \end{math},.., \begin{math}Y_{n,m}=y_n^{p_n(n)} \end{math}\\
+\end{center}
 
 \noindent
-Example on $Y_i^*$ is each tallier can publish the following. Note that every talliers exponent is the evaluation in some point in a given polynomium \begin{math}h(1), h(2),..., h(n) \end{math}.\\
+Example on $Y_i^*$ is each tallier can publish the following. Note that every talliers exponent is the evaluation in some point in a given polynomium \begin{math}h(1), h(2),..., h(n) \end{math}.
+\begin{center}
 Tallier 1 publish: \begin{math}Y_1^* = G^{ \sum\limits_{j=1}^m p_j(1)}   \end{math}\\
 Tallier 2 publish: \begin{math}Y_2^* = G^{ \sum\limits_{j=1}^m p_j(2)}   \end{math}\\
 Tallier \textit{n} publish: \begin{math}Y_n^* = G^{ \sum\limits_{j=1}^m p_j(n)}  \end{math}\\
-
+\end{center}
 
 \parahead{Lagrange interpolation} One can now use lambda, which is computed from the  Lagrange interpolation formular, \begin{math} \lambda_j \end{math} and multiply these values which will be the same as the sum of the exponents. See figure \ref{info:Computing_the_coefficients} \\
 
@@ -135,7 +138,7 @@ Tallier \textit{n} publish: \begin{math}Y_n^* = G^{ \sum\limits_{j=1}^m p_j(n)} 
 The \begin{math}p_j(0) \end{math} correspond to the sum of the secret values of \textit{s} for the voters. This \begin{math}p_j(0)\end{math} corresponds to the evaluation of \begin{math}h(0)\end{math}. See figure  \ref{info:Applying_Lagrange_polynomial_interpolation}
 
 \begin{infobox}[A master authority applies Lagrange interpolation]
-\begin{math}(Y_1^*)^{\lambda_1 * \ (mod \ q)} * (Y_2^*)^{\lambda_2 \ (mod \ q)} * (Y_n^*)^{\lambda_n \ (mod \ q)} \ (mod \ 2*q+1) \end{math}\\
+\begin{math}(Y_1^*)^{\lambda_1  \cdot  \ (mod \ q)}  \cdot  (Y_2^*)^{\lambda_2 \ (mod \ q)}  \cdot  (Y_n^*)^{\lambda_n \ (mod \ q)} \ (mod \ 2 \cdot q+1) \end{math}\\
 
 
 \noindent
@@ -157,7 +160,7 @@ The last step is to isolate the votes and then compute the final result.
 \noindent
 \begin{infobox}[A master authority computes the votes]
 By combining \begin{math}U_j \end{math} we obtain: \\ 
-\begin{math} (\prod\limits_{j=1}^{m} U_{j}) \ (mod \ 2*q+1)=  G^{ \sum\limits_{j=1}^m s_j +v_j}\end{math} \\ \\
+\begin{math} (\prod\limits_{j=1}^{m} U_{j}) \ (mod \ 2 \cdot q+1)=  G^{ \sum\limits_{j=1}^m s_j +v_j}\end{math} \\ \\
 By dividing we isolate \textit{v}: \\ \\
 \begin{math}\frac{G^{ \sum\limits_{j=1}^m s_j +v_j}}{{ G^{ \sum\limits_{j=1}^m s_j} }} =G^{ \sum\limits_{j=1}^m s_j +v_j -\sum\limits_{j=1}^m s_j} = G^{ \sum\limits_{j=1}^m v_j}  \end{math}
 \end{infobox}
@@ -174,10 +177,9 @@ In this section we will elaborate the mathematical justification of the interact
 %----------------------------------------------------------------------
 \subsubsection{DLEQ interactive proof between voters and verifier}
 %----------------------------------------------------------------------
-DLEQ stands for discrete logarithm equality and it proofs the exponent are equal \begin{math}X_i=g^{p(i)}  \land Y_i=y_i^{p(i)} \end{math} without revealing \begin{math}{p(i)} \end{math}. The verification of the shares in the interactive proof happens by the following  interaction between the prover and the verifier.\\\\
+DLEQ stands for discrete logarithm equality and it proofs the exponent are equal \begin{math}X_i=g^{p(i)}  \land Y_i=y_i^{p(i)} \end{math} without revealing \begin{math}{p(i)} \end{math}. The verification of the shares in the interactive proof happens by the following  interaction between the prover and the verifier.
 
-\noindent
-\parahead{The prover computes}  \begin{math}a_1=g^w  \land a_2=y_i^w,  w\in_R \Z_q \end{math} and sends $a_1$ and $a_2$ to the verifier. \parahead{ The verifer computes}  \begin{math}C\in_R \Z_q \end{math} and sends $C$ to the prover. \parahead{The prover computes}  \begin{math}r=w-p(i) * C\end{math}. \parahead{ The verifer computes}  if the following computation is true \begin{math}a_1 = g^r*X_i^C \ \land \ a_2=y_i^r*Y_i^C\end{math}.
+\parahead{The prover computes}  \begin{math}a_1=g^w  \land a_2=y_i^w,  w\in_R \Z_q \end{math} and sends $a_1$ and $a_2$ to the verifier. \textbf{ The verifer computes}  \begin{math}C\in_R \Z_q \end{math} and sends $C$ to the prover. \textbf{The prover computes}  \begin{math}r=w-p(i)  \cdot  C\end{math}. \textbf{The verifer computes}  if the following computation is true \begin{math}a_1 = g^r \cdot X_i^C \ \land \ a_2=y_i^r \cdot Y_i^C\end{math}.
 
 
 \begin{figure}[H]
@@ -198,11 +200,11 @@ DLEQ stands for discrete logarithm equality and it proofs the exponent are equal
         & a_2=y_i^w   & \xrightarrow{\hspace{1em}a_1 \land a_2\hspace{1em}} & \\
         Step \ 2 & & & C\in_R \Z_q \\
         & & \xleftarrow{\hspace{2em}C\hspace{2em}} & \\
-        Step \ 3 & r=w-p(i) * C    & & \\
+        Step \ 3 & r=w-p(i)  \cdot  C    & & \\
         Step \ 4 & & \xrightarrow{\hspace{2em}r\hspace{2em}} & \begin{array}{c}
         checks \ if: \\      
-        a_1 = g^r*X_i^C \\ 
-        a_2=y_i^r*Y_i^C
+        a_1 = g^r \cdot X_i^C \\ 
+        a_2=y_i^r \cdot Y_i^C
         \end{array} \\
         \hline
     \end{array}
@@ -223,10 +225,10 @@ Note that the verifier sends a challenge \textit{C}, after the prover has comput
 \begin{infobox}[DLEQ without a challenge]
 Prover \begin{math}\rightarrow\end{math} Verifier: \begin{math}a_1=g^6 \ \land\ a_2=y_i^7 \ \land \ X_i=g^2 \ \land \ Y_i=y_i^3 \end{math}\\
 Verifier \begin{math}\rightarrow\end{math} Prover: \begin{math}C=1 \end{math}\\
-Prover \begin{math}\rightarrow\end{math} Verifier: \begin{math}r=w-p(i) * C = 6-2 * 1= 4\end{math}\\
-Verifier knows:  \begin{math}a_1=g^4 * X_i \ \land \ a_2=y_i^4 * Y_i \end{math}\\
-Verifier checks if:  \begin{math}a_1 = g^4*X_i^C = g^4*g^{2*1} = g^6\end{math}\\
-Verifier checks if:  \begin{math} a_2=y_i^4 * Y_i^C = y_i^4 * y_i^{3*1}= y_i^7 \end{math}
+Prover \begin{math}\rightarrow\end{math} Verifier: \begin{math}r=w-p(i)  \cdot  C = 6-2  \cdot  1= 4\end{math}\\
+Verifier knows:  \begin{math}a_1=g^4  \cdot  X_i \ \land \ a_2=y_i^4  \cdot  Y_i \end{math}\\
+Verifier checks if:  \begin{math}a_1 = g^4 \cdot X_i^C = g^4 \cdot g^{2 \cdot 1} = g^6\end{math}\\
+Verifier checks if:  \begin{math} a_2=y_i^4  \cdot  Y_i^C = y_i^4  \cdot  y_i^{3 \cdot 1}= y_i^7 \end{math}
 \end{infobox}
 
 \noindent
@@ -235,27 +237,27 @@ One can see that both checks passes in this example despite that the prover is d
 \begin{infobox}[DLEQ with a challenge]
 Prover \begin{math}\rightarrow\end{math} Verifier: \begin{math}a_1=g^6 \ \land\ a_2=y_i^7 \ \land \ X_i=g^2 \ \land \ Y_i=y_i^3 \end{math}\\
 Verifier \begin{math}\rightarrow\end{math} Prover: \begin{math}C=9\ (mod \ 5) \end{math}\\
-Prover \begin{math}\rightarrow\end{math} Verifier: \begin{math}r=w-p(i) * C = 6-2 * 4 \ (mod \ 5)= 3\end{math}\\
-Verifier knows:  \begin{math}a_1=g^3 * X_i \ \land \ a_2=y_i^3 * Y_i \end{math}\\
-Verifier checks if:  \begin{math}a_1 = g^3*X_i^C = g^3*g^{2*4} = g^3 * g^3 = g^6= g^1= g\end{math}\\
-Verifier checks if:  \begin{math} a_2=y_i^3 * Y_i^C = y_i^3 * y_i^{3*4}= y_i^3 * y_i^{1*2}= y_i^3 * y_i^2= y^5=y^0= 1 \end{math}
+Prover \begin{math}\rightarrow\end{math} Verifier: \begin{math}r=w-p(i)  \cdot  C = 6-2  \cdot  4 \ (mod \ 5)= 3\end{math}\\
+Verifier knows:  \begin{math}a_1=g^3  \cdot  X_i \ \land \ a_2=y_i^3  \cdot  Y_i \end{math}\\
+Verifier checks if:  \begin{math}a_1 = g^3 \cdot X_i^C = g^3 \cdot g^{2 \cdot 4} = g^3  \cdot  g^3 = g^6= g^1= g\end{math}\\
+Verifier checks if:  \begin{math} a_2=y_i^3  \cdot  Y_i^C = y_i^3  \cdot  y_i^{3 \cdot 4}= y_i^3  \cdot  y_i^{1 \cdot 2}= y_i^3  \cdot  y_i^2= y^5=y^0= 1 \end{math}
 \end{infobox}
 
 
 \parahead{The mathematical justification} Verifier knows that the prover has raised \begin{math}g^w\end{math} and \begin{math}y_i^w\end{math}. We denote these exponents by \begin{math}w\end{math}    and \begin{math}w^{'}\end{math}. The verifier also knows that the prover has computed \begin{math}X_i=g^{p(i)}  \land Y_i=y_i^{p(i)} \end{math}. We denote the exponents by \begin{math}m_i\end{math} and \begin{math}m_i^{'}\end{math}. We know
-\begin{math} a_1= g^w \end{math} equal to \begin{math}g^r * X_i^C=g^r*g^{m_i*C} = g^{r+m_i*C}\end{math} and
-\begin{math} a_2= y_i^{w^{'}}\end{math} equal to \begin{math}y_i^r * Y_i^C=y_i^r*y_i^{m_i^{'}*C} = y_i^{r+m_i^{'}*C}\end{math}.
+\begin{math} a_1= g^w \end{math} equal to \begin{math}g^r  \cdot  X_i^C=g^r \cdot g^{m_i \cdot C} = g^{r+m_i \cdot C}\end{math} and
+\begin{math} a_2= y_i^{w^{'}}\end{math} equal to \begin{math}y_i^r  \cdot  Y_i^C=y_i^r \cdot y_i^{m_i^{'} \cdot C} = y_i^{r+m_i^{'} \cdot C}\end{math}.
 Based on this we can now write two inequalities. It is unlikely that if the prover was dishonest that these two checks passes. It may not be clear but in order for these inequalities to be true we can rewrite.
 
 \begin{infobox}[DLEQ mathematical justification]
 We know\\
-\begin{math} a_1= g^w \end{math} equal to \begin{math}g^r * X_i^C=g^r*g^{m_i*C} = g^{r+m_i*C}\end{math}\\
-\begin{math} a_2= y_i^{w^{'}}\end{math} equal to \begin{math}y_i^r * Y_i^C=y_i^r*y_i^{m_i^{'}*C} = y_i^{r+m_i^{'}*C}\end{math}\\\\
+\begin{math} a_1= g^w \end{math} equal to \begin{math}g^r  \cdot  X_i^C=g^r \cdot g^{m_i \cdot C} = g^{r+m_i \cdot C}\end{math}\\
+\begin{math} a_2= y_i^{w^{'}}\end{math} equal to \begin{math}y_i^r  \cdot  Y_i^C=y_i^r \cdot y_i^{m_i^{'} \cdot C} = y_i^{r+m_i^{'} \cdot C}\end{math}\\\\
 We can now write two inequalities\\
-\begin{math} w= r+m_i * C\ (mod\ q) \implies r= w-m_i*C\ (mod\ q) \end{math}\\
-\begin{math} w^{'}= r+m_i^{'} * C\ (mod\ q) \implies r= w^{'}-m_i^{'} * C\ (mod\ q) \end{math}\\\\
+\begin{math} w= r+m_i  \cdot  C\ (mod\ q) \implies r= w-m_i \cdot C\ (mod\ q) \end{math}\\
+\begin{math} w^{'}= r+m_i^{'}  \cdot  C\ (mod\ q) \implies r= w^{'}-m_i^{'}  \cdot  C\ (mod\ q) \end{math}\\\\
 These two inequalities has to be equal, therefor we can rewrite\\
-\begin{math}w-m_i*C = w^i-m_i^{'}\ (mod\ q) \implies (w-w^i)-(m_i - m_i^{'}) * C = 0 \ (mod\ q) \end{math}
+\begin{math}w-m_i \cdot C = w^i-m_i^{'}\ (mod\ q) \implies (w-w^i)-(m_i - m_i^{'})  \cdot  C = 0 \ (mod\ q) \end{math}
 \end{infobox}
 
 
@@ -281,10 +283,10 @@ Here we present how one can turn an interactive proof to a non interactive proof
 \textcolor{red}{We will describe an non optimized and a optimized version - does this have a name??}\\
 
 
-\parahead{The prover computes} \begin{math}a_1=g^w \ (mod\ q)  \land a_2=y_i^w \ (mod\ q),  w\in_R \Z_q \end{math}. Then the prover computes the hash \begin{math}C=H(X_i,Y_i,a_1,a_2) \end{math}. Then the prover computes  \begin{math}r=w-p(i) * C \ (mod\ q)\end{math}. Last the prover publish \begin{math}a_1, a_2,r,C\end{math}. \\
+\parahead{The prover computes} \begin{math}a_1=g^w \ (mod\ q)  \land a_2=y_i^w \ (mod\ q),  w\in_R \Z_q \end{math}. Then the prover computes the hash \begin{math}C=H(X_i,Y_i,a_1,a_2) \end{math}. Then the prover computes  \begin{math}r=w-p(i)  \cdot  C \ (mod\ q)\end{math}. Last the prover publish \begin{math}a_1, a_2,r,C\end{math}. \\
 
 \noindent
-\parahead{The verifier computes} the following computations \begin{math}a_1 = g^r*X_i^C  \ (mod\ q)\end{math} and \begin{math} a_2=y_i^r * Y_i^C \ (mod\ q)\end{math} and \begin{math}C=H(X_i,Y_i,a_1,a_2)\end{math}.
+\parahead{The verifier computes} the following computations \begin{math}a_1 = g^r \cdot X_i^C  \ (mod\ q)\end{math} and \begin{math} a_2=y_i^r  \cdot  Y_i^C \ (mod\ q)\end{math} and \begin{math}C=H(X_i,Y_i,a_1,a_2)\end{math}.
 
 
 \begin{figure}[H]
@@ -305,13 +307,13 @@ Here we present how one can turn an interactive proof to a non interactive proof
                                     a_1=g^w \ (mod\ q)      \\ 
                                     a_2=y_i^w \ (mod\ q)    \\
                                     C=H(X_i,Y_i,a_1,a_2)    \\
-                                    r=w-p(i) * C \ (mod\ q)
+                                    r=w-p(i)  \cdot  C \ (mod\ q)
                                 \end{array}     &               & \\
                     &                   &               & \\
         Step \ 2    &                   &               \xrightarrow{\hspace{0.4em}a_1 , a_2 , r , C\hspace{0.4em}} & \begin{array}{l}
             checks \ if: \\      
-            a_1 = g^r*X_i^C \\ 
-            a_2=y_i^r*Y_i^C \\
+            a_1 = g^r \cdot X_i^C \\ 
+            a_2=y_i^r \cdot Y_i^C \\
             C=H(Xi,Yi,a1,a2)
         \end{array} \\
         \hline
@@ -334,10 +336,10 @@ Here we present how one can turn an interactive proof to a non interactive proof
 DLEQ \begin{math}(g,X_i,y_i,Y_i) \end{math} for  \begin{math}1\leq i \leq n \end{math}  \\
 Prover publish: \begin{math}a_{1,i}=g^{w_i} \ (mod\ q)  \land a_{2,i}=y_i^{w_i} \ (mod\ q),  w_i\in_R \Z_q \end{math}\\
 Prover computes the hash: \begin{math}C=H(X_i,Y_i,...,X_n,Y_n,a_{1,1},a_{2,1},\\a_{1,2},a_{2,2},...,a_{1,n},a_{2,n})\end{math}\\
-Prover computes \begin{math}r_i\end{math}:  \begin{math}r_i=w_i-p(i) * C \ (mod\ q)\end{math}\\
+Prover computes \begin{math}r_i\end{math}:  \begin{math}r_i=w_i-p(i)  \cdot  C \ (mod\ q)\end{math}\\
 Prover publish:  \begin{math}r_i,C\end{math}\\
-Verifier checks if:  \begin{math}a_{1,i} = g^{r,i}*X_i^C \ (mod\ q) \end{math}\\
-Verifier checks if:  \begin{math} a_{2,i}=y_i^{r_{i}} * Y_i^C \ (mod\ q)\end{math}\\ 
+Verifier checks if:  \begin{math}a_{1,i} = g^{r,i} \cdot X_i^C \ (mod\ q) \end{math}\\
+Verifier checks if:  \begin{math} a_{2,i}=y_i^{r_{i}}  \cdot  Y_i^C \ (mod\ q)\end{math}\\ 
 Verifier checks if:  \begin{math}C=H(X_i,Y_i,...,X_n,Y_n,a_{1,1},a_{2,1},a_{1,2},a_{2,2},...,a_{1,n},a_{2,n})\end{math}
 
 \label{info:DLEQ_optimized}
@@ -352,10 +354,10 @@ Prover selects:  $w_1, w_2,w_3\in_R \Z_q$ \\
 Prover computes: $a_{1,i}=g^w_i \ (mod\ q) \land a_{2,i}=y_i^{w_i} \ (mod\ q)$ \\
 Prover computes the hash:  $C=H(X_i,Y_i,...,X_n,Y_n,a_{1,1},a_{2,1},$\\
 $a_{1,2},a_{2,2},...,a_{1,n},a_{2,n})$\\
-Prover computes  $\ r_i:  r_i=w_i-p(i) * C \ (mod\ q)$ \\\\
+Prover computes  $\ r_i:  r_i=w_i-p(i)  \cdot  C \ (mod\ q)$ \\\\
 The verification contains the following computation: \\
-Verifier checks if: $a_{1,i} = g^{r,i}*X_i^C \ (mod\ q) $        \\
-Verifier checks if: $a_{2,i} =y_i^{r_{i}} * Y_i^C \ (mod\ q)  $   \\
+Verifier checks if: $a_{1,i} = g^{r,i} \cdot X_i^C \ (mod\ q) $        \\
+Verifier checks if: $a_{2,i} =y_i^{r_{i}}  \cdot  Y_i^C \ (mod\ q)  $   \\
 Verifier checks if: $C=H(X_i,Y_i,...,X_n,Y_n,a_{1,1},a_{2,1},a_{1,2},a_{2,2},...,a_{1,n},a_{2,n})$
 
 \end{infobox}
@@ -395,9 +397,9 @@ In this section we will show the interactive proof. Through Fiat–Shamir  we tr
                                     r_1\in_R\{1,...,q-1\},\\
                                     d_1\in_R\{1,...,q-1\},      \\ 
                                     a_0 = g^w,\\ 
-                                    a_1 = g^{r_1}*C^{d_1}_0,\\ 
+                                    a_1 = g^{r_1} \cdot C^{d_1}_0,\\ 
                                     b_0 = G^w,  \\
-                                    b_1 = G^{r_1} * (\frac{U}{G^{1-v}})^{d_1} = G^{r_1} * (\frac{U}{G})^{d_1} \\
+                                    b_1 = G^{r_1}  \cdot  (\frac{U}{G^{1-v}})^{d_1} = G^{r_1}  \cdot  (\frac{U}{G})^{d_1} \\
                                 \end{array}     &               & \\
                                 \\
                     &                   \xrightarrow{\hspace{1em}a_0, a_1, b_0, b_1\hspace{1em}} \ \textbf{Publish to bulletin}&  & \\                                
@@ -406,9 +408,9 @@ In this section we will show the interactive proof. Through Fiat–Shamir  we tr
                                     v=1             \\ 
                                     w\in_R \{1,...,q-1\},\\ r_0\in_R\{1,...,q-1\},\\
                                     d_0\in_R\{1,...,q-1\},      \\ 
-                                    a_0 = g^{r_0}*C^{d_0}_0,\\
+                                    a_0 = g^{r_0} \cdot C^{d_0}_0,\\
                                     a_1 = g^w,\\
-                                    b_0 = G^{r_0} * (\frac{U}{G^{1-v}})^{d_0}= G^{r_0} * U^{d_0} ,\\
+                                    b_0 = G^{r_0}  \cdot  (\frac{U}{G^{1-v}})^{d_0}= G^{r_0}  \cdot  U^{d_0} ,\\
                                     b_1 = G^w\\
                                 \end{array}     &               & \\
                     &                   &               & \\
@@ -422,7 +424,7 @@ In this section we will show the interactive proof. Through Fiat–Shamir  we tr
         Step \ 3a   &          \begin{array}{l}
                                    v=0             \\ 
                                    d_0= C-d_1\ mod\ q,\\
-                                   r_0=w-s*d_0 \ mod\ q\\  
+                                   r_0=w-s \cdot d_0 \ mod\ q\\  
                                 \end{array}     &               & \\
                                 \\
                     &                   \xrightarrow{\hspace{1em}d_0,\ r_0,\ d_1,\ r_1\hspace{1em}} \ \textbf{Publish to bulletin}&  & \\                                
@@ -430,7 +432,7 @@ In this section we will show the interactive proof. Through Fiat–Shamir  we tr
         Step \ 3b   &           \begin{array}{l}
                                     v=1             \\ 
                                     d_1= C-d_0\ mod\ q, \\
-                                    r_1=w-s*d_1 \ mod\ q\\ 
+                                    r_1=w-s \cdot d_1 \ mod\ q\\ 
                                 \end{array}     &               & \\
                                 \\
                     &                   \xrightarrow{\hspace{1em}d_0,\ r_0,\ d_1,\ r_1\hspace{1em}} \ \textbf{Publish to bulletin}&  &\\
@@ -438,10 +440,10 @@ In this section we will show the interactive proof. Through Fiat–Shamir  we tr
         Step \ 4   &                    & \begin{array}{l}
                                 \textbf{Verification:} \\      
                                 C = d_1 + d_0,\\
-                                a_0=g^{r_0} * C^{d_1}_0,\\
-                                b_0 = G^{r_0}*U^{d_0},\\
-                                a_1=g^{r_1} * C^{d_1}_0,\\
-                                b_1= G^{r_1} *(\frac{U}{G})^{d_1} \\ 
+                                a_0=g^{r_0}  \cdot  C^{d_1}_0,\\
+                                b_0 = G^{r_0} \cdot U^{d_0},\\
+                                a_1=g^{r_1}  \cdot  C^{d_1}_0,\\
+                                b_1= G^{r_1}  \cdot (\frac{U}{G})^{d_1} \\ 
         \end{array} \\
         \hline
     \end{array}
@@ -457,10 +459,10 @@ In this section we will show the interactive proof. Through Fiat–Shamir  we tr
 \begin{infobox}[Step 1]
 Voter votes 0 and creates and publish:\\
 \begin{math}v=0,\ w\in_R \{1,...,q-1\},\ r_1\in_R\{1,...,q-1\},\ d_1\in_R\{1,...,q-1\}\end{math}\\
-Publish: \begin{math}a_0 = g^w,\ b_0 = G^w,\ a_1 = g^{r_1}*C^{d_1}_0,\ b_1 = G^{r_1} * (\frac{U}{G^{1-v}})^{d_1} = G^{r_1} * (\frac{U}{G})^{d_1} \end{math}\\\\
+Publish: \begin{math}a_0 = g^w,\ b_0 = G^w,\ a_1 = g^{r_1} \cdot C^{d_1}_0,\ b_1 = G^{r_1}  \cdot  (\frac{U}{G^{1-v}})^{d_1} = G^{r_1}  \cdot  (\frac{U}{G})^{d_1} \end{math}\\\\
 Voter votes 1 and creates and publish\\
 \begin{math}v=1,\ w\in_R \{1,...,q-1\},\ r_0\in_R\{1,...,q-1\},\ d_0\in_R\{1,...,q-1\}\end{math}\\
-Publish: \begin{math}a_1 = g^w,\ b_1 = G^w,\ a_0 = g^{r_0}*C^{d_0}_0,\ b_0 = G^{r_0} * (\frac{U}{G^{1-v}})^{d_0}=  G^{r_0} * U^{d_0} \end{math}
+Publish: \begin{math}a_1 = g^w,\ b_1 = G^w,\ a_0 = g^{r_0} \cdot C^{d_0}_0,\ b_0 = G^{r_0}  \cdot  (\frac{U}{G^{1-v}})^{d_0}=  G^{r_0}  \cdot  U^{d_0} \end{math}
 \end{infobox}
 
 \noindent
@@ -474,9 +476,9 @@ The outcome from step 3 is that the voter publish \begin{math}d_0,\ r_0,\ d_1,\ 
 \noindent
 \begin{infobox}[Step 3]
 Voter votes 0 computes\\
-\begin{math}v=0,\ d_0= C-d_1\ mod\ q, \ r_0=w-s*d_0 \ mod\ q\end{math}\\\\
+\begin{math}v=0,\ d_0= C-d_1\ mod\ q, \ r_0=w-s \cdot d_0 \ mod\ q\end{math}\\\\
 Voter votes 1 computes\\
-\begin{math}v=1,\ d_1= C-d_0\ mod\ q, \ r_1=w-s*d_1 \ mod\ q\end{math}
+\begin{math}v=1,\ d_1= C-d_0\ mod\ q, \ r_1=w-s \cdot d_1 \ mod\ q\end{math}
 \end{infobox}
 
 \noindent
@@ -484,41 +486,72 @@ In step 4 the verifier will be able computes and verify consistency.
 
 \noindent
 \begin{infobox}[Step 4]
-\begin{math}C = d_1 + d_0,\ a_0=g^{r_0} * C^{d_1}_0,\ b_0 = G^{r_0}*U^{d_0},\ a_1=g^{r_1} * C^{d_1}_0,\ b_1= G^{r_1} *(\frac{U}{G})^{d_1}\end{math}
+\begin{math}C = d_1 + d_0,\ a_0=g^{r_0}  \cdot  C^{d_1}_0,\ b_0 = G^{r_0} \cdot U^{d_0},\ a_1=g^{r_1}  \cdot  C^{d_1}_0,\ b_1= G^{r_1}  \cdot (\frac{U}{G})^{d_1}\end{math}
 \end{infobox}
 
-\parahead{Non-interactive proof} We can turn this into a non-interactive proof by replacing step 2 with the voter using a hash function and thereby avoiding interaction with the verifier. The prover will then compute a hash of \begin{math}C=H(U,\ C_0,\ a_0,\ b_0,\ a_1,\ b_1) \end{math}.\\\\
+\parahead{Non-interactive proof} We can turn this into a non-interactive proof by replacing step 2 with the voter using a hash function and thereby avoiding interaction with the verifier. The prover will then compute a hash of \begin{math}C=H(U,\ C_0,\ a_0,\ b_0,\ a_1,\ b_1) \end{math}.\\
 
-\parahead{Mathematical justification} The mathematical justification in step 4, we will replace with earlier expression from above and replace by the actual value of the vote.
-
-\begin{infobox}[Explanation of \begin{math}a_0=g^{r_0} * C^{d_1}_0\end{math}]
-vote=0, show that \begin{math}a_0=g^{r_0} * C^{d_0}_0 = g^w \end{math} is well constructed\\
-\begin{math}a_0=g^{r_0} * C^{d_0}_0 = g^{w-sd_0}* g^{sd_0}= g^{w-sd_0+ sd_0}= g^w\end{math}\\
-vote =1, this is trivial because \begin{math}a_0 \end{math}  is constructed from \begin{math}a_0=g^{r_0} * C^{d_0}_0 \end{math}
-\end{infobox}
-
-
-\begin{infobox}[Explanation of \begin{math}b_0 = G^{r_0}*U^{d_0}\end{math}]
-vote=0, show that \begin{math}b_0 = G^{r_0}*U^{d_0} = G^w \end{math} is well constructed\\
-\begin{math}b_0 = G^{r_0}*U^{d_0} =  G^{w-sd_0}*G^{(s+0)*d_{0}} =  G^{w-sd_0}*G^{sd_{0}}= G^w \end{math}\\
-vote 1, show that \begin{math}b_0 = G^{r_0}*(\frac{U}{G^{1-1}})^{d_0}=  G^{r_0}*U^{d_0} \end{math} \\
-\begin{math}b_0 = G^{r_0}*(\frac{U}{G^{1-v}})^{d_0}=  G^{r_0}*(\frac{U}{G^{0}})^{d_0} = G^{r_0}*(\frac{U}{1})^{d_0}=  G^{r_0}*U^{d_0}  \end{math}
-\end{infobox}
+\parahead{Mathematical justification} In the following we derive the mathematical justification from step 4. Here we will replace with earlier expression from above and replace by the actual value of the vote. What this means is that the math depends on the value of the vote.\\
 
 
 
-\begin{infobox}[Explanation of \begin{math}a_1=g^{r_1} * C^{d_1}_0\end{math}]
-vote= 1, show that \begin{math}a_1=g^{r_1} * C^{d_1}_0 = g^w \end{math} is well constructed\\
-\begin{math}a_1=g^{r_1} * C^{d_1}_0 = g^{w-sd_1}* g^{sd_1}= g^{w-sd_1+ sd_1}= g^w\end{math}\\
-vote =0, this is trivial because \begin{math}a_1 \end{math} is constructed from \begin{math}a_1=g^{r_1} * C^{d_1}_0 \end{math}
+\begin{infobox}[Explanation of \begin{math}a_0=g^{r_0}  \cdot  C^{d_1}_0\end{math}]
+vote=0, show that \begin{math}a_0=g^{r_0}  \cdot  C^{d_0}_0 = g^w \end{math} is well constructed
+\begin{align*}
+    a_0 &=g^{r_0}  \cdot  C^{d_0}_0     \\ 
+        &= g^{w-sd_0} \cdot  g^{sd_0}   \\
+        &= g^{w-sd_0+ sd_0}             \\
+        &= g^w                          
+\end{align*}
+vote =1, this is trivial because \begin{math}a_0 \end{math}  is constructed from \begin{math}a_0=g^{r_0}  \cdot  C^{d_0}_0 \end{math}
 \end{infobox}
 
 
-\begin{infobox}[Explanation of \begin{math}b_1= G^{r_1} *(\frac{U}{G})^{d_1}\end{math}]
-vote=1, show that \begin{math}b_1= G^{r_1} *(\frac{U}{G})^{d_1} = G^W\end{math} is well constructed \\
-\begin{math}b_1= G^{r_1} *(\frac{U}{G})^{d_1} = G^{w-sd_1}*(U*G^{-1})^{d_1}= G^{w-sd_1}* (G^{s+1})^{d_0}*G^{-d_1} =  G^{w-sd_1}* G^{sd_0+d_0}*G^{-d_1}= G^W\end{math}\\
-vote=0, show that  \begin{math}b_1= G^{r_1} *(\frac{U}{G^{1-v}})^{d_1} = G^{r_1} *(\frac{U}{G})^{d_1}\end{math} is well constructed\\
-\begin{math}b_1= G^{r_1} *(\frac{U}{G^{1-v}})^{d_1} = G^{r_1} *(\frac{U}{G^{1-0}})^{d_1} = G^{r_1} *(\frac{U}{G})^{d_1}\end{math}
+\begin{infobox}[Explanation of \begin{math}b_0 = G^{r_0} \cdot U^{d_0}\end{math}]
+vote=0, show that \begin{math}b_0 = G^{r_0} \cdot U^{d_0} = G^w \end{math} is well constructed
+\begin{align*}
+    b_0 &= G^{r_0} \cdot U^{d_0}                    \\
+        &= G^{w-sd_0} \cdot G^{(s+0) \cdot d_{0}}   \\
+        &= G^{w-sd_0} \cdot G^{sd_{0}}              \\
+        &= G^w                                          
+\end{align*}
+vote 1, show that \begin{math}b_0 = G^{r_0} \cdot (\frac{U}{G^{1-1}})^{d_0}=  G^{r_0} \cdot U^{d_0} \end{math}
+\begin{align*}
+    b_0 &= G^{r_0} \cdot (\frac{U}{G^{1-v}})^{d_0}  \\
+        &= G^{r_0} \cdot (\frac{U}{G^{0}})^{d_0}    \\
+        &= G^{r_0} \cdot (\frac{U}{1})^{d_0}        \\
+        &= G^{r_0} \cdot U^{d_0}  
+\end{align*}
+\end{infobox}
+
+
+
+\begin{infobox}[Explanation of \begin{math}a_1=g^{r_1}  \cdot  C^{d_1}_0\end{math}]
+vote= 1, show that \begin{math}a_1=g^{r_1}  \cdot  C^{d_1}_0 = g^w \end{math} is well constructed
+\begin{align*}
+    a_1 &= g^{r_1}  \cdot  C^{d_1}_0    \\
+        &= g^{w-sd_1} \cdot  g^{sd_1}   \\
+        &= g^{w-sd_1+ sd_1}             \\
+        &= g^w
+\end{align*}
+vote =0, this is trivial because \begin{math}a_1 \end{math} is constructed from \begin{math}a_1=g^{r_1}  \cdot  C^{d_1}_0 \end{math}
+\end{infobox}
+
+
+\begin{infobox}[Explanation of \begin{math}b_1= G^{r_1}  \cdot (\frac{U}{G})^{d_1}\end{math}]
+vote=1, show that \begin{math}b_1= G^{r_1}  \cdot (\frac{U}{G})^{d_1} = G^W\end{math} is well constructed \begin{align*}
+    b_1 &= G^{r_1}  \cdot (\frac{U}{G})^{d_1}                   \\
+        &= G^{w-sd_1} \cdot (U \cdot G^{-1})^{d_1}              \\
+        &= G^{w-sd_1} \cdot  (G^{s+1})^{d_0} \cdot G^{-d_1}     \\
+        &= G^{w-sd_1} \cdot  G^{sd_0+d_0} \cdot G^{-d_1}        \\
+        &= G^W
+\end{align*}
+vote=0, show that  \begin{math}b_1= G^{r_1}  \cdot (\frac{U}{G^{1-v}})^{d_1} = G^{r_1}  \cdot (\frac{U}{G})^{d_1}\end{math} is well constructed
+\begin{align*}
+    b_1 &= G^{r_1}  \cdot (\frac{U}{G^{1-v}})^{d_1}             \\ 
+        &= G^{r_1}  \cdot (\frac{U}{G^{1-0}})^{d_1}             \\
+        &= G^{r_1}  \cdot (\frac{U}{G})^{d_1}
+\end{align*}
 \end{infobox}
 
 
@@ -533,7 +566,7 @@ the honest verifier that it is true, except with some small probability?\\\\
 \end{infobox}
 
 %----------------------------------------------------------------------
-\subsubsection{DLEQ proof by the servers}
+\subsubsection{DLEQ proof by the talliers}
 %----------------------------------------------------------------------
 The tallier will do computations on each of their shares. Here each tallier uses the DLEQ to prove that the decryption of their shares is done correctly. We will first show the interactive proof and then transform it to a non-interactive proof. The input values are \begin{math}(G,\ y_i,\ S_i, Y_i)\end{math} where \begin{math}G = y_i^{x_i}\end{math} and  \begin{math} Y_i=S_i^{x_i}\end{math}. We have some initial values
  \begin{math}g_1 =G,\ h_i=y_i,\ g_2=S_i,\ h_2=Y_i,\ \alpha=x_i \end{math} and \begin{math}w \in_R \{0,...,q-1\}\end{math}.\\
@@ -542,7 +575,7 @@ The tallier will do computations on each of their shares. Here each tallier uses
  
 \noindent 
 In step 1 the prover computes \begin{math}a_1,\ a_2=S_i^w\end{math}. In step 2
-the verifier creates a challenge \begin{math}C\end{math}. In step 3 the tallier computes \begin{math}r=w-C*x_i\end{math}. In step 4 the verifier computes \begin{math}a_1=G^r*y_i^C,\ a_2=S_i^r*Y_i^C\end{math}.
+the verifier creates a challenge \begin{math}C\end{math}. In step 3 the tallier computes \begin{math}r=w-C \cdot x_i\end{math}. In step 4 the verifier computes \begin{math}a_1=G^r \cdot y_i^C,\ a_2=S_i^r \cdot Y_i^C\end{math}.
  
  
  
@@ -552,7 +585,7 @@ the verifier creates a challenge \begin{math}C\end{math}. In step 3 the tallier 
     $
     \begin{array}{l}
     \hline                      \
-    \textbf{DLEQ protocol}      \\
+    \textbf{DLEQ protocol by the talliers}      \\
     \hline                      \
     Input:  G,\ y_i,\ S_i, \ Y_i \ where \ G = y_i^{x_i} \land Y_i=S_i^{x_i}     \\
     Output: 0 \ or \ 1
@@ -565,26 +598,26 @@ the verifier creates a challenge \begin{math}C\end{math}. In step 3 the tallier 
         & a_2=y_i^w   & \xrightarrow{\hspace{1em}a_1 \land a_2\hspace{1em}} & \\
         Step \ 2 & & & C\in_R \Z_q \\
         & & \xleftarrow{\hspace{2em}C\hspace{2em}} & \\
-        Step \ 3 & r=w-p(i) * C    & & \\
+        Step \ 3 & r=w-p(i)  \cdot  C    & & \\
         Step \ 4 & & \xrightarrow{\hspace{2em}r\hspace{2em}} & \begin{array}{c}
         checks \ if: \\      
-        a_1 = g^r*X_i^C \\ 
-        a_2=y_i^r*Y_i^C
+        a_1 = g^r \cdot X_i^C \\ 
+        a_2=y_i^r \cdot Y_i^C
         \end{array} \\
         \hline
     \end{array}
     \end{array}
     $    
     \caption{DLEQ}
-	\label{fig:DLEQ}
+	\label{fig:DLEQ_by_talliers}
 \end{figure} 
  
 \parahead{Non-interactive proof} Note the interaction in step 2 where the verifier create a challenge to the server. Through Fiat–Shamir we transform an interactive proof of knowledge into a non-interactive proof of knowledge. We replace step 2 with a hashing algorithm  \begin{math}C=H(G,\ y_i,\ S_i,\ Y_i,\ a_1,\ a_2)\end{math}.\\
  
 \parahead{Mathematical justification} For the mathematical justification in step 4, we can do the following computation on \begin{math}a_1=G^w\end{math} and \begin{math}a_2=S_i^w\end{math}.\\\\
-Let \begin{math}a_1=G^w\end{math} we show that \begin{math}G^r*y_i^C=G^r*y_{x_i}^C=G^{r+x_iC}=G^{w-Cx_i+x_iC}=G^w\end{math}\\\\
+Let \begin{math}a_1=G^w\end{math} we show that \begin{math}G^r \cdot y_i^C=G^r \cdot y_{x_i}^C=G^{r+x_iC}=G^{w-Cx_i+x_iC}=G^w\end{math}\\\\
 Let \begin{math}a_2=S_i^w\end{math} we show that
-\begin{math}S_i^r*Y_i^C=S^r*Y_{x_i^C}=S^{w-Cx_i}*S_i^{x_i*C}=S^{w-Cx_i+x_i*C}=S_i^w\end{math}
+\begin{math}S_i^r \cdot Y_i^C=S^r \cdot Y_{x_i^C}=S^{w-Cx_i} \cdot S_i^{x_i \cdot C}=S^{w-Cx_i+x_i \cdot C}=S_i^w\end{math}
 
 
 

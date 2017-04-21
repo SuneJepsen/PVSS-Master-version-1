@@ -170,7 +170,7 @@ Below we have listed some of the known algorithms. These algorithms all takes th
     The main idea with square-root attacks is to divide the DL problem into small problems, which can be calculate more efficiently and faster. 
     
     \noindent
-    As this name square-root attacks implies, the running time is \bigO{\sqrt{n}} \\
+    As the name square-root attacks implies, the running time is around \bigO{\sqrt{n}} \\
 
     \noindent
     There are several known square-root attacks, one of them is the \textbf{[Baby-steps Giant-steps algorithm]} which we will look at in details below. \\          
@@ -186,22 +186,29 @@ Below we have listed some of the known algorithms. These algorithms all takes th
 %----------------------------------------------------------------
 \parahead{Baby-steps Giant-steps algorithm} 
 %----------------------------------------------------------------
-We will here look in details how the Baby-steps Giant-steps algorithm works. For simplicity and as the PVSS protocol
-operates in $\Zp^*$ we will only look at the algorithm in this group. \\
+We will here look in details how the Baby-steps Giant-steps algorithm works. For simplicity and as our implantation of the PVSS protocol operates in $\Zp^*$ we will only look at the algorithm in this group. \\
 
 \noindent
-The idea of the algorithm is to look at the exponent $a$ as the product of $a = ui + j$ where $u = \lceil \sqrt{p} \rceil$ and $0 \leq i,j \leq u$. we can now restate the problem as such
+The idea of the algorithm is to divide the group into smaller sub-groups. Given a cyclic group $G$, a generator $g$ and an element $c \in g$, we can then think of all the elements in $G$ as points in a circle 
+
+\begin{center}
+    $1 = g^0, g^1, g^2,...,g^{q-2}, g^{q-1}, g^q = 1$
+\end{center}
+
+\noindent
+We then divide then circle into intervals of $u = \lceil \sqrt{p} \rceil$ sizes, each interval is the Giant step whereas the elements in the intervals is the baby steps which there are at most $u$ of. We can now look at the exponent $a$ as the product of $a = ui + j$ where $0 \leq i,j \leq u$. This allows us to restate the problem as such
 \begin{align*}
     c           &= g^a                  \\
     c           &= g^{ui + j}           \\ 
     c           &= g^{ui} \cdot g^{j}   \\
-    c( g^{-u} )^i &= g^{j}                \\
+    c( g^{-u} )^i &= g^{j}                
 \end{align*}
-
+\noindent
+The goal now, is to find an integer $j$ and $i$ such that $c( g^{-u} )^i = g^{j}$. this can be done by computing $g^{j}$ for $j = 0,1,...,u-1$ and $c( g^{-u} )^i = g^{j}$ for  $i = 0,1,...,u-1$ and then finding a match between the two lists. The details are given in algorithm \ref{alg:BabyGiant}
 
 \begin{center}
 \begin{algorithm}[H]
-\caption{Baby-steps Giant-steps algorithm)  \label{alg:BabyGiant}}
+\caption{Baby-steps Giant-steps algorithm  \label{alg:BabyGiant}}
 
 \SetKwRepeat{Do}{do}{while}
 
@@ -224,8 +231,8 @@ The idea of the algorithm is to look at the exponent $a$ as the product of $a = 
 }
 \end{algorithm}
 \end{center}
-
-We valid the algorithm by example. Let $p = 31$, $g=3$ and $c = 6$.
+\noindent
+By example we valid the algorithm. Let $p = 31$, $g=3$ and $c = 6$.
 
 \begin{enumerate}
 \item $u = \lceil \sqrt{p} \rceil = 6$
@@ -241,7 +248,7 @@ We valid the algorithm by example. Let $p = 31$, $g=3$ and $c = 6$.
 
 \item Next we compute $g^{-u} = 3^{-6}$, we can use the euclidean algorithm to find $g^{-1} = 3^{-1} = 21$. using this result we get $3^{-6} = 21^6 = 2 \ mod \ 31$. 
 
-\item Using the result for the previous step we can efficiently compute $c(g^{-u})^j$ for increasing $j$ untill we find a match with the result from step 2. \\
+\item Using the result for the previous step we can efficiently compute $c(g^{-u})^j$ for an increasing $j$ until we find a match with the result from step 2. \\
 
 \iffalse
 \begin{align*}
@@ -262,8 +269,7 @@ We valid the algorithm by example. Let $p = 31$, $g=3$ and $c = 6$.
 \end{tabular}
 
 We found a match as $c(g^{-u})^4 = g^1 \ mod \ p$. 
-\item We can then compute $a = g^{iu+j} = g^{4u+1} = g^{4 \cdot 6 + 1} = g^{25} = 3^{25} = 6 \ mod \ 31$
-
+\item We can then compute $a = g^{iu+j} = g^{4u+1} = g^{4 \cdot 6 + 1} = g^{25} = 3^{25} = \underline{\underline{6}} \ mod \ 31$
 \end{enumerate}
 
 
@@ -271,7 +277,7 @@ We found a match as $c(g^{-u})^4 = g^1 \ mod \ p$.
 %------------------------------------------------------------------------------------
 \subsection{Hash function}
 %------------------------------------------------------------------------------------
-Hash functions is a function that takes a message of arbitrary size and outputs a digest hash value of a fixed size. The hash functions used in this project is hash function, which means that they are considered as one-way function. we define cryptographic hash function, denote just as hash functions onward, as.
+Hash functions is a function that takes a message of arbitrary size and outputs a digest hash value of a fixed size. The hash functions used in this project are collision resistant hash function, which means that they are considered as one-way function. we define collision resistant hash function, denote just as hash functions onward, as.
 
 \begin{defi}[Hash function]
 \begin{enumerate}
@@ -306,7 +312,10 @@ A homomorphic encryption scheme is a crypto system that allows computations to b
 %------------------------------------------------------------------------------------
 \subsection{Fiat Sharmir}
 %------------------------------------------------------------------------------------
-The Fiat–Shamir heuristic is a technique in cryptography for taking an interactive proof of knowledge into a non interactive proof (signature scheme). This way, some fact (for example, knowledge of a certain number secret to the public) can be proven without revealing underlying information. This means that transforming a interactive proof into a non-interactive proof. Instead of the verifier creates a challenge the prover creates a challenge, on some previous data, based on a hash function.
+The Fiat–Shamir heuristic is a technique in cryptography for taking an interactive proof of knowledge into a non interactive proof (signature scheme). This way, some fact (for example, knowledge of a certain number secret to the public) can be proven without revealing underlying information. This means that transforming a interactive proof into a non-interactive proof. Instead of the verifier creates a challenge the prover creates a challenge, on some previous data, based on a hash function.\\
+
+\noindent
+$Gen_{id}$: is the generator of $pk$ and $sk$.
 
 \begin{figure}[H]
     \centering        
