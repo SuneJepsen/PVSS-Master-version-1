@@ -3,8 +3,8 @@ Modular arithmetic, is a simple way of performing arithmetic in a finite set of 
 
 %**************************************Definition Modulo Operation Start
 \begin{defi}[\textbf{Modulo Operation}]
-Let \begin{math} a, r,m \in  \mathbb{Z}\end{math} (where \begin{math} \mathbb{Z}\end{math} is a set of all integers) and \begin{math} m > 0\end{math}. We write A 
-\begin{center} \begin{math} a \equiv r \ mod \ m\end{math} \end{center}
+Let \begin{math} a, r,m \in  \mathbb{Z}\end{math} (where \begin{math} \mathbb{Z}\end{math} is a set of all integers) and \begin{math} m > 0\end{math}. We write  
+\begin{center} \begin{math} a = r \ mod \ m\end{math} \end{center}
 if \begin{math}m \end{math} divides \begin{math} a - r \end{math}.\\
 \begin{math}m \end{math} is called the modulus and \begin{math}r \end{math} is called the remainder.
 \end{defi}
@@ -20,13 +20,13 @@ if \begin{math}m \end{math} divides \begin{math} a - r \end{math}.\\
 \begin{align*}
 42 &= 6 \ mod \ 9 \\
 42 &= 15 \ mod \ 9 \\
-42 &= -3 \ mod \ 9 \\
+42 &= -3 \ mod \ 9 
 \end{align*}
+
 \parahead{Computing the inverse}
-As we will see later, computing the inverse becomes an important part in this protocol for how to divide modulo an integer arithmetically. For this we have the Extended Euclidean algorithm which allows us to compute modular inverses given to positive integers. \\
+As we will see later, computing the inverse becomes an important part in this protocol for how to divide modulo an integer arithmetically. For this we have the Extended Euclidean algorithm which allows us to compute modular some integers. This computation results in computing the inverse. \\
 
 
-\noindent
 \parahead{Extended Euclidean algorithm} The first two lines (6-7) in the algorithm is the standard Euclidean Algorithm. It turns out that if we give the Extended Euclidean Algorithm $gcd(n,a)$, where $n$ is the modulo integer and $a$ is an integer, then the $t$ parameter will be the inverse of $a$. 
 
 %**************************************Pseudocode Euclidean algorithm start

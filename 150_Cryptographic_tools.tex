@@ -1,5 +1,20 @@
-\section{Mathematical tools}
+\section{Cryptographic tools}
 The following section will be about the cryptographic assumptions which are used in the PVSS protocol. We will also describe some techniques which will be used in practical part of coding the protocol.
+
+
+%------------------------------------------------------------------------------------
+\subsection{Zero knowledge proof} % Zero knowledge proof
+%------------------------------------------------------------------------------------
+Zero knowledge proof is a important part of the PVSS protocol. It is used for verifying the correctness of the data. Intuitively Zero knowledge proof is a protocol between two parties a prover and a verifier where the prover tries to convince the verifier about some statement of the form $x \in L$, for which he uses additional knowledge about $x$. In the last step if the protocol, the verifier either accepts or rejects the proof. A zero-knowledge proof must satisfy following three properties:
+
+%-----------------------------------------------zero knowledge
+\begin{itemize}
+\item  \textnormal{\textbf{(Completeness:)}} If the prover is honest and the statement is true, then the honest verifier always accept. More formally it means that $x \in L$.
+\item    \textnormal{\textbf{(Soundness:)}} If the statement is false then it should fail with overwhelming probability. More formally it means that $x \not\in L$.
+\item   \textnormal{\textbf{(Zero-knowledge:)}} If the statement is true, no cheating verifier learns anything other than the fact that the statement is true.
+\end{itemize}
+%-----------------------------------------------zero knowledge
+
 
 %------------------------------------------------------------------------------------
 \subsection{One-way function and The Discrete logarithm problem} % and One way functions
