@@ -1,0 +1,19 @@
+\section{Multiparty Computation}
+\subsection{Adversaries}
+Participants in a MPC protocol do not necessarily behave as intended. Corrupt
+players may occur and they are divided into the following two main
+groups [Opp05]:
+• A passive adversary is where players perform the protocol correctly,
+but collaborate in information gathering and sharing with the goal of
+getting access to sensitive information of other players. Such players
+are sometimes called semihonest.
+• An active adversary is a group of players deviating from the protocol
+in order to disrupt the computation. The goal is to produce incorrect
+results and/or violate the privacy of other players. Such players are
+sometimes called byzantine.
+13
+Chapter 3. Secure Multiparty Computation
+Both types can be static or adaptive. A static adversary means that the
+set of corrupted players is chosen before the protocol starts. An adaptive
+adversary on the other hand, can choose which players to corrupt during
+the execution of the protocol.

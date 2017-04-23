@@ -5,6 +5,9 @@ The following section will be about the cryptographic assumptions which are used
 %------------------------------------------------------------------------------------
 \subsection{Zero knowledge proof} % Zero knowledge proof
 %------------------------------------------------------------------------------------
+In cryptography, a zero-knowledge proof is a protocol by which one party (the prover) can prove to another party (the verifier) that a given statement is true, without revealing any information apart from the fact that the statement is indeed true.\\
+
+\noindent
 Zero knowledge proof is a important part of the PVSS protocol. It is used for verifying the correctness of the data. Intuitively Zero knowledge proof is a protocol between two parties a prover and a verifier where the prover tries to convince the verifier about some statement of the form $x \in L$, for which he uses additional knowledge about $x$. In the last step if the protocol, the verifier either accepts or rejects the proof. A zero-knowledge proof must satisfy following three properties:
 
 %-----------------------------------------------zero knowledge
@@ -17,7 +20,7 @@ Zero knowledge proof is a important part of the PVSS protocol. It is used for ve
 
 
 %------------------------------------------------------------------------------------
-\subsection{One-way function and The Discrete logarithm problem} % and One way functions
+\subsection{Discrete Logarithm problem} % and One way functions
 %------------------------------------------------------------------------------------
 
 \parahead{One-way function} One-way functions are easy to compute but it is very difficult to compute their inverse functions. Thus, having data $x$ it is easy to calculate $f(x)$ but,  
@@ -165,7 +168,7 @@ The DDH problem is no harder then CDH problem
 The security of the PVSS protocol can be reduced down to the hardness of the DL problem. Which means that if there can be found a efficient algorithm to solve the DL problem with large expoents then the entire PVSS protocol is insecure. In the next subsection we will look at known algorithms for solving the DL problem. 
 
 %------------------------------------------------------------------------------------
-\subsection{Known algorithms for solving the Discrete Logarithm Problem}
+\subsection{Solving the Discrete Logarithm Problem}
 %------------------------------------------------------------------------------------
 We will here look at some of the known algorithms to solve the DL problem. It is known that the DL problem can be solved given enough time and compute power, so we only ask that this cannot be done within \textcolor{red}{What do we need here?  polynomial time?}. In order to increase the computation time needed to solve the DL problem, we increase the size of the groups we operate within. However the consequence of increasing the group size is an increased execution time of our protocol. \\
 

@@ -1,4 +1,4 @@
-\documentclass[a4paper]{article}
+\documentclass[a4paper]{report}
 \usepackage[utf8]{inputenc}
 \usepackage{amssymb}
 \usepackage{amsmath}
@@ -38,98 +38,144 @@
   \arrowfill@\leftarrow\relbar\rightarrow}
 \makeatother
 
-\newcommand{\vectorbound}{\ensuremath{\kappa}}
-\newcommand{\secretbound}{\ensuremath{\nu}}
-\newcommand{\E}{\ensuremath{\textnormal{E}}}
-\newcommand{\Var}{\ensuremath{\textnormal{Var}}}
-\newcommand{\U}[1]{\ensuremath{\mathcal{U}(#1)\xspace}}
-\newcommand{\abs}[1]{\ensuremath{|#1|}\xspace}
-\newcommand{\dotp}[2]{\ensuremath{\left\langle {#1},{#2}\right\rangle}\xspace}
+%\newcommand{\vectorbound}{\ensuremath{\kappa}}
+%\newcommand{\secretbound}{\ensuremath{\nu}}
+%\newcommand{\shortvec}[1]{\tilde{\mathbf{#1}}\xspace}
+%\renewcommand{\vec}[1]{\mathbf{#1}\xspace}
+%\newcommand{\cemph}[1]{\color{yellow9}{\bf #1}\xspace}
+%\newcommand{\chig}{\ensuremath{\chi_{\alpha,q}}}
+%\newcommand{\Ldis}{L_{\mathbf{s},\chi}^{(n)}\xspace}
+%\newcommand{\sample}{\ensuremath{\leftarrow_{\$}}}
+%\newcommand{\round}[1]{\ensuremath{\left\lfloor{#1}\right\rceil}\xspace}
+%\newcommand{\Bdis}[1]{B_{\mathbf{s},\chi}(b,#1,p)\xspace}
+%\newcommand{\Bdissm}[1]{B_{small,\mathbf{s},\chi}(b,#1,p)\xspace}
+%\newcommand{\svec}{\ensuremath{\mathbf{s}}\xspace} % command for pseudo code
+%\newmdtheoremenv[frametitlerule=true, frametitlebackgroundcolor=gray!20]{defi}
+%\newcommand{\E}{\ensuremath{\textnormal{E}}}
+%\newcommand{\Var}{\ensuremath{\textnormal{Var}}}
+%\newcommand{\U}[1]{\ensuremath{\mathcal{U}(#1)\xspace}}
+%\newcommand{\abs}[1]{\ensuremath{|#1|}\xspace}
 
-\newcommand{\shortvec}[1]{\tilde{\mathbf{#1}}\xspace}
-\renewcommand{\vec}[1]{\mathbf{#1}\xspace}
-\newcommand{\cemph}[1]{\color{yellow9}{\bf #1}\xspace}
-\newcommand{\chig}{\ensuremath{\chi_{\alpha,q}}}
+
+\newcommand{\dotp}[2]{\ensuremath{\left\langle {#1},{#2}\right\rangle}\xspace}
 \newcommand{\Z}{\ensuremath{\mathbb{Z}}\xspace}
 \newcommand{\Zq}{\ensuremath{\Z_q}\xspace}
 \newcommand{\ZqStar}{\ensuremath{\Z_q^*}\xspace}
 \newcommand{\Zp}{\ensuremath{\mathbb{Z}_p}\xspace}
-\newcommand{\Ldis}{L_{\mathbf{s},\chi}^{(n)}\xspace}
-\newcommand{\sample}{\ensuremath{\leftarrow_{\$}}}
-\renewcommand{\O}[1]{\ensuremath{{\mathcal{O}\left(#1\right)}}\xspace}
-\newcommand{\round}[1]{\ensuremath{\left\lfloor{#1}\right\rceil}\xspace}
-\newcommand{\Bdis}[1]{B_{\mathbf{s},\chi}(b,#1,p)\xspace}
-\newcommand{\Bdissm}[1]{B_{small,\mathbf{s},\chi}(b,#1,p)\xspace}
+
 \def\polyfactor{n\, \log_2^2 n}
 \newcommand{\bigO}[1]{\ensuremath{\mathcal{O}\left(#1\right)}\xspace}
-\newcommand{\svec}{\ensuremath{\mathbf{s}}\xspace} % command for pseudo code
+\renewcommand{\O}[1]{\ensuremath{{\mathcal{O}\left(#1\right)}}\xspace}
+
 
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}[subsection]
 \newtheorem{lemma}{Lemma}[subsection]
-%\newmdtheoremenv[frametitlerule=true, frametitlebackgroundcolor=gray!20]{defi}
 
 \mdfdefinestyle{defstyle}{frametitlerule=true, frametitlerulewidth=0px}
 \mdtheorem[style=defstyle]{defi}{Definition}[subsection]
 
 \mdtheorem[style=defstyle]{infobox}{}[subsection]
 
-\title{Draft 1}
+\title{
+    Draft 1 \\
+	Aalborg University \\
+    \includegraphics[scale=0.1]{Ignacio.jpg}
+}
 \author{Kasper and  Sune}
 \date{February 2017}
 
 \begin{document}
 
+
+%***************************************************************
+%               Title Page
+%***************************************************************
 \maketitle
+\clearpage
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.1]{Ignacio.jpg}
-    \caption{Ignacio Cascudo}
-\end{figure}
-
+\chapter*{Abstract}
 \input{010_abstract.tex}
+\clearpage
 
-\input{020_introduction.tex}
+\tableofcontents
+\clearpage
 
-\input{030_Motivation.tex}
 
-\input{040_Hypothesis.tex}
-
-\input{043_Overview.tex}
+%***************************************************************
+%               Part 1: Introduction
+%***************************************************************
+\chapter{Introduction}
+    \input{020_introduction.tex}
+    
+    \input{030_Motivation.tex}
+    
+    \input{040_Objectives.tex}
+    
+    \input{041_Limitations.tex}
+    
+    \input{043_Overview.tex}
 
 \clearpage
 %***************************************************************
-%               Part 1: Protocol
+%               Part 2: Mathematical understanding
 %***************************************************************
-\input{110_Part_1_Protocol.tex}
-
-\input{142_Method.tex}
-
-\input{145_Modular_Arithmetic.tex}
-
-\input{147_Group_Theory.tex}
-
-\input{150_Cryptographic_tools.tex}
-
-\input{160_Shamir_Secret_Sharing.tex}
+\chapter{Mathematical understanding}
+    \input{110_Part_1_Protocol.tex}
+    
+    \input{142_Method.tex}
+    
+    \input{145_Modular_Arithmetic.tex}
+    
+    \input{147_Group_Theory.tex}
+    
+    \input{150_Cryptographic_tools.tex}
+    
+    \input{155_MPC.tex}
+    
+    \input{160_Shamir_Secret_Sharing.tex}
+    
+ \clearpage
+%***************************************************************
+%               Part 3: Voting
+%***************************************************************  
+\chapter{Voting}    
+    
+ \clearpage
+%***************************************************************
+%               Part 4: The Protocol
+%***************************************************************  
+\chapter{Protocol}
+    \input{170_Special_PVSS_Protocol.tex}
 
 \clearpage
-\input{170_Special_PVSS_Protocol.tex}
+%***************************************************************
+%               Part 5: Application
+%***************************************************************
+\chapter{Application}
+    \input{200_Part_2_Application.tex}
+    
+    \input{210_Introduction.tex}
+    
+    \input{220_Method.tex}
+    
+\clearpage    
+%***************************************************************
+%               Part 6: Discussion
+%***************************************************************
+\chapter{Discussion}
 
 \clearpage
 %***************************************************************
-%               Part 2: Application
+%               Part 7: Conclusion
 %***************************************************************
-\input{200_Part_2_Application.tex}
-
-\input{210_Introduction.tex}
-
-\input{220_Method.tex}
+\chapter{Conclusion}
 
 \clearpage
 %***************************************************************
 %               Bibliography
 %***************************************************************
+\chapter{Bibliography}
+
 \input{990_Bibliography.tex}
 \end{document}
