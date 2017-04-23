@@ -310,24 +310,6 @@ Hash functions is a function that takes a message of arbitrary size and outputs 
 A function hash function: $\{0,1\}^{\leq L} \rightarrow \{0,1\}^\ell$ is called collision resistant if it is hard to find $x \in \{0,1\}^{\leq L}$ and $x' \in \{0,1\}^{\leq L}$ such that $x \neq x'$ and $H(x)=H(x')$ - the value $(x,x')$ is called a collision. Here $\{0,1\}^{\leq L}$ denotes the set of bitstrings of length at most $L$. If $L \geq \ell$, then of course collisions exist, so they can be found given enough time, which is fine as we only ask that they are computationally hard to find.  
 
 %------------------------------------------------------------------------------------
-\subsection{Homomorphic Secret Sharing}
-%------------------------------------------------------------------------------------
-A homomorphism is a transformation from one algebraic structure into another of the same type so that the structure is preserved. Importantly, this means that for every kind of manipulation of the original data, there is a corresponding manipulation of the transformed data.\\
-
-\noindent 
-A homomorphic encryption scheme is a crypto system that allows computations to be performed on data without decrypting it. It is an encrypting scheme which allows computations to be carried out on ciphertext, thus generating an encrypted result which, when decrypted, matches the result of operations performed on the plaintext.\\
-
-\parahead{Homomorphic Secret Sharing} is a type of secret sharing algorithm in which the secret is encrypted via homomorphic encryption. In the PVSS scheme we use this property that one can sum the shares which are equal to the sum of the secrets.
-
-\begin{defi}[Homomorphic Secret Sharing]
-\begin{math}s\rightarrow (s_i,...,s_n)\end{math}\\
-\begin{math}u\rightarrow (u_i,...,u_n) \end{math}\\
-\begin{math}s+u\rightarrow (s_i+u_i,...,s_n+u_n) \end{math}\\
-\textcolor{red}{Ignacio: We need a formal definition. In "Introduction to Modern Cryptography" there are explanation on Homomorphic encryption page.499. It is correct understood that we use the property of Homomorphic Secret Sharing in section 12.3 }
-\end{defi}
-
-
-%------------------------------------------------------------------------------------
 \subsection{Fiat Sharmir}
 %------------------------------------------------------------------------------------
 The Fiat–Shamir heuristic is a technique in cryptography for taking an interactive proof of knowledge into a non interactive proof (signature scheme). This way, some fact (for example, knowledge of a certain number secret to the public) can be proven without revealing underlying information. This means that transforming a interactive proof into a non-interactive proof. Instead of the verifier creates a challenge the prover creates a challenge, on some previous data, based on a hash function.\\

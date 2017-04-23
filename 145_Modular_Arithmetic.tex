@@ -27,11 +27,11 @@ if \begin{math}m \end{math} divides \begin{math} a - r \end{math}.\\
 As we will see later, computing the inverse becomes an important part in this protocol for how to divide modulo an integer arithmetically. For this we have the Extended Euclidean algorithm which allows us to compute modular some integers. This computation results in computing the inverse.
 
 
-\parahead{Extended Euclidean algorithm} To compute the inverse means that we want to compute the following \begin{math}a\ \cdot \ a^{-1} \ mod \ q = 1 \end{math} where $a, \ a^{-1}, \ q$ are integers and $a^{-1}$ is the inverse of $a$. The condition for the existence of the inverse is that the $gcd(q,\ a)= 1$. So if $gcd(q,\ a)= 1$ the Extended Euclidean Algorithm computes the inverse of $a$.\\
+\parahead{Extended Euclidean algorithm} To compute the inverse means that we want to compute the following \begin{math}a\ \cdot \ x \ mod \ q = 1 \end{math} where $a, \ x, \ q$ are integers and $x$ is the inverse of $a$. The condition for the existence of the inverse is that the $gcd(q,\ a)= 1$. So if $gcd(q,\ a)= 1$ the Extended Euclidean Algorithm computes the inverse of $a$.\\
 
 
 \noindent
-\parahead{Explanation of the Extended Euclidean algorithm (EEA)} Since we will use an implementation in our electronic voting application we will explain the EEA by example. The first two lines (6-7) in the algorithm is the standard Euclidean Algorithm. It turns out that if we give the Extended Euclidean Algorithm $gcd(n,a)$, where $n$ is the modulo integer and $a$ is an integer, then the $t$ parameter will be the inverse of $a$. 
+\parahead{Explanation of the Extended Euclidean algorithm (EEA)} Since we will use an implementation in our electronic voting application we will explain the EEA by example. In order to explain the EEA we will explain the regular Euclidean algorithm (EA). The first two lines (6-7) in the algorithm is the EA. It turns out that if the $gcd(n,a)=1$  and we give the EEA $gcd(n,a)$, where $n$ is the modulo integer and $a$ is an integer, then the $t$ parameter will be the inverse of $a$. 
 
 %**************************************Pseudocode Euclidean algorithm start
 \begin{center}
@@ -41,7 +41,7 @@ As we will see later, computing the inverse becomes an important part in this pr
 \SetKwRepeat{Do}{do}{while}
 
 \KwIn{positive integers $r_0 $ and $r_1 $ with $r_0 $ > $r_1 $}
-\KwOut{gcd($r_0 $, $r_1 $), as well as s and t such that gcd($r_0$, $r_1$) = $s * r_0+t * r_1 $.}
+\KwOut{gcd($r_0 $, $r_1 $), as well as s and t such that gcd($r_0$, $r_1$) = $s \cdot r_0+t \cdot r_1 $.}
 
 \textbf{Initialization:} \\
 $
@@ -57,8 +57,8 @@ $
     $i = i+1 $\\
     $r_i = r_{i-2} \ mod \ r_{i-1} $\\
     \begin{math} \mathbf{ q_{i-1} = ( r_{i-2}-r_{i} ) / r_{i-1} }  \end{math}\\
-    $s_i = s_{i-2}-q_{i-1} * s_{i-1} $\\
-    $t_i = t_{i-2}-q_{i-1} * t_{i-1} $
+    $s_i = s_{i-2}-q_{i-1} \cdot s_{i-1} $\\
+    $t_i = t_{i-2}-q_{i-1} \cdot t_{i-1} $
     }
 
 \Return{ \\
@@ -73,7 +73,7 @@ $
 
 %**************************************Pseudocode Euclidean algorithm end
 \noindent
-The regular Euclidean algorithm works that given to integers $r_0 = 911$ and $r_1 = 301$. The gcd is computed by reducing the problem of finding the gcd of two given numbers to that of the gcd of two smaller numbers 
+The EA works that given to integers $r_0 = 911$ and $r_1 = 301$. The gcd is computed by reducing the problem of finding the gcd of two given numbers to that of the gcd of two smaller numbers 
 
 
 \begin{center}
@@ -98,7 +98,7 @@ $1$ & $= 1 \cdot 1+0$ & $gcd(1,1)$ & $= gcd(1,0)$ & $= 1$ \\
 
 
 \noindent
-\parahead{Example Extended Euclidean algorithm} The main point is that the last iteration we computed the parameter $t$, from two previous iterations. This $t$ parameter is the inverse of $r_1$. On the left-hand side, we compute the standard Euclidean algorithm, i.e., we compute new remainders $r_2$, $r_3$, ... Also, we have to compute the integer quotient $q_{i-1}$ in every iteration. On the right-hand side we compute the coefficients $s_i$ and $t_i$ such that $r_i = s_i r_0 + t_i r_1$. 
+\parahead{Example Extended Euclidean algorithm} We will now extend the EA example with EEA with the same values $r_0 = 911$ and $r_1 = 301$ . Here the main point is that the last iteration we compute the parameter $t$, from two previous iterations. This $t$ parameter is the inverse of $r_1$. On the left-hand side, we compute the standard Euclidean algorithm, i.e., we compute new remainders $r_2$, $r_3$, ... Also, we have to compute the integer quotient $q_{i-1}$ in every iteration. On the right-hand side we compute the coefficients $s_i$ and $t_i$ such that $r_i = s_i r_0 + t_i r_1$. 
 \begin{center}
 \begin{tabular}{|l|l|p{5cm}| } 
 \hline
