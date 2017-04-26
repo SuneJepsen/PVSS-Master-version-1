@@ -16,6 +16,22 @@
 
 
 \begin{document}
+
+\begin{description}
+  \item[paralist] provides compact lists and list versions
+    that can be used within paragraphs, helps to customize
+    labels and layout
+  \item[enumitem] gives control over labels and lenghts in all
+    kind of lists
+  \item[mdwlist] is useful to customize description lists,
+    it even allows multi-line labels. It features compact lists
+    and the capability to suspend and resume.
+  \item[desclist] offers more flexibility in definition list
+  \item[multenum] produces vertical enumeration in
+    multiple columns
+\end{description}
+
+
 \begin{math}
 \frac{abc}{xyz}
  \end{math}    
@@ -52,60 +68,6 @@ Figur \ref{fig:DLEQ_1}
 \end{axis}
 \end{tikzpicture} 
  
- 
-\begin{figure}[H]
-	\begin{center}
- 	\begin{tabular}{ l c r }
-		\bf{HB+ Protokol} \\
-		\\
-		Offentlig parameter: $k, \tau, q$ \\
-		Hemmelig nøgle: $\svec_1, \svec_2 \in \{0,1\}^n$ \\
-		Parameter: $L = 0$ \\
-		Følgende procedure gentages $q$ gange \\
-		\hline
-		\bf{Læser} & & \multicolumn{1}{l}{\bf{Tag}} \\
-		& & \multicolumn{1}{l}{Vælger udfordringen $\bvec \in_R \{0,1\}^n$} \\
-		& $\overset{\bvec}{\leftarrow}$ & \\
-		Vælger udfordringen $\avec \in_R \{0,1\}^k$ & & \\
-		& $\overset{\avec}{\rightarrow}$ & \\
-		& & \multicolumn{1}{l}{$e \in_{\ber} \{0,1\}$} \\
-		& & \multicolumn{1}{l}{Beregner svaret $r \leftarrow \dotp{\avec}{\svec_1} \oplus \dotp{\bvec}{\svec_2} \oplus e$ } \\
-		& $\overset{r}{\leftarrow}$ &  \\
-		Hvis $r = \dotp{\avec}{\svec_1} \oplus \dotp{\bvec}{\svec_2}$ så tælle vi $L = L + 1$ & & \\
-		\hline
-		Tag'et blive accepteret hvis $L > (1-\tau)q$ & &
-	\end{tabular}
-	\end{center}
-	\caption{HB+ protokol}
-	\label{fig:HB+}
-\end{figure} 
-
-\clearpage
-\begin{center}
-\begin{algorithm}[H]
-\KwIn{a set $V$ of $q$ queries $(v_i, c_i) \in \{0,1\}^{k+1}$ from the LPN Oracle, values $a, b$ such that $k = ab$}
-\KwOut{values $\svec_1,...\svec_b$}
-\SetKw{KwAnd}{and}
-\SetKw{KwOr}{or}
-\Begin{
-Partitions the positions $a$ into disjoint $q_1 \cup...\cup q_{a-1}$ with $q_i$ of size $b$\;
-\For{$i=1$ to $a-1$}{
-  Partition $V = V_1 \cup ... \cup V_{2^b}$ s.t.vectors in $V_j$ have the same bit values on $q_i$\;
-  \For{\textbf{each} $V_j$}{
-    Choose a random $(v^*,c^*) \in V_j$ as a representative vector\;
-    Replace each $(v,c)$ by $(v,c) \oplus (v^*,c^*), (v,c) \in V_j$ for $(v,c) \neq (v^*,c^*)$\;
-    Discard $(v^*,c^*)$ from $V_j$\;
-  }
-  $V = V_1 \cup ... \cup V_{2^b}$\; 
-  }
-$f(x)=\sum_{i} 1_{v'_i}=x(-1)^{c'_i}$\;
-$f(v)=\sum_{x} (-1)^{\dotp{v}{x}}f(x)$\;
-$(\svec_1,...,\svec_b) = arg max(f(v))$
-\Return{$\svec_1,...,\svec_b$}
-}
-\caption{LF1 Algoritmen som beskreven i [3]}
-\end{algorithm}
-\end{center}
 
 
 \begin{thebibliography}{9}
