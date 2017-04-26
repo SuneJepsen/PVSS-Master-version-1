@@ -1,4 +1,6 @@
-\section{Electronic voting Protocol}
+In the PVSS protocol there will be $m$-voters where each voter votes $0$ or $1$. The result of the votation is the sum of the votes. The votes are going to be counted by $n$-talliers where no tallier knows the individual votes, even if $t-1$ talliers are corrupted by the same adversary. There will be a bullutin board where voters/talliers put their public information. This allows the correctness of the voter and tallier to be publicly verified.\\
+
+\noindent
 The PVSS protocol is a protocol which can handle a large set of secret data but it can also handle a small set data. This means that one of its applications is a  electronic voting system where the secret may differ from 0 or 1. The PVSS protocol differs from standard MPC protocol in which the shares are made public and verifiable.\\\\
 This section will start by explaining our requirements for our implementation and after that we will explain the protocol. The main part will be the Ballot casting where the voter distribute their shares and the Tallying where the tallier computes and reconstructs the votes. The last part will go in depth with the mathematical proofs. \\
 
@@ -31,10 +33,9 @@ This section will start by explaining our requirements for our implementation an
 \noindent
 In the following we will describe the central parts of the protocol. We will use terms as Bulletin board which is keen of public board where all the public values gets posted. Tallying is in this context those who counts the votes.
 
-\subsection{Initialization}
-
-
-
+%--------------------------------------------------------------------------
+\section{Initialization}
+%--------------------------------------------------------------------------
 \parahead{Strong prime} In our implementation we will pick a prime, \begin{math}q\end{math}, so we avoid doing the gcd computation. The protocol states that we have to compute in a group of order q. This means that when we are doing operations in the exponent this property should be satisfied \begin{math}g^q=1\end{math} where \begin{math}q\end{math} is prime. If we are doing \begin{math}mod \ q \end{math} in the exponent we have \begin{math}g^q=g^0\end{math}. The reason for doing operation in the exponent \begin{math}mod \ q\end{math} is because we are using Sharmir secret sharing which require a finite field.\\\\
 One can see that if \begin{math}q\end{math} is a prime say \begin{math}q=5\end{math}, then \begin{math}2^5 \ mod \ 5 = 32 \ mod \ 5 = 2\end{math}. For this to be true, we take the square of numbers modulo a prime in this form \begin{math}2q+1\end{math}. This is also called a strong prime. By using this mathematical structure this property holds. We can choose \begin{math}b=a^2\end{math}. Then we see the property holds \begin{math}b^{2q} = 1 \ mod \ 2q+1\end{math}. By example it is clear that \begin{math}(2^2)^5 \ mod \ 11 = 1024 \ mod \ 11 = 1\end{math}. Fermat little theorem states that \begin{math}b^{q-1} \ mod \ q = 1\end{math} where \begin{math}q\end{math} is prime. So we know if we pick our \begin{math}q\end{math} and \begin{math}b\end{math} (as a square)  in this form \begin{math}(b^{2})^{q+1-1} \ mod \ 2q+1 =1 =  b^{2q} \ mod \ 2q+1 =1\end{math} the property holds.
 
@@ -70,17 +71,14 @@ Shamir Secret Sharing: \begin{math} p(x)=s+\alpha_1x^1+\alpha_2x^2+,...,+\alpha_
 Secret Shares: \begin{math} p(0)=s,\ p(1),\ p(2),...,\ p(n) \end{math}
 \end{infobox}
 
-\subsection{Ballot casting}
+
+%--------------------------------------------------------------------------
+\section{Ballot casting}
+%--------------------------------------------------------------------------
 The  Ballot casting consists of \textit{distribution of the shares} and \textit{verification of the shares}. First the voter votes and then creates a random value. Two proofs are included by the voter a $DLEQ$ and a $PROOF_U$.\\
 
-\parahead{Shamir Secret Sharing} The \begin{math}p(i)\end{math} is the secret where we use Shamir Secret Sharing. The \begin{math}\alpha_j\end{math} is all the coefficients. The \begin{math}X_i\end{math} means the i'th tallier. \\
+\parahead{Shamir Secret Sharing} The \begin{math}p(i)\end{math} is the share where we use Shamir Secret Sharing. The \begin{math}\alpha_j\end{math} is all the coefficients. The shares are going to be encrypted using the talliers public key $y_i^{p(i)}$. \\
 
-\parahead{DLEQ} With DLEQ we prove that the exponent are equal \begin{math}X_i=g^{p(i)}  \land Y_i=y_i^{p(i)} \end{math} without revealing \begin{math}{p(i)} \end{math}. Note that there has been no communcation between the the player for now. We will present an interactive and a non-interactive proof of the DLEQ between the voter and the verifier.\\
-
-\parahead{\begin{math} PROOF_U \end{math}} With \begin{math} PROOF_U \end{math} the voter proofs "consistency" and that the vote is either 1 or 0.\\
-
-\noindent
-Note that the contruction of $Y_i$ is a hard problem to solve as we discussed in the discrete logarithm section. 
 
 \begin{infobox}[The voter distributes the encrypted share with a $PROOF_U$ and a $DLEQ$ proof]
 The following gets publish to the bulleting board\\
@@ -91,7 +89,12 @@ The following gets publish to the bulleting board\\
 \begin{math}PROOF_U \end{math} and DLEQ
 \end{infobox}
 
+\parahead{DLEQ} With DLEQ we prove that the exponent are equal \begin{math}X_i=g^{p(i)}  \land Y_i=y_i^{p(i)} \end{math} without revealing \begin{math}{p(i)} \end{math}. Note that there has been no communcation between the the player for now. We will present an interactive and a non-interactive proof of the DLEQ between the voter and the verifier.\\
 
+\parahead{\begin{math} PROOF_U \end{math}} With \begin{math} PROOF_U \end{math} the voter proofs "consistency" and that the vote is either 1 or 0.\\
+
+\noindent
+Note that the contruction of $Y_i$ is a hard problem to solve as we discussed in the discrete logarithm section. 
 
 \parahead{Example} For clarification an example on \begin{math}X_i\end{math} calculations to tallier 1, tallier 2 and tallier 3.
 \begin{center}
@@ -100,7 +103,9 @@ Tallier 2: \begin{math}X_2=\prod\limits_{j=0}^{t-1} C_j^{i^j} = C_0^{2^0}  \cdot
 Tallier 3: \begin{math}X_3=\prod\limits_{j=0}^{t-1} C_j^{i^j} = C_0^{3^0}  \cdot  C_1^{3^1}  \cdot  C_2^{3^2}\end{math}
 \end{center}
 
-\subsection{Tallying}
+%--------------------------------------------------------------------------
+\section{Tallying}
+%--------------------------------------------------------------------------
 Tallying is the process of counting the votes. Here the tallier uses their private keys to collectively compute the final tally, based on the valid ballots.\\
 
 
@@ -171,11 +176,13 @@ By dividing we isolate \textit{v}: \\ \\
 \parahead{Baby-step giant-step} A more efficient algorithm is to use Baby-step giant-step algorithm. 
 
 
-%************Proofs start
-\subsection{Proofs}
+%--------------------------------------------------------------------------
+\section{Proofs}
+%--------------------------------------------------------------------------
 In this section we will elaborate the mathematical justification of the interactive- and non interactive DLEQ and the $PROOF_U$. 
+
 %----------------------------------------------------------------------
-\subsubsection{DLEQ interactive proof between voters and verifier}
+\subsection{DLEQ interactive proof between voters and verifier}
 %----------------------------------------------------------------------
 DLEQ stands for discrete logarithm equality and it proofs the exponent are equal \begin{math}X_i=g^{p(i)}  \land Y_i=y_i^{p(i)} \end{math} without revealing \begin{math}{p(i)} \end{math}. The verification of the shares in the interactive proof happens by the following  interaction between the prover and the verifier.
 
@@ -211,7 +218,7 @@ DLEQ stands for discrete logarithm equality and it proofs the exponent are equal
     \end{array}
     $    
     \caption{DLEQ interactive}
-	\label{fig:DLEQ}
+	\label{fig:DLEQ_interactive}
 \end{figure}
 	
 
@@ -275,7 +282,7 @@ the honest verifier that it is true, except with some small probability?\\\\
 \end{infobox}
 
 %----------------------------------------------------------------------
-\subsubsection{DLEQ non-interactive proof between voters and verifier}
+\subsection{DLEQ non-interactive proof between voters and verifier}
 %----------------------------------------------------------------------
 Here we present how one can turn an interactive proof to a non interactive proof.
 
@@ -374,7 +381,7 @@ the honest verifier that it is true, except with some small probability?\\\\
 \end{infobox}
 
 %----------------------------------------------------------------------
-\subsubsection{Description of $ \mathbf{PROOF_U} $}
+\subsection{Description of $ \mathbf{PROOF_U} $}
 %----------------------------------------------------------------------
 In this section we will show the interactive proof. Through Fiat–Shamir  we transform an interactive proof of knowledge into a non-interactive proof of knowledge. First of all the voter proves that there is consistency between the exponents of how \begin{math}U\end{math} and \begin{math}C_0\end{math} is constructed from \begin{math}U=G^{s+v}\end{math} and \begin{math}C_0 = g^s\end{math}. The exponents only differs from the vote hence 0 or 1.\\
 
@@ -450,7 +457,7 @@ In this section we will show the interactive proof. Through Fiat–Shamir  we tr
     \end{array}
     $    
     \caption{$PROOF_U$}
-	\label{fig:DLEQ}
+	\label{fig:PROOF_U}
 \end{figure}
 
 \parahead{Explanation of the protocol} In step 1 the voter publish \begin{math}a_0,\ b_0,\ a_1,\ b_1\end{math}. Note that the difference between voting 0 or 1 is just by swapping the values between the variables \begin{math}a_0,\ b_0\end{math} and \begin{math}a_1,\ b_1\end{math}. The point is that the verifier will not be able to distinguish the value of the vote and thereby gain knowledge about the vote.
@@ -566,7 +573,7 @@ the honest verifier that it is true, except with some small probability?\\\\
 \end{infobox}
 
 %----------------------------------------------------------------------
-\subsubsection{DLEQ proof by the talliers}
+\subsection{DLEQ proof by the talliers}
 %----------------------------------------------------------------------
 The tallier will do computations on each of their shares. Here each tallier uses the DLEQ to prove that the decryption of their shares is done correctly. We will first show the interactive proof and then transform it to a non-interactive proof. The input values are \begin{math}(G,\ y_i,\ S_i, Y_i)\end{math} where \begin{math}G = y_i^{x_i}\end{math} and  \begin{math} Y_i=S_i^{x_i}\end{math}. We have some initial values
  \begin{math}g_1 =G,\ h_i=y_i,\ g_2=S_i,\ h_2=Y_i,\ \alpha=x_i \end{math} and \begin{math}w \in_R \{0,...,q-1\}\end{math}.\\

@@ -27,11 +27,11 @@ if \begin{math}m \end{math} divides \begin{math} a - r \end{math}.\\
 As we will see later, computing the inverse becomes an important part in this protocol for how to divide modulo an integer arithmetically. For this we have the Extended Euclidean algorithm which allows us to compute modular some integers. This computation results in computing the inverse.
 
 
-\parahead{Extended Euclidean algorithm} To compute the inverse means that we want to compute the following \begin{math}a\ \cdot \ x \ mod \ q = 1 \end{math} where $a, \ x, \ q$ are integers and $x$ is the inverse of $a$. The condition for the existence of the inverse is that the $gcd(q,\ a)= 1$. So if $gcd(q,\ a)= 1$ the Extended Euclidean Algorithm computes the inverse of $a$.\\
+\parahead{Extended Euclidean algorithm} To compute the inverse means that we want to compute the following \begin{math}a\ \cdot \ x \ mod \ q = 1 \end{math} where $a, \ x, \ q$ are integers and $x$ is the inverse of $a$. The condition for the existence of the inverse is that the $gcd(q,\ a)= 1$. This means that the only number which divides both $q$ and $a$ is $1$. So if $gcd(q,\ a)= 1$ the Extended Euclidean Algorithm computes the inverse of $a$.\\
 
 
-\noindent
 \parahead{Explanation of the Extended Euclidean algorithm (EEA)} Since we will use an implementation in our electronic voting application we will explain the EEA by example. In order to explain the EEA we will explain the regular Euclidean algorithm (EA). The first two lines (6-7) in the algorithm is the EA. It turns out that if the $gcd(n,a)=1$  and we give the EEA $gcd(n,a)$, where $n$ is the modulo integer and $a$ is an integer, then the $t$ parameter will be the inverse of $a$. 
+\cite{Paar}
 
 %**************************************Pseudocode Euclidean algorithm start
 \begin{center}

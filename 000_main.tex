@@ -77,22 +77,75 @@
 
 \mdtheorem[style=defstyle]{infobox}{}[subsection]
 
-\title{
-    Draft 1 \\
-	Aalborg University \\
-    \includegraphics[scale=0.1]{Ignacio.jpg}
-}
-\author{Kasper and  Sune}
-\date{February 2017}
-
 \begin{document}
-
 
 %***************************************************************
 %               Title Page
 %***************************************************************
-\maketitle
-\clearpage
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE Aalborg university}\\[1.5cm] % Name of your university/college
+\textsc{\Large Master of IT, Software Development}\\[0.5cm] % Major Heading
+\textsc{\large Master thesis}\\[0.5cm] %Minor Heading 
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Electronic voting application based on public verifiable secret sharing}\\[0.4cm] % Title
+\HRule \\[1.5cm]
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Author:}\\
+Sune Chung \textsc{Jepsen} % Your name
+Kasper Jensen \textsc{Lemming} % Your name
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Supervisor:} \\
+Ignacio \textsc{Cascudo} % Supervisor's Name
+\end{flushright}
+\end{minipage}\\[2cm]
+
+% If you don't want a supervisor, uncomment the two lines below and remove the section above
+%\Large \emph{Author:}\\
+%John \textsc{Smith}\\[3cm] % Your name
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large June 2017}\\[2cm] % Date, change the \today to a set date if you want to be precise
+
+%----------------------------------------------------------------------------------------
+%	LOGO SECTION
+%----------------------------------------------------------------------------------------
+
+\includegraphics{AAU_LOGO.png}\\[1cm] % Include a department/university logo - this will require the graphicx package
+ 
+%----------------------------------------------------------------------------------------
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+
 
 \chapter*{Abstract}
 \input{010_abstract.tex}
@@ -116,9 +169,17 @@
     
     \input{043_Overview.tex}
 
+ \clearpage
+%***************************************************************
+%               Part 2: Voting
+%***************************************************************  
+\chapter{Voting}    
+    \input{190_Voting.tex}
+
+
 \clearpage
 %***************************************************************
-%               Part 2: Mathematical understanding
+%               Part 3: Mathematical understanding
 %***************************************************************
 \chapter{Mathematical understanding}
     \input{110_Part_1_Protocol.tex}
@@ -130,28 +191,28 @@
     \input{147_Group_Theory.tex}
     
     \input{150_Cryptographic_tools.tex}
+
+\clearpage
+%***************************************************************
+%               Part 4: Multiparty Computation and Secret Sharing
+%***************************************************************    
+\chapter{Multiparty Computation}
     
     \input{155_MPC.tex}
     
-    \input{160_Shamir_Secret_Sharing.tex}
+    \input{160_Secret_Sharing.tex}
+    
     
  \clearpage
 %***************************************************************
-%               Part 3: Voting
+%               Part 5: The Protocol
 %***************************************************************  
-\chapter{Voting}    
-    \input{190_Voting.tex}
-    
- \clearpage
-%***************************************************************
-%               Part 4: The Protocol
-%***************************************************************  
-\chapter{Protocol}
+\chapter{Electronic voting protocol}
     \input{170_Special_PVSS_Protocol.tex}
 
 \clearpage
 %***************************************************************
-%               Part 5: Application
+%               Part 6: Application
 %***************************************************************
 \chapter{Application}
     \input{200_Part_2_Application.tex}
@@ -162,13 +223,13 @@
     
 \clearpage    
 %***************************************************************
-%               Part 6: Discussion
+%               Part 7: Discussion
 %***************************************************************
 \chapter{Discussion}
 
 \clearpage
 %***************************************************************
-%               Part 7: Conclusion
+%               Part 8: Conclusion
 %***************************************************************
 \chapter{Conclusion}
 

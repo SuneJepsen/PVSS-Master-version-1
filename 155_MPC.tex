@@ -1,19 +1,14 @@
 \section{Multiparty Computation}
+There are two types of MPC protocols. First there are MPC protocols which are secure against passive corruption which assumes that everyone is honest and sends correct data. This is whats called secure against passive corruption. Then there are MPC protocols which are secure against active corruption where adversary is able to send incorrect data. Here we need more advanced protocols like the Verifiable secret sharing protocol (VSS) and Zero knowledge proofs. Here the protocol allows the involved participants to verify their shares as consistent. This means that the VSS will be able to detect incorrect shares. \\
+
+\noindent
+An extension to the VSS protocol is PVSS protocol where the goal is not just that the participants can verify their own shares, but that anybody can verify the correctness of the transmitted data. 
+
 \subsection{Adversaries}
-Participants in a MPC protocol do not necessarily behave as intended. Corrupt
-players may occur and they are divided into the following two main
-groups [Opp05]:
-• A passive adversary is where players perform the protocol correctly,
-but collaborate in information gathering and sharing with the goal of
-getting access to sensitive information of other players. Such players
-are sometimes called semihonest.
-• An active adversary is a group of players deviating from the protocol
-in order to disrupt the computation. The goal is to produce incorrect
-results and/or violate the privacy of other players. Such players are
-sometimes called byzantine.
-13
-Chapter 3. Secure Multiparty Computation
-Both types can be static or adaptive. A static adversary means that the
-set of corrupted players is chosen before the protocol starts. An adaptive
-adversary on the other hand, can choose which players to corrupt during
-the execution of the protocol.
+The reason for this is that we cannot rely on every participants in a MPC protocol to behave as intended. Some participants could be corrupted, we divide these adversaries into two main groups \cite{IntroCrypto}. 
+
+\begin{itemize}
+\item \textbf{Passive corruption} is that a server (semihonest) gets access to information which the server is not entitled to, e.g. if a voter ask another voter about his information and tries to compare the information and get some more information in that way. By using secret sharing we can prevent passive corruption, because the scheme guaranties that if \textit{t}-servers are corrupted then they will not be able to gain anything.
+
+\item \textbf{Active corruption} happens when the voters (malicious) try to send values that they are not supposed to send - so the voters deviate from the protocol. The PVSS prevent these attacks.
+\end{itemize}
