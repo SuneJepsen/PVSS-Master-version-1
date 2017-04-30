@@ -15,6 +15,10 @@
 \usepackage{array}
 \usepackage{mdframed}
 
+%Setup of the TableOfContent to incl. subsubsection
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
 \RestyleAlgo{boxruled}
 \LinesNumbered
 
@@ -152,9 +156,10 @@ Ignacio \textsc{Cascudo} % Supervisor's Name
 \clearpage
 
 \tableofcontents
+
+
+\part{Intoduction}
 \clearpage
-
-
 %***************************************************************
 %               Part 1: Introduction
 %***************************************************************
@@ -169,12 +174,13 @@ Ignacio \textsc{Cascudo} % Supervisor's Name
     
     \input{043_Overview.tex}
 
+\part{Theoretical}
  \clearpage
 %***************************************************************
 %               Part 2: Voting
 %***************************************************************  
 \chapter{Voting}    
-    \input{190_Voting.tex}
+    \input{070_Voting.tex}
 
 
 \clearpage
@@ -182,7 +188,7 @@ Ignacio \textsc{Cascudo} % Supervisor's Name
 %               Part 3: Mathematical understanding
 %***************************************************************
 \chapter{Mathematical understanding}
-    \input{110_Part_1_Protocol.tex}
+    \input{110_Mathematical_understanding.tex}
     
     \input{142_Method.tex}
     
@@ -210,6 +216,8 @@ Ignacio \textsc{Cascudo} % Supervisor's Name
 \chapter{Electronic voting protocol}
     \input{170_Special_PVSS_Protocol.tex}
 
+
+\part{Practical}
 \clearpage
 %***************************************************************
 %               Part 6: Application
@@ -221,15 +229,41 @@ Ignacio \textsc{Cascudo} % Supervisor's Name
     
     \input{220_Method.tex}
     
+    \input{230_Case.tex}
+    
+    \input{250_Functional_Requirements.tex}
+    
+    \input{260_Architectural_Requirements.tex}
+        
+    
+    
+\clearpage
+%***************************************************************
+%               Part 7: Implementation in practices
+%***************************************************************
+\chapter{Implementation in practices}
+
+\section{Proof-of-concept}
+    \subsection{Learning by doing}
+    \subsection{Testing the boundaries of the languages}
+
+
+\section{Implementing the application}
+    \subsection{Design to Code}
+    \subsection{Deployment of the application}    
+
+\section{Issue-table}
+
+\part{Reflecting}    
 \clearpage    
 %***************************************************************
-%               Part 7: Discussion
+%               Part 8: Discussion
 %***************************************************************
 \chapter{Discussion}
 
 \clearpage
 %***************************************************************
-%               Part 8: Conclusion
+%               Part 9: Conclusion
 %***************************************************************
 \chapter{Conclusion}
 

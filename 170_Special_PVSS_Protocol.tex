@@ -1,143 +1,164 @@
-In this section we look at the electronic voting protocol described in \cite{Schoenmakers1999}. \\
+In this section we look at the electronic voting protocol described in \cite{Schoenmakers1999}. The protocol is based on the PVSS protocol describe in the same article. We will only be describing the electronic voting protocol but as doing so, the relevant elements from the PVSS protocol will taking into the description. For the rest of this chapter we will be referring to the electronic voting protocol, as simply the protocol, unless specified otherwise. \\
 
 \noindent
-In the PVSS protocol there will be $m$-voters where each voter votes $0$ or $1$. The result of the votation is the sum of the votes. The votes are going to be counted by $n$-talliers where no tallier knows the individual votes, even if $t-1$ talliers are corrupted by the same adversary. There will be a bullutin board where voters/talliers put their public information. This allows the correctness of the voter and tallier to be publicly verified.\\
+Giving the complexity of the protocol we divided this description into three parts. In the first part we will be describing the protocol as simple as possible, living out mathematical justification and proofs. In second part we will be looking at the mathematical justification, describing this in the same order as in the first part. and finally we will be look though the proofs in the last part. 
+
+
+\section{The protocol}
+
+
+\noindent
+In the PVSS protocol there will be a group of voters where each voter votes $0$ or $1$. The result of the votation is the sum of the votes. The votes are going to be counted by group of talliers where no tallier knows the individual votes, even if a certain group of talliers are corrupted by the same adversary. There will be a bullutin board where voters/talliers put their public information. This allows the correctness of the voter and tallier to be publicly verified.\\
 
 \noindent
 The PVSS protocol is a protocol which can handle a large set of secret data but it can also handle a small set data. This means that one of its applications is a  electronic voting system where the secret may differ from 0 or 1. The PVSS protocol differs from standard MPC protocol in which the shares are made public and verifiable.\\\\
 This section will start by explaining our requirements for our implementation and after that we will explain the protocol. The main part will be the Ballot casting where the voter distribute their shares and the Tallying where the tallier computes and reconstructs the votes. The last part will go in depth with the mathematical proofs. \\
 
+
+\begin{description}
+    \item[Voter]
+    \item[Tallier]
+    \item[Observer]
+    \item[Bulletin board]
+
+    \item[Strong prime] In our implementation we will pick a prime, \begin{math}q\end{math}, so we avoid doing the gcd computation. The protocol states that we have to compute in a group of order q. This means that when we are doing operations in the exponent this property should be satisfied \begin{math}g^q=1\end{math} where \begin{math}q\end{math} is prime. If we are doing \begin{math}mod \ q \end{math} in the exponent we have \begin{math}g^q=g^0\end{math}. The reason for doing operation in the exponent \begin{math}mod \ q\end{math} is because we are using Sharmir secret sharing which require a finite field.\\
+    
+    \noindent
+    One can see that if \begin{math}q\end{math} is a prime say \begin{math}q=5\end{math}, then \begin{math}2^5 \ mod \ 5 = 32 \ mod \ 5 = 2\end{math}. For this to be true, we take the square of numbers modulo a prime in this form \begin{math}2q+1\end{math}. This is also called a strong prime. By using this mathematical structure this property holds. We can choose \begin{math}b=a^2\end{math}. Then we see the property holds \begin{math}b^{2q} = 1 \ mod \ 2q+1\end{math}. By example it is clear that \begin{math}(2^2)^5 \ mod \ 11 = 1024 \ mod \ 11 = 1\end{math}. Fermat little theorem states that \begin{math}b^{q-1} \ mod \ q = 1\end{math} where \begin{math}q\end{math} is prime. So we know if we pick our \begin{math}q\end{math} and \begin{math}b\end{math} (as a square)  in this form \begin{math}(b^{2})^{q+1-1} \ mod \ 2q+1 =1 =  b^{2q} \ mod \ 2q+1 =1\end{math} the property holds.
+\end{description}
+
+
+
+
 \noindent
 
-\begin{infobox}[Short overview of the protocol]
+\begin{infobox*}[Short overview of the protocol]
+\begin{enumerate}
+\item \textbf{Initialization}
 \begin{enumerate}
 \item Each voter signs it name on the bulletin board
 \item Each tallier generates a private and a public key
 \item Each tallier registries their public keys on the bulletin board
-\item Initialization
-\begin{enumerate}
 \item The bulletin board generates and publish $g$ and $G$ and a securetity parameter $t$
 \end{enumerate}
-\item Ballot casting
+\item \textbf{Ballot casting}
 \begin{enumerate}
 \item Each voter votes $1$ or $0$
 \item Each voter generates a random secret
 \item Each voter creates shares of the secret to each tallier and encrypts it with the corresponding public key of the tallier. Each voter supply this secret share with evidence of its consistency with a $DLEQ$ proof
 \item Each voter supply evidence for a valid vote with $PROOF_U$
 \end{enumerate}
-\item Tallying
+\item \textbf{Tallying}
 \begin{enumerate}
 \item At least $t-1$ tallier accumulates and decrypts their shares
 \item One authority completes the final computation of the total votes
 \end{enumerate}
 \end{enumerate}
-\end{infobox}
+\end{infobox*}
 
 \noindent
 In the following we will describe the central parts of the protocol. We will use terms as Bulletin board which is keen of public board where all the public values gets posted. Tallying is in this context those who counts the votes.
 
 
 \begin{description}
-  \item[Registration] provides compact lists and list versions
-    that can be used within paragraphs, helps to customize
-    labels and layoutprovides compact lists and list versions
-    that can be used within paragraphs, helps to customize
-    labels and layoutprovides compact lists and list versions
-    that can be used within paragraphs, helps to customize
-    labels and layoutprovides compact lists and list versions
-    that can be used within paragraphs, helps to customize
-    labels and layoutprovides compact lists and list versions
-    that can be used within paragraphs, helps to customize
-    labels and layoutprovides compact lists and list versions
-    that can be used within paragraphs, helps to customize
-    labels and layout
+    \item[Initialization] provides compact lists and list versions
+        that can be used within paragraphs, helps to customize
+        labels and layout
     
-  \item[Initialization] provides compact lists and list versions
-    that can be used within paragraphs, helps to customize
-    labels and layout
+    \item[Ballot Casting] provides compact lists and list versions
+        that can be used within paragraphs, helps to customize
+        labels and layout
     
-  \item[Ballot Casting] provides compact lists and list versions
-    that can be used within paragraphs, helps to customize
-    labels and layout
+    \begin{enumerate}
+        \item \textit{Distribution of the shares}
+        \item \textit{Verification of the shares}        
+    \end{enumerate}
     
-  \item[Tallying] provides compact lists and list versions
-    that can be used within paragraphs, helps to customize
-    labels and layout    
+    
+    \item[Tallying] provides compact lists and list versions
+        that can be used within paragraphs, helps to customize
+        labels and layout    
+        
+    \begin{enumerate}
+        \item \textit{Decryption of the shares}
+        \item \textit{Pooling the shares}        
+    \end{enumerate}        
 
 \end{description}
-
+For efficiency we will limit the computation of the votes to a finite number of talliers. There are \textit{m} voters and \textit{n} talliers. 
 %--------------------------------------------------------------------------
-\section{Initialization}
+\subsection{Initialization}
 %--------------------------------------------------------------------------
-\parahead{Strong prime} In our implementation we will pick a prime, \begin{math}q\end{math}, so we avoid doing the gcd computation. The protocol states that we have to compute in a group of order q. This means that when we are doing operations in the exponent this property should be satisfied \begin{math}g^q=1\end{math} where \begin{math}q\end{math} is prime. If we are doing \begin{math}mod \ q \end{math} in the exponent we have \begin{math}g^q=g^0\end{math}. The reason for doing operation in the exponent \begin{math}mod \ q\end{math} is because we are using Sharmir secret sharing which require a finite field.\\\\
-One can see that if \begin{math}q\end{math} is a prime say \begin{math}q=5\end{math}, then \begin{math}2^5 \ mod \ 5 = 32 \ mod \ 5 = 2\end{math}. For this to be true, we take the square of numbers modulo a prime in this form \begin{math}2q+1\end{math}. This is also called a strong prime. By using this mathematical structure this property holds. We can choose \begin{math}b=a^2\end{math}. Then we see the property holds \begin{math}b^{2q} = 1 \ mod \ 2q+1\end{math}. By example it is clear that \begin{math}(2^2)^5 \ mod \ 11 = 1024 \ mod \ 11 = 1\end{math}. Fermat little theorem states that \begin{math}b^{q-1} \ mod \ q = 1\end{math} where \begin{math}q\end{math} is prime. So we know if we pick our \begin{math}q\end{math} and \begin{math}b\end{math} (as a square)  in this form \begin{math}(b^{2})^{q+1-1} \ mod \ 2q+1 =1 =  b^{2q} \ mod \ 2q+1 =1\end{math} the property holds.
 
 \noindent
-\begin{infobox}[The bulleting board generates all system parameters]
-Public elements:\\
-\begin{math}f \in_R \{1,...,2q\} \rightarrow g= f^2 \ mod\ 2q+1\end{math}\\
-\begin{math}F \in_R \{1,...,2q\}\rightarrow G= F^2 \ mod\ 2q+1 \wedge G\neq1\end{math}\\
-Security parameter:\\
-\begin{math} t \in_R \Z_q^* = \{1,2,3,...,q-1\} \end{math}
-\end{infobox}
+\textbf{The bulletin board generates all system parameters. The public elements $f$ and $F$ and a security parameter $t$.}
 
 
-\noindent
-There are \textit{m} voters and \textit{n} talliers. For efficiency we will limit the computation of the votes to a finite number of talliers. 
+\begin{alignat*}{2}
+f \ &\in_R \{1,...,2q\} \rightarrow g &&= f^2 \ mod\ 2q+1\\
+F \ &\in_R \{1,...,2q\}\rightarrow G &&= F^2 \ mod\ 2q+1 \wedge G\neq1\\
+t &\in_R \Z_q^* &&= \{1,2,3,...,q-1\} 
+\end{alignat*}
 
 \noindent
-\begin{infobox}[The tallier generates a private and a public keys]
-Private key: \begin{math}x_{i} \in_R \Z_q^* = \{1,2,3,...,q-1\}\end{math}\\
-Public key: \begin{math}y_i=G^{x_i} ,\ i=\{1,2,3,...., n \}  \end{math}
-\end{infobox}
-
-
-\noindent
-Every voter either votes "no" or "yes" corresponding to 0 or 1. The voter select a random secret value \begin{math}s \end{math}. The PVSS protocol is then used to distribute shares which contain a combination of the random secret and the vote. Every voter will construct a random polynomium at degree $t$ and then evaluate the shares  of each of the talliers.
-
-
-\noindent
-\begin{infobox}[The voter creates a random polynomial of degree at most $t$ and computes the shares]
-Vote: \begin{math}v\in\{0,1\} \end{math}\\
-Random value: \begin{math} s\in_R \Z_q \end{math}\\ 
-Shamir Secret Sharing: \begin{math} p(x)=s+\alpha_1x^1+\alpha_2x^2+,...,+\alpha_{t-1}x^{t-1}, \ \alpha_j\in_R \Z_q  \end{math}\\
-Secret Shares: \begin{math} p(0)=s,\ p(1),\ p(2),...,\ p(n) \end{math}
-\end{infobox}
+\textbf{The tallier generates a private, $x_i$ and a public keys $y_i$.}
+\begin{alignat*}{2}
+x_{i} \in_R \Z_q^* &= \{1,2,3,...,q-1\}\\
+y_i=G^{x_i} ,\ i &=\{1,2,3,...., n \}
+\end{alignat*}
 
 
 %--------------------------------------------------------------------------
-\section{Ballot casting}
+\subsection{Ballot casting}
 %--------------------------------------------------------------------------
-The  Ballot casting consists of \textit{distribution of the shares} and \textit{verification of the shares}. First the voter votes and then creates a random value. Two proofs are included by the voter a $DLEQ$ and a $PROOF_U$.\\
-
-\parahead{Shamir Secret Sharing} The \begin{math}p(i)\end{math} is the share where we use Shamir Secret Sharing. The \begin{math}\alpha_j\end{math} is all the coefficients. The shares are going to be encrypted using the talliers public key $y_i^{p(i)}$. \\
-
-
-\begin{infobox}[The voter distributes the encrypted share with a $PROOF_U$ and a $DLEQ$ proof]
-The following gets publish to the bulleting board\\
-\begin{math}Y_i=y_i^{p(i)} \end{math}, \begin{math}1\leq i\leq n\end{math} (Encryption of the share) \\ 
-\begin{math}C_j=g^{\alpha_j},\ j=\{0,1,2,3,....,t-1 \} \end{math} \\ 
-\begin{math}X_i=\prod\limits_{j=0}^{t-1} C_j^{i^j} =g^{p(i)}\end{math}, \begin{math}1\leq i\leq n\end{math}\\
-\begin{math}U=G^{s+v} \end{math}\\
-\begin{math}PROOF_U \end{math} and DLEQ
-\end{infobox}
-
-\parahead{DLEQ} With DLEQ we prove that the exponent are equal \begin{math}X_i=g^{p(i)}  \land Y_i=y_i^{p(i)} \end{math} without revealing \begin{math}{p(i)} \end{math}. Note that there has been no communcation between the the player for now. We will present an interactive and a non-interactive proof of the DLEQ between the voter and the verifier.\\
-
-\parahead{\begin{math} PROOF_U \end{math}} With \begin{math} PROOF_U \end{math} the voter proofs "consistency" and that the vote is either 1 or 0.\\
+The  Ballot casting consists of \textit{distribution of the shares} and \textit{verification of the shares}.\\
 
 \noindent
-Note that the contruction of $Y_i$ is a hard problem to solve as we discussed in the discrete logarithm section. 
+First the voter either votes "no" or "yes" corresponding to 0 or 1. The voter select a random secret value \begin{math}s \end{math}. The PVSS protocol is then used to distribute shares which contain a combination of the random secret and the vote. Every voter will construct a random polynomial at degree $t$ and then evaluate the shares  to each of the talliers.\\
 
-\parahead{Example} For clarification an example on \begin{math}X_i\end{math} calculations to tallier 1, tallier 2 and tallier 3.
-\begin{center}
-Tallier 1: \begin{math}X_1=\prod\limits_{j=0}^{t-1} C_j^{i^j} = C_0^{1^0}  \cdot  C_1^{1^1}  \cdot  C_2^{1^2}\end{math}\\
-Tallier 2: \begin{math}X_2=\prod\limits_{j=0}^{t-1} C_j^{i^j} = C_0^{2^0}  \cdot  C_1^{2^1}  \cdot  C_2^{2^2}\end{math}\\
-Tallier 3: \begin{math}X_3=\prod\limits_{j=0}^{t-1} C_j^{i^j} = C_0^{3^0}  \cdot  C_1^{3^1}  \cdot  C_2^{3^2}\end{math}
-\end{center}
+
+\noindent
+\textbf{The voter creates his vote, a random value and a random polynomial of degree at most $t$ and computes the shares.}
+
+\begin{flalign*}
+Vote &: v\in\{0,1\} & \\
+Random \ value  &: s\in_R \Z_q &\\
+SSS &:  p(x)=s+\alpha_1x^1+\alpha_2x^2+,...,+\alpha_{t-1}x^{t-1}, \ \alpha_j\in_R \Z_q &\\
+Secret \ Shares &:  p(0)=s,\ p(1),\ p(2),...,\ p(n)
+\end{flalign*}
+
+\noindent
+\textbf{The voter distributes the encrypted share and creates a $PROOF_U$ and a $DLEQ$ proof.}\\
+The \begin{math}p(i)\end{math} is the share where we use Shamir Secret Sharing. The \begin{math}\alpha_j\end{math} is all the coefficients. The shares are going to be encrypted using the talliers public key $y_i^{p(i)}$. The following gets publish to the bulleting board
+
+\begin{alignat*}{2}
+Y_i&=y_i^{p(i)} ,1\leq i\leq n \ (Encryption \ of \ the \ share) \\ 
+C_j&=g^{\alpha_j},\ j =\{0,1,2,3,....,t-1 \}  \\ 
+X_i&=\prod\limits_{j=0}^{t-1} C_j^{i^j} =g^{p(i)}, 1\leq i\leq n\\
+U&=G^{s+v}
+\end{alignat*}
+
+\noindent
+Besides above computed parameters a  $PROOF_U$ proof and a $DLEQ$ proof are computed. \\
+
+\noindent
+With $DLEQ$ we prove that the exponent are equal \begin{math}X_i=g^{p(i)}  \land Y_i=y_i^{p(i)} \end{math} without revealing \begin{math}{p(i)} \end{math}. Note that there has been no communcation between the the player for now. We will present an interactive and a non-interactive proof of the $DLEQ$ between the voter and the verifier.\\
+
+\noindent
+With \begin{math} PROOF_U \end{math} the voter proofs "consistency" and that the vote is either 1 or 0. Note that the contruction of $Y_i$ is a hard problem to solve as we discussed in the discrete logarithm section. \\
+
+\noindent
+An example for clarification on the computations of \begin{math}X_i\end{math}. The following is computation of the $X_i$ to tallier 1 ($X_1$), tallier 2 ($X_2$) and tallier 3 ($X_3$).
+
+\begin{alignat*}{3}
+X_1 &=\prod\limits_{j=0}^{t-1} C_j^{i^j} &&= C_0^{1^0}  \cdot  C_1^{1^1}  \cdot  C_2^{1^2}\\
+X_2 &=\prod\limits_{j=0}^{t-1} C_j^{i^j} &&= C_0^{2^0}  \cdot  C_1^{2^1}  \cdot  C_2^{2^2}\\
+X_3 &=\prod\limits_{j=0}^{t-1} C_j^{i^j} &&= C_0^{3^0}  \cdot  C_1^{3^1}  \cdot  C_2^{3^2}
+\end{alignat*}
+
 
 %--------------------------------------------------------------------------
-\section{Tallying}
+\subsection{Tallying}
 %--------------------------------------------------------------------------
 Tallying is the process of counting the votes. Here the tallier uses their private keys to collectively compute the final tally, based on the valid ballots.\\
 
@@ -146,7 +167,7 @@ Tallying is the process of counting the votes. Here the tallier uses their priva
 \parahead{Homomorphic secret sharing} property ensures that each tallier will  be able to multiply the shares and decrypt. Note that \textit{i} is referring to tallier 1, tallier  2 and tallier 3 and \textit{j} is referring to voter 1, voter 2 and voter 3.:\\
 
 \begin{infobox}[The tallier decrypts the shares and publishes a $DLEQ$ proof]
-\begin{math}Y_i^*=(\prod\limits_{j=1}^{m} Y_{ij}) \ (mod\ 2 \cdot q+1) =y_i^{\sum\limits_{j=1}^m p_j(i)}\end{math}\\ \\
+\begin{math}Y_i^*=(\prod\limits_{j=1}^{m} Y_{ij}) \ (mod\ 2 \cdot q+1) =y_i^{\sum\limits_{j=1}^m p_j(i)}\end{math}\\
 Following can be reduced by using the talliers private key. Note that we are raising to the multiplicative inverse of the private key in  \textit{q}:\\\\
 \begin{math}y_i^{\sum\limits_{j=1}^m p_j(i)}=(G^{x_i})^{\sum\limits_{j=1}^m p_j(i)} = G^{x_i \sum\limits_{j=1}^m p_j(i)}= (G^{x_i \sum\limits_{j=1}^m p_j(i)})^{\frac{1}{x_i}}= G^{ \sum\limits_{j=1}^m p_j(i)}   \end{math}
 \end{infobox}
@@ -156,11 +177,16 @@ Following can be reduced by using the talliers private key. Note that we are rai
 Note that besides decrypting the shares the tallier will publish a $DLEQ$ proof which shows that the decrypting was done correct. See figure \ref{fig:DLEQ_by_talliers} of the $DLEQ$ proof. Also note that we computing the inverse of the key $x_i$. To compute the inverse we will use Extended Euclidean algorithm.
 
 \parahead{Example} on the multiplcation of the $Y_{ij}$
-\begin{center}
-Voter 1: \begin{math}Y_{1,1}=y_{1,1}^{p_1(1)} \end{math}, \begin{math}Y_{2,1}=y_{2,1}^{p_2(2)} \end{math},.., \begin{math}Y_{n,1}=y_n^{p_n(n)} \end{math}\\
-Voter 2: \begin{math}Y_{1,2}=y_{1,2}^{p_1(1)} \end{math}, \begin{math}Y_{2,2}=y_{2,2}^{p_2(2)} \end{math},.., \begin{math}Y_{n,2}=y_n^{p_n(n)} \end{math}\\
-Voter \textit{m}: \begin{math}Y_{1,m}=y_{1,m}^{p_1(1)} \end{math}, \begin{math}Y_{2,m}=y_{2,m}^{p_2(2)} \end{math},.., \begin{math}Y_{n,m}=y_n^{p_n(n)} \end{math}\\
-\end{center}
+
+\begin{alignat*}{4}
+Voter \ 1&: Y_{1,1}&&=y_{1,1}^{p_1(1)},Y_{2,1}&&=y_{2,1}^{p_2(2)} ,.., Y_{n,1}&&=y_n^{p_n(n)}\\
+Voter \ 2&: Y_{1,2}&&=y_{1,2}^{p_1(1)},Y_{2,2}&&=y_{2,2}^{p_2(2)} ,.., Y_{n,2}&&=y_n^{p_n(n)}\\
+Voter \ \textit{m}&: Y_{1,m}&&=y_{1,m}^{p_1(1)} , Y_{2,m}&&=y_{2,m}^{p_2(2)} ,.., Y_{n,m}&&=y_n^{p_n(n)}
+\end{alignat*}
+
+
+
+
 
 \noindent
 Example on $Y_i^*$ is each tallier can publish the following. Note that every talliers exponent is the evaluation in some point in a given polynomium \begin{math}h(1), h(2),..., h(n) \end{math}.
@@ -208,6 +234,13 @@ By dividing we isolate \textit{v}: \\ \\
 
 \parahead{Baby-step giant-step} A more efficient algorithm is to use Baby-step giant-step algorithm. 
 
+%--------------------------------------------------------------------------
+\section{Protocol details}
+%--------------------------------------------------------------------------
+
+\subsection{Initialization}
+\subsection{Ballot casting}
+\subsection{Tallying}
 
 %--------------------------------------------------------------------------
 \section{Proofs}

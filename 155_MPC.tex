@@ -1,5 +1,14 @@
 \section{Multiparty Computation}
+This problem was first introduced by Yao in 1982 and exemplified through what is known as the "millionaire problem" \cite{Yao82}:
+
+\begin{center}
+\textit{“Two millionaires wish to know who is richer; however, they do not want to find out inadvertently any additional information about each other’s wealth. How can they carry out such a conversation?”}
+\end{center}
+
+\noindent
 There are two types of MPC protocols. First there are MPC protocols which are secure against passive corruption which assumes that everyone is honest and sends correct data. This is whats called secure against passive corruption. Then there are MPC protocols which are secure against active corruption where adversary is able to send incorrect data. Here we need more advanced protocols like the Verifiable secret sharing protocol (VSS) and Zero knowledge proofs. Here the protocol allows the involved participants to verify their shares as consistent. This means that the VSS will be able to detect incorrect shares. \\
+
+
 
 \noindent
 An extension to the VSS protocol is PVSS protocol where the goal is not just that the participants can verify their own shares, but that anybody can verify the correctness of the transmitted data. 

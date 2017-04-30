@@ -1,0 +1,33 @@
+\section{Functional requirements}
+\begin{itemize}
+    \item \textit{Voter Privacy}
+        No one should be able to link a vote back to the specific voter, and only the voter should
+        know his vote. These requirements shall hold during and after the election.  
+    
+    \item \textit{Eligibility}    
+        Only Eligible and registered voters can vote. 
+    
+    \item \textit{Uniqueness}
+        Only one vote per registered voter should be counted.
+    
+    \item \textit{Fairness}
+        None should be able to gain any knowledge of the outcome of the election, before the ending. This is to prevent voters of voting accordingly to any leaked information. 
+    
+    \item \textit{Uncoercibility}
+        Nobody should be able to extract the value of a vote. This is to prevent anybody from compelling a voter by force, intimidation, or authority to cast a vote in a specific way. 
+    
+    \item \textit{Receipt-freeness} 
+        The voting system should not produce a receipt that reveals any information about the casted vote. This is to prevent a vote from trading his vote. 
+    
+    \item \textit{Accuracy} 
+        The final tally should be correctly computed from valid casted votes. It should not be
+        possible to manipulate the final tally without being detected. 
+    
+    \item \textit{Universal Verifiability}
+        It should be possible for any participants and observers to validate individual votes as well as the final tally of the election. 
+    
+    \item \textit{Individual Verifiability}    
+        Every registered voter should be able to verify that his vote is counted correctly. 
+    
+\end{itemize}
+Use cases: Only registers user are allowed to votes one time
