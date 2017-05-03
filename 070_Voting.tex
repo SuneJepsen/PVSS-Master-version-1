@@ -20,7 +20,7 @@ In many aspects of our life's we in counter the act of voting, from simple thing
 
 
 \section{The Voting Process}
-Similar to the classification, there exist several of different systems and protocols for voting. But they typically all follows the same process and includes the same actors as illustrated and describe below \cite{Cet09}. 
+Similar to the classification, there exist several of different systems and protocols for electronic voting. But they typically all follows the same process and includes the same actors as illustrated and describe below \cite{Cet09}. 
 
 \begin{figure}[H]
 \centering
@@ -31,12 +31,11 @@ Similar to the classification, there exist several of different systems and prot
 \end{figure}
 
 \begin{description}
-    \item[Voter] A registered voter that has the right to cast a vote in the election.  
-    
-    \item[Registration authority] Registration authority is responsible for registering eligible voters, and ensuring that
-    only these voters are allowed to vote, and only votes ones. 
+    \item[Voter] Voter refers to a person who is eligible and who has registered for the privileges of voting in a given election. 
         
-    \item[Collection authority] The collection authority are responsible for collecting all the votes
+    \item[Registration authority] Registration authority refers to the authority that is responsible for registering eligible voters, and ensuring that only these voters are allowed to vote. Furthermore they ensures that voters only vote ones. 
+        
+    \item[Collection authority] The collection authority refers to the authority that is responsible for properly collecting all the votes. This authority can be represent as a simple electronic ballot box.
 
     \item[Tallying authority] Tallying authority are responsible for counting the votes of the election and publishing the result. 
 \end{description}
@@ -46,40 +45,37 @@ Similar to the classification, there exist several of different systems and prot
 The voting process as illustrated on figure \ref{fig:Voting_Process} holds true for any voting system, and includes four stages. 
 
 \begin{description}
-    \item[Registration] Prior to the election eligible voters registers to vote in the election. 
-    
-    \item[Authentication and Authorisation] Registered voters are authenticated, if they are found eligible and have not voted yet, and are giving the privileges of voting to the election. 
+    \item[Registration] Prior to an election, people who are eligible for voting, signs up to vote in the election. These voters are then registered, thus hereby ensuring no double voting acquires.
+        
+    \item[Authentication and Authorisation] Registered voters are authenticated, if they are found eligible and have not voted yet. Ones authenticated, the voter is giving access to cast his vote in the election.  
         
     \item[Voting] The voters cast there votes. 
 
-    \item[Tallying] The Tallying authority counts the votes and publishes the result. 
+    \item[Tallying] In this final stage the votes are counted, and of course only valid votes are being included. Ones the counting process is finished the final count is published. 
 \end{description}
 
 
 \section{Challenges}
-Though the voting process and actors is basically similar for any voting system, electronic or not. 
+Though the process of electronic voting have many similarities with paper based voting systems, there is still concern of the security. In paper based voting systems, the security is easily noticeable as this is represented by officials observing every stages of the process. the process typically goes along the lines of: When arriving to the polling site a voter typically already have proofs that he is eligible and is simply registered and handed the paper ballots. The paper ballot is fulfilled in a voting booth where only the voter himself is present. When fulfilled the ballot is folded or put in an envelope, in order to hide the vote is self, an then put in a ballot box located on the polling site. Note that ballot is anonymous and typical only requires a simple mark. Ones all the votes have been cast or a deadline is reached then the votes is counted. Throughout this entire process there are neutral officials physical present typically along with represents from each party in the election and passive observers.  
 
-
-In their paper Damgård, Groth and Gorm outline three important challenges
-that need to be solved [DGS02]:
+\noindent
+In electronic voting systems the security is not this visible and if the system falls into the classification of \textit{Poll-site Internet voting} or \textit{Remote Internet voting} then uncontrolled network is used and the group of potential adversary is significantly increased.
+To ensure security and public trust an electronic vote system should aim to fulfill the goals 
+listed below \cite{Damgaard2003}
 
 \begin{description}
-    \item[Privacy] Only the final result should be made public, no information
-        about the votes must be leaked.
+    \item[Privacy] Throughout the process no information should be leaked, only the final counting
+    should be made public. At no time should a vote could be linked to the voter. 
+    
+    \item[Robustness] The system should be tolerant against cheating. Only valid and correctly fulfilled ballots should be counted. Nobody should be able to manipulating the final count.
 
-    \item[Robustness] The result will reflect all submitted and well-formed ballots
-        correctly, even if some voters or entities running the election cheat.
-
-    \item[Universal verifiability] After the election, the result can be verified by
-        anyone. In order words, any party should be able to convince himself
-        that the election was fair in the sense that the published tally was
-        correctly computed.
+    \item[Universal verifiability] The final count should be public verifiable. Anyone should be able to convince himself of the fairness of the election. This should be done without gain any other information.
+        
 \end{description}
 
-
 \section{Security Requirements}
+The previous three goals are fairly board and can with benefit be specified into concrete security requirements as done in \cite{Cet08}
 
-\cite{Cet08}
 \begin{itemize}
     \item \textit{Voter Privacy}
         No one should be able to link a vote back to the specific voter, and only the voter should
@@ -112,44 +108,19 @@ that need to be solved [DGS02]:
     
 \end{itemize}
 
+
 \section{Approaches}
+To construct a electronic voting system that fulfills these security requirements, we look that three fundamentally different approaches 
 
 \begin{description}
-    \item[Mix-nets] In mix-net voting schemes, the ballots of all voters are shuffled through a
-        mix-net, such that afterwards, it is unclear which ballot belongs to which
-        voter. More precisely, the voter encrypts his vote consecutively with the
-        public key of each mixer, then all these multi-encrypted votes are sequentially
-        decrypted and permuted by each mixer. The output of the
-        last mixer is a shuffle of the votes in clear, but in random order. These
-        votes can then be tallied publicly. In order to guarantee correctness of the
-        tally, every mixer must additional publish a proof that he did not modify
-        or substitute votes. This process is illustrated in Figure 1.2.
-        For the first mixer, the secrecy of the votes is based on the infeasibility
-        of decrypting, and with each mixer, the level of encryption is decreased,
-        but the level of anonymity of the voter is increased. The correctness is
-        22 Introduction
-        based on the soundness of the public proofs. Because at the end all votes
-        are known in clear, invalid votes can be discarded easily.
-    
-    
-    \item[Blind signatures] This approach can be seen as an abstraction of mix-net voting            schemes. Here, each voter casts his vote unencrypted, but anonymously. The security
-        of this scheme is based on hiding which vote belongs to which voter.
-        Additional efforts are needed to ensure that only entitled voters can cast
-        a vote: Each voter is to get a blindly signed public key from a registration
-        authority, with which he signs his vote and sends it over an anonymous
-        channel to the bulletin board. This approach is illustrated in Figure 1.3.
+    \item[Blind signatures]
+
+    \item[Mix-nets]        
         
-        
-    \item[Homomorphic encryption] A homomorphic encryption scheme supports addition of               ciphertexts without knowledge of the secret key. With this primitive, one can construct
-        very efficient voting protocols: The voter encrypts his vote with a
-        homomorphic encryption scheme and posts it to the bulletin board. The
-        authorities can tally the encrypted votes and decrypt the sum (see Figure
-        1.4). In addition, each voter must prove the validity of the submitted
-        vote. In this approach, it is clear which (encrypted) vote belongs to which
-        voter, and the secrecy of the votes is based on the infeasibility of decrypting
-        votes.
+    \item[Homomorphic encryption]
 \end{description}
 
+This that are to be detailed in this chapter: 
 
 \begin{description}
     \item[Voter]

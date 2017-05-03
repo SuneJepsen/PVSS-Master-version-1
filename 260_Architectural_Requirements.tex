@@ -1,7 +1,106 @@
-\section{Architectural requirements}    
-\subsection{Quality Attributes workshop}
+\section{Architectural requirements}
 
-\begin{table}[!htp]
+
+
+
+
+
+\subsection{Quality Attributes workshop}
+In this section we will present 8 phases of the QAW. Despite that a workshop is not held we still see clear benefits by using this model namely to determine the qualities for the electronic voting application before it is implemented. We are well aware that the outcome isn't perfect. 
+\begin{description}
+    \item [QAW Presentation and Introductions]
+        QAW facilitators describe the motivation for the QAW and explain each step of the method. 
+    
+    \item [Business/Mission Presentation]    
+        A representative of the stakeholder community presents the business and/or programmatic drivers for the system.
+    
+    \item [Architectural Plan Presentation]
+        A technical stakeholder presents the system architectural plans as they stand with respect to early documents, such as high-level system descriptions, context drawings, or other artifacts that describe some of the system's technical details.
+    
+    \item [Identification of Architectural Drivers]
+     Architectural drivers often include high-level requirements, business/mission concerns, goals and objectives, and various quality attributes. During this step, the facilitators and stakeholders reach a consensus about which drivers are key to the system.
+          
+    
+    \item [Scenario Brainstorm]
+        Stakeholders generate real-world scenarios for the system. Scenarios comprise a related stimulus, an environmental condition, and a response. Facilitators ensure that at least one scenario addresses each of the architectural drivers identified in Step 4.
+         
+    \item [Consolidation] 
+        Scenarios that are similar in content are consolidated.
+    
+    \item [Prioritization] 
+  Stakeholders prioritize the scenarios through a voting process. 
+    
+    \item [Refinement]
+        The top four or five scenarios are further clarified and the following are described:
+        \begin{enumerate}
+            \item the business/programmatic goals that are affected by those scenarios
+            \item the relevant quality attributes associated with those scenarios   
+        \end{enumerate}
+
+   
+
+\end{description}
+
+
+
+
+\subsubsection{2. Business / mission presentation}
+In this phase we will present our case.
+ 
+
+\subsubsection{4. Identify architectural drivers}
+The purpose of this step is to identify architectural drivers (AD). We found AD's by discussions while we got them described on the board. Based on our drivers, we could begin to see the following quality attributes.\\
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|l|}{Voters point of view}                \\ \hline
+Usability    & Easy to use for a voter                   \\ \hline
+Usability    & Trustworthy should give detailed feedback \\ \hline
+Availability & available when needed                     \\ \hline
+\end{tabular}
+\caption{Voters point of view}
+\label{my-label}
+\end{table}
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|l|}{Robustness}                                                                                                                                                                        \\ \hline
+Scalable         & \begin{tabular}[c]{@{}l@{}}Should be able to handle a large amount \\ of user within a reasonabletime\end{tabular}                                                                   \\ \hline
+Testability      & \begin{tabular}[c]{@{}l@{}}Given the nature of systems complexity it\\ should be easily testableto ensure \\ robustness and reliability\end{tabular}                                 \\ \hline
+Security         & \begin{tabular}[c]{@{}l@{}}The integrity should withhold even though \\ if cheating occurs.\end{tabular}                                                                             \\ \hline
+\multicolumn{2}{|l|}{Universal verifiability}                                                                                                                                                           \\ \hline
+Interoperability & \begin{tabular}[c]{@{}l@{}}Not only participant but also passive observers \\ should be able to validate through out the \\ election and afterwards(Fairness)\end{tabular}           \\ \hline
+\multicolumn{2}{|l|}{Future proof}                                                                                                                                                                      \\ \hline
+Modifiable       & \begin{tabular}[c]{@{}l@{}}Only a registered user should be able to vote. \\ This registration should be easily replaceable \\ depending on the nature of the election.\end{tabular} \\ \hline
+Modifiable       & \begin{tabular}[c]{@{}l@{}}The system should modifiable such that\\  core elements are replaceable\end{tabular}                                                                      \\ \hline
+\end{tabular}
+\caption{Owners point of view}
+\label{my-label}
+\end{table}
+
+
+\subsubsection{5. Scenario brainstorming}
+The purpose of this step is to design quality attribute scenarios (QAS), based on our AD's. That is, here we form QAS in a form such as Bass et al. Form so there is clear stimulus and clear response measure.
+
+
+\subsubsection{6. Scenario considation}
+The purpose of this step is to merge scenarios that have similar features. At the workshop there were no scenarios that could be merged.
+
+\subsubsection{7. Scenario prioritization}
+The purpose of this step is to draw up a priority list based on the total votes.
+
+\subsubsection{8. Scenario Refinement}
+The purpose of this step is to form QAS based on Bass et al, where divide into source, stimulus, artifact, environment, response and response measure. 
+
+
+
+\begin{table}[H]
 \begin{center}
 \begin{tabular}{|p{0.3cm}|p{2.5cm}|p{8cm}|}
   \hline
@@ -31,60 +130,38 @@
 \end{center}
 \end{table}
 
-\subsubsection{2. Business / mission presentation}
-
-På baggrund af den brede formulering af TM16 har vi valgt at udforme en mission præsentation af TM16, med vores vision for TM16. Mission Presentation danner grundlag for QA workshoppen og med en for bred specifikation af TM16 vil vores scenarie kunne misforstås. 
-
-
-Vi har valgt at anse TM16 som et redskab i et screen forløb af en patient. Når en patient indgår i et screen forløb stilles en måler med TM16 til rådighed. Patienten skal så over en given periode løbende fortage målinger. Når perioden er gået, har fagpersonale mulighed for at inddrage målingerne i evalueringen af patienten over den givne periode. 
-
-
-Det skal være muligt at benytte TM16 uden internet adgang, da vi ikke kan antage at alle patienter har internet adgang i hjemmet. I tilfælde af at der ikke har været internet adgang under en måling, så sendes denne måling til en intern database på måleenheden. Måliningen sendes til TM16 Server så snart etableres en internet forbindelse.
-
-
-
-TM16 skal væres nem at betjene da patienterne har meget forskellige faglige baggrund, hvor vi må antage at nogle af patienterne har meget ringe eller ingen teknisk færdigheder. 
-
-Det skal desuden være muligt for fagpersonalet at arbejde med målingerne fra TM16 i deres eget fagprogram dvs. et specifik program til specifikke faggrupper. Det forventes at målingerne kan trækkes direkte fra TM16 så snart at målingerne at sendt til TM16 server. Da TM16 forventes at blive en kæmpe succes så vil der komme stor tilgang af brugere og sandsynligheden for samtidighed vil dermed opstå. Derfor skal systemet kunne håndter samtighed. Vi formoder at i takt med at flere faggrupper får adgang til TM16, så vil der blive stilet krav til flere forskellige typer målingerne.
-
-\subsubsection{4. Identify architural drivers}
-Voter point of view: \\
-Usability: Easy to use for a voter\\
-Usability: Trustworthy should give detailed feedback\\
-Availability: available when needed\\\\
-
-
-\noindent
-Owner point of view:\\
-
-\noindent
-Robustness:\\
-Scalable: Should be able to handle a large amount of user within a reasonable time\\
-Testability: Given the nature of systems complexity it should be easily testable to ensure robustness and reliability\\
-Security: The integrity should withhold even though if cheating occurs.\\
-
-\noindent
-Universal verifiability\\
-Interoperability:Not only participant but also passive observers should be able to validate through out the election and afterwards(Fairness)\\
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|p{0.3cm}|p{2.5cm}|p{8cm}|}
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & A secure error was found in the Random generator implementation. The generator needs to be replaced \\
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Relevant Quality Attributes:} & Modifiability\\
+  \hline
+  \multirow{6}{*}{\begin{sideways}{\bfseries Scenario Parts}\end{sideways}}
+  & {\bfseries Source:} & Developer \\
+  \cline{2-3}
+  & {\bfseries Stimulus:} & Needs to replace the random generator \\
+  \cline{2-3}
+  & {\bfseries Artifact} &  Code \\
+  \cline{2-3}
+  & {\bfseries Environment:} &  Design time \\
+  \cline{2-3}
+  & {\bfseries Response:} &  Replacement made and Unit tested\\
+  \cline{2-3}
+  & {\bfseries Response Measure:} & In one hour\\
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Questions:} &  \\
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Issues:} &  \\
+  \hline
+\end{tabular}
+\caption{Quality Attribute Scenario}
+\end{center}
+\end{table}
 
 
-\noindent
-Future proof\\
-Modifiable: only a registered user should be able to vote. This registration should be easily replaceable depending on the nature of the election.\\
-Modifiable: The system should modifiable such that core elements are replaceable\\
+\subsection{Architectural decision}
 
 
-
-
-
-
-
-
-\subsubsection{5. Scenario brainstorming}
-
-\subsubsection{6. Scenario considation}
-
-\subsubsection{7. Scenario prioritization}
-
-\subsubsection{8. Scenario Refinement}
-        
+\subsection{Architectural evaluation}
