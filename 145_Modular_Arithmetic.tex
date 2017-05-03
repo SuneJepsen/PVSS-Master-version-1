@@ -10,10 +10,17 @@ if \begin{math}m \end{math} divides \begin{math} a - r \end{math}.\\
 \end{defi}
 %**************************************Definition Modulo Operation End
 
-\parahead{Computing the remainder} By example we can compute the remainder according to the definition. Given: \begin{math} a, m \in \mathbb{Z} \end{math} we compute the remainder by the following fomular:  \begin{math} a = qm +r \end{math}. The remainder is computed by how many times the quotient can be multiplied with the modulo. This example shows that the remainder is not unique. \\\\
-\begin{math}42 = 4 * 9 +6 \implies r = 6 \end{math}, by definition \begin{math} (42-6) = 36 \end{math}, \begin{math} 9| 36 \end{math}\\
-\begin{math}42 = 3 * 9 +15 \implies r = 15 \end{math}, by definition \begin{math} (42-15) = 27 \end{math}, \begin{math} 9| 27 \end{math}\\
-\begin{math}42 = 5 * 9 +(-3) \implies r = -3 \end{math}, by definition \begin{math} (42-(-3)) = 45 \end{math}, \begin{math} 9| 45 \end{math}\\
+\parahead{Computing the remainder} By example we can compute the remainder according to the definition. Given: \begin{math} a, m \in \mathbb{Z} \end{math} we compute the remainder by the following fomular:  \begin{math} a = qm +r \end{math}. The remainder is computed by how many times the quotient can be multiplied with the modulo. This example shows that the remainder is not unique.
+
+\noindent
+\begin{alignat*}{8}
+42 &= 4 * 9 +6 &&\implies r &&= 6 ,\ &&\text{by \ definition}: \  &&(42-6) &&= 36 ,  9| 36 \\
+42 &= 3 * 9 +15 &&\implies r &&= 15 ,\ &&\text{by \ definition}: \ &&(42-15) &&= 27 ,  9| 27 \\
+42 &= 5 * 9 +(-3) &&\implies r &&= -3 ,\ &&\text{by \ definition}: \ &&(42-(-3)) &&= 45 ,  9| 45 
+\end{alignat*}
+
+
+
 
 \parahead{Equivalence classes} Above can also be written with the modulo operator. Here we show that all have different remainder but are in the same equivalence class modulo \textit{9}. This means that all members of a given equivalence class behave equivalently. Note also that one can compute with negative integers.
 
@@ -121,31 +128,48 @@ $7$ & $2 = 1 \cdot 1+1$ & $r_7= 1 = 2-1$ \newline $r_7=-75 \cdot 911 + 227 \cdot
 
 
 \noindent
-To understand how the EEA works we observe that the righthand side is always constructed with the help of the previous linear combinations. We will now derive recursive formulae for computing $s_i$ and $r_i$ in every iteration. Assume we are in iteration with index i. 
-
-\begin{infobox}[The two previous iterations we computed the values]
-$r_{i - 2} = [s_{i-2}]r_0 +[t_{i-2}]r_1$\\
-$r_{i-1} = [s_{i-1}]r_0 +[t_{i-1}]r_1$
-\end{infobox}
+To understand how the EEA works we observe that the righthand side is always constructed with the help of the previous linear combinations. We will now derive recursive formulae for computing $s_i$ and $r_i$ in every iteration. Assume we are in iteration with index i.The two previous iterations we computed the values.
 
 \noindent
-In the current iteration i we first compute the quotient $q_{i-1}$ and the new remainder $r_i$ from $r_{i-1}$ and $r_{i-2}$:
+\begin{alignat*}{2}
+r_{i - 2} &= [s_{i-2}]r_0 +[t_{i-2}]r_1\\
+r_{i-1} &= [s_{i-1}]r_0 +[t_{i-1}]r_1   
+\end{alignat*}
 
-\begin{infobox}[Current iteration $i$]
-$r_{i-2} = q_{i-1} \cdot r_{i-1}+r_i$.\\
+
+
+\noindent
+In the current iteration $i$ we first compute the quotient $q_{i-1}$ and the new remainder $r_i$ from $r_{i-1}$ and $r_{i-2}$:
+
+\noindent
+\begin{alignat*}{2}
+r_{i-2} &= q_{i-1} \cdot r_{i-1}+r_i 
+\end{alignat*}
+
+\noindent
 This equation can be rewritten as:\\
-$r_i = r_{i-2}-q_{i-1} \cdot r_{i-1}$.
-\end{infobox}
+
+\noindent
+\begin{alignat*}{2}
+r_i &= r_{i-2}-q_{i-1} \cdot r_{i-1} 
+\end{alignat*}
 
 
 \noindent
-The goal is to represent the new remainder $r_i$ as a linear combination of $r_0$ and $r_1$ as $r_i = [s_i]r_0 +[t_i]r_1$. The core step for achieving this is by substitute $r_{i-2}$ and $r_{i-1}$ by the following.
+The goal is to represent the new remainder $r_i$ as a linear combination of $r_0$ and $r_1$ as $r_i = [s_i]r_0 +[t_i]r_1$. The core step for achieving this is by substitute $r_{i-2}$ and $r_{i-1}$ by the following. The general formula is derived by substitute $r_{i-2}$ and $r_{i-1}$ as:
+
 
 \noindent
-\begin{infobox}[General formula is derived by substitute $r_{i-2}$ and $r_{i-1}$]
-$r_i = (s_{i-2}r_0+t_{i-2}r_1)-q_{i-1}(s_{i-1}r_0+t_{i-1}r_1)$\\
-If we rearrange the terms we obtain the desired result:\\
-$r_i = [s_{i-2}-q_{i-1}s_{i-1}]r_0 +[t_{i-2}-q_{i-1}t_{i-1}]r_1$\\
-$r_i = [s_i]r_0 +[t_i]r_1$
-\end{infobox}
+\begin{alignat*}{2}
+r_i = (s_{i-2}r_0+t_{i-2}r_1)-q_{i-1}(s_{i-1}r_0+t_{i-1}r_1) 
+\end{alignat*}
 
+
+\noindent
+If we rearrange the terms we obtain the desired result:
+
+\noindent
+\begin{alignat*}{2}
+r_i &= [s_{i-2}-q_{i-1}s_{i-1}]r_0 +[t_{i-2}-q_{i-1}t_{i-1}]r_1\\
+r_i &= [s_i]r_0 +[t_i]r_1
+\end{alignat*}

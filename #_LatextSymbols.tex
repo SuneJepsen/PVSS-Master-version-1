@@ -11,9 +11,13 @@
 \usepackage[T1]{fontenc}
 \usepackage[vlined]{algorithm2e}
 \usepackage{pgfplots}
+\usepackage{booktabs,array,rotating}
 
 \newcommand{\svec}{\ensuremath{\mathbf{s}}\xspace}
 
+\newcommand{\splitcell}[1]{%
+  \begin{tabular}{@{}l@{}}#1\end{tabular}%
+}
 
 \begin{document}
 
@@ -67,6 +71,90 @@ Figur \ref{fig:DLEQ_1}
     };
 \end{axis}
 \end{tikzpicture} 
+
+
+
+
+\begin{sidewaystable}
+\caption{The ATAM Attribute Utility Tree}
+
+\medskip
+
+\begin{tabular}{ @{} l l >{\raggedright\arraybackslash}p{9.5cm} @{} }
+\toprule
+\bfseries\splitcell{Quality \\ Attribute}
+  & \bfseries\splitcell{Attribute \\ Refinement}
+  & \bfseries Scenarios \\
+\midrule
+Reliability
+  & Fatal error recovery
+  & Mechanisms must be in place to ensure any error that occurs is handled without
+    causing the application to crash.
+\\\addlinespace
+  & Reliable Simulation
+  & Calculate physics simulation results in a reliable manner.
+\\
+\midrule
+Scalability
+  & Scale with world size and complexity
+  & Physical world size and complexity will have an impact on graphics hardware performance. 
+    The resource requirements must scale linearly with the complexity of the graphical assets 
+    on screen.
+\\\addlinespace
+  & Scale with vehicle complexity
+  & System performance will be affected by the increase in vehicle complexity. The resources 
+    requirements must scale in proportion to the complexity size.
+\\\addlinespace
+  & Scale with multiplayer size
+  & On the multiplayer server side, the amount of concurrent connections into the 
+    server is going to impact performance. Servers must have a known budget and resources 
+    requirements must be known for concurrent connection sizes.
+\\
+\midrule
+Performance
+  & Consistent performance
+  & Maintain framerate as simulation complexity grows.
+\\
+\midrule
+Maintainability
+  & Core isolation
+  & Update core physics engine without affecting other parts
+\\\addlinespace
+  & Pluggable rendering engine
+  & Different rendering engines (Direct3D, OpenGL, Mantle etc.)\ should be used 
+    depending on architecture and user requirements.
+\\
+\midrule
+Flexibility
+  & Simulation Flexibility
+  & Simulate various types of vehicles such as cars, boats and aircraft with same
+    simulation engine.
+\\\addlinespace
+  & Scriptable Interface to Simulation
+  & Read vehicle configurations and simulation parameters in from human readable files.
+\\
+\midrule
+Configurability
+  & System Settings
+  & Capacity for various translations (and possible future translations) must be
+    available in the architecture.
+\\\addlinespace
+  & Scenario Settings
+  & Adjustable scenario parameters such as weather conditions, time of day, terrain
+    conditions and various triggerable events must be accessible from the interface.
+\\
+\midrule
+Internationalisation
+  & Local Translation
+  & System settings such as audio, graphics and interface must be settable from the
+    interface and changes must be persistent.
+\\\addlinespace
+  & Unit Translations
+  & Units must be displayable in various formats such as imperial and ISO.
+\\
+\bottomrule
+\end{tabular}
+\end{sidewaystable}
  
 
 
