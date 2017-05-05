@@ -8,12 +8,12 @@ The following section will be about the cryptographic assumptions which are used
 In cryptography, a zero-knowledge proof is a protocol by which one party (the prover) can prove to another party (the verifier) that a given statement is true, without revealing any information apart from the fact that the statement is indeed true.\\
 
 \noindent
-Zero knowledge proof is a important part of the PVSS protocol. It is used for verifying the correctness of the data. Intuitively Zero knowledge proof is a protocol between two parties a prover and a verifier where the prover tries to convince the verifier about some statement of the form $x \in L$, for which he uses additional knowledge about $x$. In the last step if the protocol, the verifier either accepts or rejects the proof. A zero-knowledge proof must satisfy following three properties:
+Zero knowledge proof is a important part of the PVSS protocol. It is used for verifying the correctness of the data. Intuitively Zero knowledge proof is a protocol between two parties a prover and a verifier where the prover tries to convince the verifier about some statement, for which he uses additional knowledge. In the last step if the protocol, the verifier either accepts or rejects the proof. A zero-knowledge proof must satisfy following three properties:
 
 %-----------------------------------------------zero knowledge
 \begin{itemize}
-\item  \textnormal{\textbf{(Completeness:)}} If the prover is honest and the statement is true, then the honest verifier always accept. More formally it means that $x \in L$.
-\item    \textnormal{\textbf{(Soundness:)}} If the statement is false then it should fail with overwhelming probability. More formally it means that $x \not\in L$.
+\item  \textnormal{\textbf{(Completeness:)}} If the prover is honest and the statement is true, then the honest verifier always accept. 
+\item    \textnormal{\textbf{(Soundness:)}} If the statement is false then it should fail with overwhelming probability. 
 \item   \textnormal{\textbf{(Zero-knowledge:)}} If the statement is true, no cheating verifier learns anything other than the fact that the statement is true.
 \end{itemize}
 %-----------------------------------------------zero knowledge
@@ -312,7 +312,7 @@ A function hash function: $\{0,1\}^{\leq L} \rightarrow \{0,1\}^\ell$ is called 
 %------------------------------------------------------------------------------------
 \subsection{Fiat Sharmir}
 %------------------------------------------------------------------------------------
-The Fiat–Shamir heuristic is a technique in cryptography for taking an interactive proof of knowledge into a non interactive proof (signature scheme). This way, some fact (for example, knowledge of a certain number secret to the public) can be proven without revealing underlying information. This means that transforming a interactive proof into a non-interactive proof. Instead of the verifier creates a challenge the prover creates a challenge, on some previous data, based on a hash function.
+The Fiat–Shamir heuristic is a technique in cryptography for taking an interactive proof of knowledge into a non interactive proof. This way, some fact (for example, knowledge of a certain number secret to the public) can be proven without revealing underlying information. This means that transforming a interactive proof into a non-interactive proof. Instead of the verifier creates a challenge the prover creates a challenge, on some previous data, based on a hash function.
 
 \iffalse
 \noindent

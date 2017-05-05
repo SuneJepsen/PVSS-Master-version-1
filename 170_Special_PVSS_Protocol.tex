@@ -62,7 +62,7 @@ For efficiency we will limit the computation of the votes to a finite number of 
 
 
 \begin{alignat*}{2}
-f \ &\in_R \{1,...,2q\} \rightarrow g &&= f^2 \ mod\ 2q+1\\
+f \ &\in_R \{1,...,2q\} \rightarrow g &&= f^2 \ mod\ 2q+1 \wedge g\neq1\\
 F \ &\in_R \{1,...,2q\}\rightarrow G &&= F^2 \ mod\ 2q+1 \wedge G\neq1\\
 t &\in_R \Z_q^* &&= \{1,2,3,...,q-1\} 
 \end{alignat*}
@@ -96,7 +96,7 @@ Secret \ Shares &:  p(0)=s,\ p(1),\ p(2),...,\ p(n)
 
 \noindent
 \textbf{The voter distributes the encrypted share and creates a $PROOF_U$ and a $DLEQ$ proof.}\\
-The \begin{math}p(i)\end{math} is the share where we use Shamir Secret Sharing. The \begin{math}\alpha_j\end{math} is all the coefficients. The shares are going to be encrypted using the talliers public key $y_i^{p(i)}$. The following gets publish to the bulleting board
+The \begin{math}p(i)\end{math} is the share where we use Shamir Secret Sharing. The \begin{math}\alpha_j\end{math} is all the coefficients. The $\alpha_0$ corresponds to $s$ value. The shares are going to be encrypted using the talliers public key $y_i^{p(i)}$. The following gets publish to the bulleting board
 
 \begin{alignat*}{2}
 Y_i&=y_i^{p(i)} ,1\leq i\leq n \ (Encryption \ of \ the \ share) \\ 
@@ -109,7 +109,7 @@ U&=G^{s+v}
 Besides above computed parameters a  $PROOF_U$ proof and a $DLEQ$ proof are computed. \\
 
 \noindent
-With $DLEQ$ we prove that the exponent are equal \begin{math}X_i=g^{p(i)}  \land Y_i=y_i^{p(i)} \end{math} without revealing \begin{math}{p(i)} \end{math}. Note that there has been no communcation between the the player for now. We will present an interactive and a non-interactive proof of the $DLEQ$ between the voter and the verifier.\\
+With $DLEQ$ we prove that the exponent are equal \begin{math}X_i=g^{p(i)}  \land Y_i=y_i^{p(i)} \end{math} without revealing \begin{math}{p(i)} \end{math}. We will present an interactive and a non-interactive proof of the $DLEQ$ between the voter and the verifier.\\
 
 \noindent
 With \begin{math} PROOF_U \end{math} the voter proofs "consistency" and that the vote is either 1 or 0. Note that the contruction of $Y_i$ is a hard problem to solve as we discussed in the discrete logarithm section.
@@ -126,7 +126,7 @@ Tallying is the process of counting the votes. Here the tallier uses their priva
 
 \noindent
 \textbf{The tallier decrypts the shares and publishes a $DLEQ$ proof}\\
-The homomorphic secret sharing property ensures that each tallier will  be able to multiply the shares and then decrypt. Note that \textit{i} is referring to tallier 1, tallier  2 and tallier 3 etc. and \textit{j} is referring to voter 1, voter 2 and voter 3 etc.
+The homomorphic secret sharing property ensures that each tallier will  be able to multiply the shares and then decrypt. Let $Y_{ij}$ be the value Note that \textit{i} is referring to tallier 1, tallier  2 and tallier 3 etc. and \textit{j} is referring to voter 1, voter 2 and voter 3 etc.
 
 \begin{alignat*}{2}
 Y_i^*=(\prod\limits_{j=1}^{m} Y_{ij}) \ (mod\ 2 \cdot q+1) =y_i^{\sum\limits_{j=1}^m p_j(i)}

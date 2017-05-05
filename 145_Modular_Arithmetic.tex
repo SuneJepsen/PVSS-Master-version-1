@@ -10,7 +10,7 @@ if \begin{math}m \end{math} divides \begin{math} a - r \end{math}.\\
 \end{defi}
 %**************************************Definition Modulo Operation End
 
-\parahead{Computing the remainder} By example we can compute the remainder according to the definition. Given: \begin{math} a, m \in \mathbb{Z} \end{math} we compute the remainder by the following fomular:  \begin{math} a = qm +r \end{math}. The remainder is computed by how many times the quotient can be multiplied with the modulo. This example shows that the remainder is not unique.
+\parahead{Computing the remainder} By example we can compute the remainder according to the definition. Given: \begin{math} a, m \in \mathbb{Z} \end{math} we compute the remainder by the following fomular:  \begin{math} a = qm +r \end{math}. This example illustrate that the remainder is not unique. Though the remainder will be unique in set $[0,$ m $)$.
 
 \noindent
 \begin{alignat*}{8}
@@ -31,7 +31,7 @@ if \begin{math}m \end{math} divides \begin{math} a - r \end{math}.\\
 \end{align*}
 
 \parahead{Computing the inverse}
-As we will see later, computing the inverse becomes an important part in this protocol for how to divide modulo an integer arithmetically. For this we have the Extended Euclidean algorithm which allows us to compute modular some integers. This computation results in computing the inverse.
+As we will see later, computing the inverse becomes an important part in this protocol for how to divide modulo an integer arithmetically. For this we have the Extended Euclidean algorithm which allows us to compute the inverse modular some integers. This computation results in computing the inverse.
 
 
 \parahead{Extended Euclidean algorithm} To compute the inverse means that we want to compute the following \begin{math}a\ \cdot \ x \ mod \ q = 1 \end{math} where $a, \ x, \ q$ are integers and $x$ is the inverse of $a$. The condition for the existence of the inverse is that the $gcd(q,\ a)= 1$. This means that the only number which divides both $q$ and $a$ is $1$. So if $gcd(q,\ a)= 1$ the Extended Euclidean Algorithm computes the inverse of $a$.\\
@@ -106,6 +106,7 @@ $1$ & $= 1 \cdot 1+0$ & $gcd(1,1)$ & $= gcd(1,0)$ & $= 1$ \\
 
 \noindent
 \parahead{Example Extended Euclidean algorithm} We will now extend the EA example with EEA with the same values $r_0 = 911$ and $r_1 = 301$ . Here the main point is that the last iteration we compute the parameter $t$, from two previous iterations. This $t$ parameter is the inverse of $r_1$. On the left-hand side, we compute the standard Euclidean algorithm, i.e., we compute new remainders $r_2$, $r_3$, ... Also, we have to compute the integer quotient $q_{i-1}$ in every iteration. On the right-hand side we compute the coefficients $s_i$ and $t_i$ such that $r_i = s_i r_0 + t_i r_1$. 
+
 \begin{center}
 \begin{tabular}{|l|l|p{5cm}| } 
 \hline
@@ -126,6 +127,8 @@ $7$ & $2 = 1 \cdot 1+1$ & $r_7= 1 = 2-1$ \newline $r_7=-75 \cdot 911 + 227 \cdot
 \end{tabular}
 \end{center}
 
+\noindent
+From the EEA we have now computed the inverse of $301$ modulo $911$ as $569$  from the following equation  $1 = -188 \cdot 911 + 569 \cdot 301$.\\
 
 \noindent
 To understand how the EEA works we observe that the righthand side is always constructed with the help of the previous linear combinations. We will now derive recursive formulae for computing $s_i$ and $r_i$ in every iteration. Assume we are in iteration with index i.The two previous iterations we computed the values.
