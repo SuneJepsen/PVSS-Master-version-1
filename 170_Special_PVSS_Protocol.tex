@@ -96,11 +96,11 @@ Secret \ Shares &:  p(0)=s,\ p(1),\ p(2),...,\ p(n)
 
 \noindent
 \textbf{The voter distributes the encrypted share and creates a $PROOF_U$ and a $DLEQ$ proof.}\\
-The \begin{math}p(i)\end{math} is the share where we use Shamir Secret Sharing. The \begin{math}\alpha_j\end{math} is all the coefficients. The $\alpha_0$ corresponds to $s$ value. The shares are going to be encrypted using the talliers public key $y_i^{p(i)}$. The following gets publish to the bulleting board
+The \begin{math}p(i)\end{math} is the share where we use Shamir Secret Sharing. The \begin{math}\alpha_j\end{math} is all the coefficients besides that $\alpha_0$ is set to the $s$ value. The shares are going to be encrypted using the talliers public key $y_i^{p(i)}$. The following gets publish to the bulleting board
 
 \begin{alignat*}{2}
 Y_i&=y_i^{p(i)} ,1\leq i\leq n \ (Encryption \ of \ the \ share) \\ 
-C_j&=g^{\alpha_j},\ j =\{0,1,2,3,....,t-1 \}  \\ 
+C_j&=g^{\alpha_j},\ j =\{0,1,2,3,....,t-1 \}, \ where \ \alpha_0 = s  \\ 
 X_i&=\prod\limits_{j=0}^{t-1} C_j^{i^j} =g^{p(i)}, 1\leq i\leq n\\
 U&=G^{s+v}
 \end{alignat*}
@@ -112,7 +112,7 @@ Besides above computed parameters a  $PROOF_U$ proof and a $DLEQ$ proof are comp
 With $DLEQ$ we prove that the exponent are equal \begin{math}X_i=g^{p(i)}  \land Y_i=y_i^{p(i)} \end{math} without revealing \begin{math}{p(i)} \end{math}. We will present an interactive and a non-interactive proof of the $DLEQ$ between the voter and the verifier.\\
 
 \noindent
-With \begin{math} PROOF_U \end{math} the voter proofs "consistency" and that the vote is either 1 or 0. Note that the contruction of $Y_i$ is a hard problem to solve as we discussed in the discrete logarithm section.
+With \begin{math} PROOF_U \end{math} the voter proofs "consistency" and that the vote is either 1 or 0. Note that the construction of $Y_i$ is a hard problem to solve as we discussed in the discrete logarithm section.
 
 
 
@@ -126,7 +126,7 @@ Tallying is the process of counting the votes. Here the tallier uses their priva
 
 \noindent
 \textbf{The tallier decrypts the shares and publishes a $DLEQ$ proof}\\
-The homomorphic secret sharing property ensures that each tallier will  be able to multiply the shares and then decrypt. Let $Y_{ij}$ be the value Note that \textit{i} is referring to tallier 1, tallier  2 and tallier 3 etc. and \textit{j} is referring to voter 1, voter 2 and voter 3 etc.
+The homomorphic secret sharing property ensures that each tallier will  be able to multiply the shares and then decrypt. Let $Y_{ij}$ be the value $Y_i$ computed by the j-th voter as described in the previous section. This means concrete that the \textit{i} is referring to tallier 1, tallier  2 and tallier 3 etc. and \textit{j} is referring to voter 1, voter 2 and voter 3 etc.
 
 \begin{alignat*}{2}
 Y_i^*=(\prod\limits_{j=1}^{m} Y_{ij}) \ (mod\ 2 \cdot q+1) =y_i^{\sum\limits_{j=1}^m p_j(i)}
@@ -134,7 +134,7 @@ Y_i^*=(\prod\limits_{j=1}^{m} Y_{ij}) \ (mod\ 2 \cdot q+1) =y_i^{\sum\limits_{j=
 
 
 \noindent
-Following can be reduced by using the talliers private key. Note that we are raising to the multiplicative inverse of the private key in  \textit{q}
+Following can be reduced by using the talliers private key. Note that we are raising to the multiplicative inverse of the private key in  \textit{q}. The $p_j$ is the polynomium $p$ used by the j-th voter.
 
 
 \begin{alignat*}{2}
@@ -260,7 +260,7 @@ The verification of the shares in the interactive proof happens by the following
         \hline
         Step \ 1 & w\in_R \Z_q & & \\
         & a_1=g^w     & & \\
-        & a_2=y_i^w   & \xrightarrow{\hspace{1em}a_1 \land a_2\hspace{1em}} & \\
+        & a_2=y_i^w   & \xrightarrow{\hspace{1em}a_1, \ a_2\hspace{1em}} & \\
         Step \ 2 & & & C\in_R \Z_q \\
         & & \xleftarrow{\hspace{2em}C\hspace{2em}} & \\
         Step \ 3 & r=w-p(i)  \cdot  C    & & \\
@@ -539,7 +539,7 @@ In this section we will show the interactive proof. Through Fiat–Shamir  we tr
         Step \ 4   &                    & \begin{array}{l}
                                 \textbf{Verification:} \\      
                                 C = d_1 + d_0,\\
-                                a_0=g^{r_0}  \cdot  C^{d_1}_0,\\
+                                a_0=g^{r_0}  \cdot  C^{d_0}_0,\\
                                 b_0 = G^{r_0} \cdot U^{d_0},\\
                                 a_1=g^{r_1}  \cdot  C^{d_1}_0,\\
                                 b_1= G^{r_1}  \cdot (\frac{U}{G})^{d_1} \\ 
@@ -596,7 +596,7 @@ We can turn this into a non-interactive proof by replacing step 2 with the voter
 In the following we derive the mathematical justification from step 4. Here we will replace with earlier expression from above and replace by the actual value of the vote. This means is that the math depends on the value of the vote.\\
 
 \noindent
-\textbf{Explanation of \begin{math}a_0=g^{r_0}  \cdot  C^{d_1}_0\end{math}}\\
+\textbf{Explanation of \begin{math}a_0=g^{r_0}  \cdot  C^{d_0}_0\end{math}}\\
 
 \noindent
 Voter votes 0 and we show that \begin{math}a_0=g^{r_0}  \cdot  C^{d_0}_0 = g^w \end{math} is well constructed
