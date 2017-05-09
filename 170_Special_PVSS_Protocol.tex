@@ -193,8 +193,7 @@ To solve the computing of the votes one can compute \begin{math}G^0, G^1, G^3,..
 
 \subsection{Initialization}
 \noindent
-\textbf{Strong prime}\\
-In our implementation we will pick a prime, \begin{math}q\end{math}, so we avoid doing the gcd computation. The protocol states that we have to compute in a group of order q. This means that when we are doing operations in the exponent this property should be satisfied \begin{math}g^q=1\end{math} where \begin{math}q\end{math} is prime. If we are doing \begin{math}mod \ q \end{math} in the exponent we have \begin{math}g^q=g^0\end{math}. The reason for doing operation in the exponent \begin{math}mod \ q\end{math} is because we are using Sharmir secret sharing which require a finite field.\\
+\textbf{Strong prime} In our implementation we will pick a prime, \begin{math}q\end{math}, so we avoid doing the gcd computation. The protocol states that we have to compute in a group of order q. This means that when we are doing operations in the exponent this property should be satisfied \begin{math}g^q=1\end{math} where \begin{math}q\end{math} is prime. If we are doing \begin{math}mod \ q \end{math} in the exponent we have \begin{math}g^q=g^0\end{math}. The reason for doing operation in the exponent \begin{math}mod \ q\end{math} is because we are using Sharmir secret sharing which require a finite field.\\
 
 \noindent
 One can see that if \begin{math}q\end{math} is a prime say \begin{math}q=5\end{math}, then \begin{math}2^5 \ mod \ 5 = 32 \ mod \ 5 = 2\end{math}. For this to be true, we take the square of numbers modulo a prime in this form \begin{math}2q+1\end{math}. This is also called a strong prime. By using this mathematical structure this property holds. We can choose \begin{math}b=a^2\end{math}. Then we see the property holds \begin{math}b^{2q} = 1 \ mod \ 2q+1\end{math}. By example it is clear that \begin{math}(2^2)^5 \ mod \ 11 = 1024 \ mod \ 11 = 1\end{math}. Fermat little theorem states that \begin{math}b^{q-1} \ mod \ q = 1\end{math} where \begin{math}q\end{math} is prime. So we know if we pick our \begin{math}q\end{math} and \begin{math}b\end{math} (as a square)  in this form \begin{math}(b^{2})^{q+1-1} \ mod \ 2q+1 =1 =  b^{2q} \ mod \ 2q+1 =1\end{math} the property holds.
@@ -280,11 +279,42 @@ The verification of the shares in the interactive proof happens by the following
 
 
 \noindent
-Note that the verifier sends a challenge \textit{C}, after the prover has computed \begin{math}a_1\end{math} and  \begin{math}a_2\end{math}. The check only passes if the prover used the same exponents. The proof shows that there exist some element \begin{math} \alpha\end{math} such that \begin{math}g^\alpha = X_i \ \land \ y_i^\alpha=Y_i \end{math} where  \begin{math} \alpha\end{math} is equal to  \begin{math} p(i)\end{math}. The following is an argument why $DLEQ$ works.\\ 
+Note that the verifier sends a challenge \textit{C}, after the prover has computed \begin{math}a_1\end{math} and  \begin{math}a_2\end{math}. The check only passes if the prover used the same exponents. The proof shows that there exist some element \begin{math} \alpha\end{math} such that \begin{math}g^\alpha = X_i \ \land \ y_i^\alpha=Y_i \end{math} where  \begin{math} \alpha\end{math} is equal to  \begin{math} p(i)\end{math}. In the following there is an argument why $DLEQ$ works through Zero knowledge proof.\\ 
+
+
 
 \noindent
-\textbf{Example on $DLEQ$ without a challenge}\\
-We will now show a concrete example why the challenge matters. Say that the challenge doesnt matter it will be the same as saying that the challenge is 1. 
+\textbf{Correctness for $DLEQ$}\\
+Correctness means if the prover is honest and the statement is true, then the honest verifier always accept. Correctness is shown by verifying the $a_1=g^w=g^r \cdot X_i^C$ and $a_2=y_i^w =y_i^r \cdot Y_i^C$ are well constructed. Correctness for $a_1$ is shown by the following.
+
+
+
+\begin{alignat*}{3}
+a_1 &= g^w\\
+g^r \cdot X_i^C &= g^r \cdot (g^{p(i)})^C \\
+&= g^r \cdot g^{p(i) \cdot C}\\
+&=g^{r+p(i) \cdot C}      \\
+&= g^{w - p(i) \cdot C + p(i) \cdot C} &= g^w
+\end{alignat*}
+
+
+\noindent
+Correctness for $a_2$ is shown by the following.
+
+
+\begin{alignat*}{3}
+a_2 &= y_i^w\\
+y_i^r \cdot Y_i^C &= y_i^r \cdot (y^{p(i)})^C \\
+&= y_i^r \cdot y^{p(i) \cdot C}\\
+&=y_i^{r+p(i) \cdot C}      \\
+&= y_i^{w - p(i) \cdot C + p(i) \cdot C} &= y_i^w
+\end{alignat*}
+
+
+
+\noindent
+\textbf{Example on $DLEQ$ and why we need a random challenge}\\
+We will show a concrete example why we need a challenge and it needs to be random. If the challenge is already is known by the prover for example  assume say it is 1, then the prover can "prepare" and cheat with a wrong statement. 
 
 
 \begin{enumerate}
@@ -300,11 +330,11 @@ We will now show a concrete example why the challenge matters. Say that the chal
 
 
 \noindent
-One can see that both checks passes in this example despite that the prover is dishonest. \\
+One can see that both checks passes in this example despite that the prover is dishonest. This shows that if there is no random challenge there wouldnt be soundness because the prover could cheat.\\
 
 \noindent
-\textbf{Example on $DLEQ$ with a challenge}\\
-Next example shows the verification with a challenge.
+\textbf{Example on $DLEQ$ with a random challenge which satisfies soundness}\\
+Next example shows the verification with a random challenge.
 
 \begin{enumerate}
     \item The prover sends \begin{math}a_1=g^6 \ \land\ a_2=y_i^7 \ \land \ X_i=g^2 \ \land \ Y_i=y_i^3 \end{math} to verifier.
@@ -317,13 +347,12 @@ Next example shows the verification with a challenge.
     \end{enumerate}
 \end{enumerate}
 
+\noindent
+Note that soundness is full filled because the check doesn't pass because $a_1=g^6$ is different from $a_1=g$ and $a_2=y_i^7$ is different from $ a_2=y_i^0$. Recall that soundness is if the statement is false then it should fail with overwhelming probability.\\
 
 \noindent
-\textbf{The mathematical justification}\\
-The verifier knows that the prover has raised \begin{math}g^w\end{math} and \begin{math}y_i^w\end{math}. We denote these exponents by \begin{math}w\end{math}    and \begin{math}w^{'}\end{math}. The verifier also knows that the prover has computed \begin{math}X_i=g^{p(i)}  \land Y_i=y_i^{p(i)} \end{math}. We denote the exponents by \begin{math}m_i\end{math} and \begin{math}m_i^{'}\end{math}. We know
-\begin{math} a_1= g^w \end{math} equal to \begin{math}g^r  \cdot  X_i^C=g^r \cdot g^{m_i \cdot C} = g^{r+m_i \cdot C}\end{math} and
-\begin{math} a_2= y_i^{w^{'}}\end{math} equal to \begin{math}y_i^r  \cdot  Y_i^C=y_i^r \cdot y_i^{m_i^{'} \cdot C} = y_i^{r+m_i^{'} \cdot C}\end{math}.
-Based on this we can now write two inequalities. In order for these inequalities to be true we can rewrite.
+\textbf{The mathematical justification for soundness}\\
+In the following we are showing that a prover will fail if with overwhelming probability if he is dishonest which satisfies soundness. Since the verifier doesent know that if the first step \begin{math}X_i=g^{p(i)}  \land Y_i=y_i^{p(i)} \end{math} has been computed correctly we denote these exponents by \begin{math}a_1=g^w\end{math}    and \begin{math}a_2=y_i^{w^{'}}\end{math} and \begin{math}X_i=g^{m_i}\end{math}    and \begin{math}Y_i=y_i^{m_i^{'}}\end{math}. We know \begin{math} a_1= g^w \end{math} is equal to \begin{math}g^r  \cdot  X_i^C=g^r \cdot g^{m_i \cdot C} = g^{r+m_i \cdot C}\end{math} and \begin{math} a_2= y_i^{w^{'}}\end{math} is equal to \begin{math}y_i^r  \cdot  Y_i^C=y_i^r \cdot y_i^{m_i^{'} \cdot C} = y_i^{r+m_i^{'} \cdot C}\end{math}. Based on this we can now write two inequalities. In order for these inequalities to be true we can rewrite.
 
 \begin{alignat*}{5}
  a_1 &= g^w &&= g^r  \cdot  X_i^C &&=g^r \cdot g^{m_i \cdot C} &&= g^{r+m_i \cdot C}\\
@@ -346,28 +375,17 @@ w-m_i \cdot C = w^i-m_i^{'}\ (mod\ q) \implies (w-w^i)-(m_i - m_i^{'})  \cdot  C
 
 
 \noindent
-The prover has to be honest if this equation must be true. It is overwhelming unlikely that, if the prover has been dishonest that he will succeed. Since the prover doesn't know the challenge the probability will be \begin{math} \frac{1}{q}\end{math}.\\
+The prover has to be honest if this equation must be true. It is overwhelming unlikely that, if the prover has been dishonest, where $m_i \neq m_{i^{'}}$, that he will succeed. Since the $C$ is known afterwards the construction of $w$ and $w^{'}$ the probability will be \begin{math} \frac{1}{q}\end{math} for a convincing the verifier. Since the $q$ is a large number then the probability is for the dishonest prover to succeed.\\
+
 
 \noindent
-\textbf{Zero knowledge proof for the $DLEQ$}\\
-\textcolor{red}{Question to Ignacio: we need to have clear separation on what is referring to what in our description of the proof}
-\begin{itemize}
-    
-    \item \textbf{Completeness} If the prover is honest it should pass or if the statement is true, the honest verifier (that is, one following the protocol properly) will be convinced of this fact by an honest prover.
-    
-    \item \textbf{Soundness} If the statement is false then it should fail with large probability. No cheating prover can convince
-the honest verifier that it is true, except with some small probability.
-    
-    
-    \item \textbf{Zero-knowledge}  If the statement is true, no cheating verifier learns anything other than the fact that the statement is true
-\end{itemize}
-
+\textbf{Zero knowledge}\\
+The zero knowledge in this context means that the verifier doesn't learn anything about the $p(i)$. One way to argue zero knowledge is by showing that the values sent in the protocol doesn't depend on the $p(i)$. So if one can construct the values $a_1, \ a_2, \ r$  without knowing  $p(i)$  shows that they do not depend on $p(i)$ and we thereby do not learn anything about $p(i)$. One way of doing this is though experiment where on can change the order of the protocol. In is out of this thesis scope to go further depth on this subject.\\
 
 %----------------------------------------------------------------------
 \subsection{DLEQ non-interactive proof between voters and verifier}
 %----------------------------------------------------------------------
 Here we present how one can turn an interactive proof to a non interactive proof. This is also known as the Fiat Shamir where we are transforming a interactive proof into a non interactive proof (signature scheme). Instead of the verifier computes a challenge, the prover computes the challenge as a random function (hash).  We will present two ways off doing this transformation, a non optimized and a optimized version. Last we will describe an example on how this can be done.\\
-\textcolor{red}{Ignacio: We will describe an non optimized and a optimized version - does this have a name??}\\
 
 
 \parahead{The prover computes} \begin{math}a_1=g^w \ (mod\ q)  \land a_2=y_i^w \ (mod\ q),  w\in_R \Z_q \end{math}. Then the prover computes the hash \begin{math}C=H(X_i,Y_i,a_1,a_2) \end{math}. Then the prover computes  \begin{math}r=w-p(i)  \cdot  C \ (mod\ q)\end{math}. Last the prover publish \begin{math}a_1, a_2,r,C\end{math}. \\
@@ -459,23 +477,12 @@ $a_{1,2},a_{2,2},...,a_{1,n},a_{2,n})$
 
 \noindent
 \textbf{Zero knowledge proof for the $DLEQ$}\\
-\textcolor{red}{Question to Ignacio: we need to have clear separation on what is referring to what in our description of the proof}
-\begin{itemize}
-    
-    \item \textbf{Completeness} If the prover is honest it should pass or if the statement is true, the honest verifier (that is, one following the protocol properly) will be convinced of this fact by an honest prover.
-    
-    \item \textbf{Soundness} If the statement is false then it should fail with large probability. No cheating prover can convince
-the honest verifier that it is true, except with some small probability.
-    
-    
-    \item \textbf{Zero-knowledge}  If the statement is true, no cheating verifier learns anything other than the fact that the statement is true
-\end{itemize}
-
+The same arguments holds which we described in section about the interactive $DLEQ$. 
 
 %----------------------------------------------------------------------
 \subsection{Description of $ \mathbf{PROOF_U} $}
 %----------------------------------------------------------------------
-In this section we will show the interactive proof. Through Fiat–Shamir  we transform an interactive proof of knowledge into a non-interactive proof of knowledge. First of all the voter proves that there is consistency between the exponents of how \begin{math}U\end{math} and \begin{math}C_0\end{math} is constructed from \begin{math}U=G^{s+v}\end{math} and \begin{math}C_0 = g^s\end{math}. The exponents only differs from the vote hence 0 or 1.\\
+In this section we show with $PROOF_U$ that the voter either votes  1 or 0. The voter proves that there is consistency between the exponents of how \begin{math}U\end{math} and \begin{math}C_0\end{math} and is constructed from \begin{math}U=G^{s+v}\end{math} and \begin{math}C_0 = g^s\end{math} and the exponents only differs from the vote hence 0 or 1. We will show the interactive proof and through Fiat–Shamir  we transform an interactive proof of knowledge into a non-interactive proof of knowledge. \\
 
 \begin{figure}[H]
     \centering        
@@ -751,24 +758,16 @@ Note the interaction in step 2 where the verifier create a challenge to the serv
  
  \noindent
 \textbf{Mathematical justification}\\
-For the mathematical justification in step 4, we can do the following computation on \begin{math}a_1=G^w\end{math} and \begin{math}a_2=S_i^w\end{math}.\\\\
-Let \begin{math}a_1=G^w\end{math} we show that \begin{math}G^r \cdot y_i^C=G^r \cdot y_{x_i}^C=G^{r+x_iC}=G^{w-Cx_i+x_iC}=G^w\end{math}\\\\
-Let \begin{math}a_2=S_i^w\end{math} we show that
-\begin{math}S_i^r \cdot Y_i^C=S^r \cdot Y_{x_i^C}=S^{w-Cx_i} \cdot S_i^{x_i \cdot C}=S^{w-Cx_i+x_i \cdot C}=S_i^w\end{math}.\\
+To justify correctness of the computations in step 4, we can do the following computation on \begin{math}a_1=G^w\end{math} and \begin{math}a_2=S_i^w\end{math}.
+
+
+\begin{alignat*}{5}
+a_1 &=G^w &=G^r \cdot y_i^C &=G^r \cdot y_{x_i}^C &=G^{r+x_iC} =G^{w-Cx_i+x_iC} =G^w\\
+a_2 &=S_i^w &= S_i^r \cdot Y_i^C &=S^r \cdot Y_{x_i^C} &=S^{w-Cx_i} \cdot S_i^{x_i \cdot C} =S^{w-Cx_i+x_i \cdot C}&=S_i^w
+\end{alignat*}
+
 
 
 
 \noindent
-\textbf{Zero knowledge proof for the $DLEQ$ for the tallier}\\
-\textcolor{red}{Question to Ignacio: we need to have clear separation on what is referring to what in our description of the proof}
-\begin{itemize}
-    
-    \item \textbf{Completeness} If the prover is honest it should pass or if the statement is true, the honest verifier (that is, one following the protocol properly) will be convinced of this fact by an honest prover.
-    
-    \item \textbf{Soundness} If the statement is false then it should fail with large probability. No cheating prover can convince
-the honest verifier that it is true, except with some small probability.
-    
-    
-    \item \textbf{Zero-knowledge}  If the statement is true, no cheating verifier learns anything other than the fact that the statement is true
-\end{itemize}
-%************************* Proof end
+To show soundness and zero knowledge the same process from section 5.2.1 can be followed.
