@@ -49,7 +49,7 @@ In this phase we will present our case.
  
 
 \subsubsection{4. Identify architectural drivers}
-The purpose of this step is to identify architectural drivers (AD). We found AD's by discussions while we got them described on the board. Based on our drivers, we could begin to see the following quality attributes.\\
+The purpose of this step is to identify architectural drivers. Architectural drivers are the keys to realizing quality attribute goals for the system. The architectural drivers are often found through requirements and business goals. We found architectural drivers by reflection and discussion against the requirements of earlier described electronic voting application. Based on our architectural drivers, we begin to see the following quality attributes.\\
 
 
 \begin{table}[H]
@@ -57,9 +57,11 @@ The purpose of this step is to identify architectural drivers (AD). We found AD'
 \begin{tabular}{|l|l|}
 \hline
 \multicolumn{2}{|l|}{Voters point of view}                \\ \hline
-Usability    & Easy to use for a voter                   \\ \hline
-Usability    & Trustworthy should give detailed feedback \\ \hline
-Availability & Available when needed                     \\ \hline
+Usability    & The system should be easy to use for a voter                   \\ \hline
+Usability    & \begin{tabular}[c]{@{}l@{}}The system should be \\ trustworthy and should \\ give detailed feedback \end{tabular}   \\ \hline 
+Availability & The system should be available when needed                     \\ \hline
+Interoperability         & \begin{tabular}[c]{@{}l@{}} A voter should be able to cast a vote \\ from a given device with a internet \\ connection\end{tabular}                                                                   \\ \hline
+
 \end{tabular}
 \caption{Voters point of view}
 \label{my-label}
@@ -71,11 +73,12 @@ Availability & Available when needed                     \\ \hline
 \begin{tabular}{|l|l|}
 \hline
 \multicolumn{2}{|l|}{Robustness}                                                                                                                                                                        \\ \hline
-Scalable         & \begin{tabular}[c]{@{}l@{}}Should be able to handle a large amount \\ of user within a reasonabletime\end{tabular}                                                                   \\ \hline
+Performence         & \begin{tabular}[c]{@{}l@{}}Should be able to handle a large amount \\ of user within a reasonabletime\end{tabular}                                                                   \\ \hline
 Testability      & \begin{tabular}[c]{@{}l@{}}Given the nature of systems complexity it\\ should be easily testableto ensure \\ robustness and reliability\end{tabular}                                 \\ \hline
 Security         & \begin{tabular}[c]{@{}l@{}}The integrity should withhold even though \\ if cheating occurs.\end{tabular}                                                                             \\ \hline
 \multicolumn{2}{|l|}{Universal verifiability}                                                                                                                                                           \\ \hline
 Interoperability & \begin{tabular}[c]{@{}l@{}}Not only participant but also passive observers \\ should be able to validate through out the \\ election and afterwards(Fairness)\end{tabular}           \\ \hline
+
 \multicolumn{2}{|l|}{Future proof}                                                                                                                                                                      \\ \hline
 Modifiable       & \begin{tabular}[c]{@{}l@{}}Only a registered user should be able to vote. \\ This registration should be easily replaceable \\ depending on the nature of the election.\end{tabular} \\ \hline
 Modifiable       & \begin{tabular}[c]{@{}l@{}}The system should modifiable such that\\  core elements are replaceable\end{tabular}                                                                      \\ \hline
@@ -88,12 +91,31 @@ Modifiable       & \begin{tabular}[c]{@{}l@{}}The system should modifiable such 
 \subsubsection{5. Scenario brainstorming}
 The purpose of this step is to design quality attribute scenarios (QAS), based on our AD's. That is, here we form QAS in a form such as Bass et al. Form so there is clear stimulus and clear response measure.
 
+\begin{table}[H]
+\centering
+
+\label{my-label}
+\begin{tabular}{|l|l|l|}
+\hline
+Scenario \#      & Description                                                                                                                                                                                                                                                                          & Votes \\ \hline
+Usability        & \begin{tabular}[c]{@{}l@{}}A user casts a vote under \\ runtime and the PVSS client registers\\ the vote with a confirm message, within\\ 5 seconds.\end{tabular}                                                                                                                    &       \\ \hline
+Availability     & \begin{tabular}[c]{@{}l@{}}An internal crash occurs and the\\ Bulletin board is out of reach\\ during normal operation. The response\\ is that the error is logged and the \\ system is running in degraded mode.\\ The system should be up running\\ within 5 minutes.\end{tabular} &       \\ \hline
+Interoperability & \begin{tabular}[c]{@{}l@{}}A PVSS client cast a vote to the\\ Bulletin board from a given device\\ with internet connection  under runtime and\\ the system is updated and 100\% \\ of the information is exchanged \\ and processed correctly.\end{tabular}                                                                          &       \\ \hline
+Interoperability & \begin{tabular}[c]{@{}l@{}}An observer client validates\\ a vote from the the Bulletin board \\ under runtime. The validation is \\ processed, and the Bulletin board is\\ updated and 100\% of the information \\ is exchanged and processed correctly.\end{tabular} &       \\ \hline
+Testability      & \begin{tabular}[c]{@{}l@{}}An unitester should be able to\\ code a unit on the system\\ under development and the test suite\\ are executed  and result are captured\\ and 85\% of the system are coverage \\ within 3 hours.\end{tabular} &       \\ \hline
+Modifiable       & \begin{tabular}[c]{@{}l@{}}A developer should be able to make a \\ change to the random number generator\\ code under runtime and the change are made\\ and tested within 3 hours.\end{tabular}                                                                                          &       \\ \hline
+Modifiable       & \begin{tabular}[c]{@{}l@{}}A developer should be able to make a\\ change to the registration code under \\ runtime and the change are made and tested\\ within 3 hours.\end{tabular}                                                                                                 &       \\ \hline
+Security         & \begin{tabular}[c]{@{}l@{}}A cheater cast a invalid vote to the Bulletin\\ board under normal operation. All valid data\\ should be preserved and the system\\ should be able to detect invalid from \\ valid data before the total counting of \\ the votes.\end{tabular}           &       \\ \hline
+Performence      & \begin{tabular}[c]{@{}l@{}}1000 transactions are initiates towards \\ the bulletin board under normal operation.\\ The transaction are processed and there are\\ a max latency of 5 seconds.\end{tabular}                                                                            &       \\ \hline
+\end{tabular}
+\caption{First step towards quality attributes scenarios}
+\end{table}
 
 \subsubsection{6. Scenario consideration}
 The purpose of this step is to merge scenarios that have similar features. At the workshop there were no scenarios that could be merged.
 
 \subsubsection{7. Scenario prioritization}
-The purpose of this step is to draw up a priority list based on the total votes.
+The purpose of this step is to draw up a priority list based on the total votes. The list is long but we will limit this thesis to focusing on a few and the rest we will comment. Since the PVSS is a public verifiable protocol, there will be a high focus on fulfilling the "public" requirement. To achieve that we will create web application which can be access by everyone how has a device connected to the internet.
 
 \subsubsection{8. Scenario Refinement}
 The purpose of this step is to form QAS based on Bass et al, where divide into source, stimulus, artifact, environment, response and response measure. 
@@ -119,7 +141,7 @@ The purpose of this step is to form QAS based on Bass et al, where divide into s
   \cline{2-3}
   & {\bfseries Response:} &  Replacement made and Unit tested\\
   \cline{2-3}
-  & {\bfseries Response Measure:} & In one hour\\
+  & {\bfseries Response Measure:} & In three hours\\
   \hline
   \multicolumn{2}{|p{3cm}|}{\bfseries Questions:} &  \\
   \hline
@@ -141,7 +163,7 @@ The purpose of this step is to form QAS based on Bass et al, where divide into s
   \multirow{6}{*}{\begin{sideways}{\bfseries Scenario Parts}\end{sideways}}
   & {\bfseries Source:} & Developer \\
   \cline{2-3}
-  & {\bfseries Stimulus:} & Needs to replace the random generator \\
+  & {\bfseries Stimulus:} & Needs to replace the registration module \\
   \cline{2-3}
   & {\bfseries Artifact} &  Code \\
   \cline{2-3}
@@ -149,7 +171,7 @@ The purpose of this step is to form QAS based on Bass et al, where divide into s
   \cline{2-3}
   & {\bfseries Response:} &  Replacement made and Unit tested\\
   \cline{2-3}
-  & {\bfseries Response Measure:} & In one hour\\
+  & {\bfseries Response Measure:} & In three hours\\
   \hline
   \multicolumn{2}{|p{3cm}|}{\bfseries Questions:} &  \\
   \hline
@@ -159,6 +181,70 @@ The purpose of this step is to form QAS based on Bass et al, where divide into s
 \caption{Quality Attribute Scenario}
 \end{center}
 \end{table}
+
+
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|p{0.3cm}|p{2.5cm}|p{8cm}|}
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \\
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Relevant Quality Attributes:} & Interoperability\\
+  \hline
+  \multirow{6}{*}{\begin{sideways}{\bfseries Scenario Parts}\end{sideways}}
+  & {\bfseries Source:} & A webbrowser \\
+  \cline{2-3}
+  & {\bfseries Stimulus:} & Validate a vote \\
+  \cline{2-3}
+  & {\bfseries Artifact} &  Bulletinboard system \\
+  \cline{2-3}
+  & {\bfseries Environment:} &  Runtime \\
+  \cline{2-3}
+  & {\bfseries Response:} &  If the vote is valid it is accepted. If the vote is invalid it is rejected and the vote is removed from the Bulletinboard \\
+  \cline{2-3}
+  & {\bfseries Response Measure:} & 100 \% of the information is exchange and processed correctly \\
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Questions:} &  \\
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Issues:} &  \\
+  \hline
+\end{tabular}
+\caption{Quality Attribute Scenario}
+\end{center}
+\end{table}
+
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|p{0.3cm}|p{2.5cm}|p{8cm}|}
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \\
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Relevant Quality Attributes:} & Security\\
+  \hline
+  \multirow{6}{*}{\begin{sideways}{\bfseries Scenario Parts}\end{sideways}}
+  & {\bfseries Source:} & A webbrowser \\
+  \cline{2-3}
+  & {\bfseries Stimulus:} & Validate a vote \\
+  \cline{2-3}
+  & {\bfseries Artifact} &  Bulletinboard system \\
+  \cline{2-3}
+  & {\bfseries Environment:} &  Runtime \\
+  \cline{2-3}
+  & {\bfseries Response:} &  If the vote is valid it is accepted. If the vote is invalid it is rejected and the vote is removed from the Bulletinboard \\
+  \cline{2-3}
+  & {\bfseries Response Measure:} & 100 \% of the information is exchange and processed correctly \\
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Questions:} &  \\
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Issues:} &  \\
+  \hline
+\end{tabular}
+\caption{Quality Attribute Scenario}
+\end{center}
+\end{table}
+
 
 
 \subsection{Architectural decision}
