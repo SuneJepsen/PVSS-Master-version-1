@@ -58,14 +58,17 @@ For efficiency we will limit the computation of the votes to a finite number of 
 %--------------------------------------------------------------------------
 
 \noindent
-\textbf{The bulletin board generates all system parameters. The public elements $f$ and $F$ and a security parameter $t$.}
+\textbf{The bulletin board generates all system parameters. Here we find the public elements which is a prime $q$,  the generators $g$ and $G$ and a security parameter $t$.}
 
 
 \begin{alignat*}{2}
-f \ &\in_R \{1,...,2q\} \rightarrow g &&= f^2 \ mod\ 2q+1 \wedge g\neq1\\
-F \ &\in_R \{1,...,2q\}\rightarrow G &&= F^2 \ mod\ 2q+1 \wedge G\neq1\\
+q \ &\in_R \{2^{1023},...,2^{1024}\} \\
+f \ &\in_R \{2,...,2q-1\} \rightarrow g &&= f^2 \ mod\ 2q+1 \\
+F \ &\in_R \{2,...,2q-1\}\rightarrow G &&= F^2 \ mod\ 2q+1 \\
 t &\in_R \Z_q^* &&= \{1,2,3,...,q-1\} 
 \end{alignat*}
+
+
 
 \noindent
 \textbf{The tallier generates a private, $x_i$ and a public keys $y_i$.}
@@ -193,13 +196,16 @@ To solve the computing of the votes one can compute \begin{math}G^0, G^1, G^3,..
 
 \subsection{Initialization}
 \noindent
-\textbf{Strong prime} In our implementation we will pick a prime, \begin{math}q\end{math}, so we avoid doing the gcd computation. The protocol states that we have to compute in a group of order q. This means that when we are doing operations in the exponent this property should be satisfied \begin{math}g^q=1\end{math} where \begin{math}q\end{math} is prime. If we are doing \begin{math}mod \ q \end{math} in the exponent we have \begin{math}g^q=g^0\end{math}. The reason for doing operation in the exponent \begin{math}mod \ q\end{math} is because we are using Sharmir secret sharing which require a finite field.\\
+In our implementation we will pick a prime, \begin{math}q\end{math}, so we avoid doing the gcd computation. The protocol states that we have to compute in a group of order q. This means that when we are doing operations in the exponent this property should be satisfied \begin{math}g^q=1\end{math} where \begin{math}q\end{math} is prime. If we are doing \begin{math}mod \ q \end{math} in the exponent we have \begin{math}g^q=g^0\end{math}. The reason for doing operation in the exponent \begin{math}mod \ q\end{math} is because we are using Sharmir secret sharing which require a finite field.\\
 
 \noindent
-One can see that given a generator $g=2 $ and a prime $q=5$, then \begin{math}2^5 \ mod \ 5 = 32 \ mod \ 5 = 2\end{math}. For this to be true, we take the square of numbers modulo a prime in this form \begin{math}2q+1\end{math}. This is also called a strong prime. By using this mathematical structure this property holds. We can choose \begin{math}b=a^2\end{math}. Then we see the property holds \begin{math}b^{q} = 1 \ mod \ 2q+1\end{math}. Using the same values as before, it is clear that \begin{math}(2^2)^5 \ mod \ 11 = 1024 \ mod \ 11 = 1\end{math}. Fermat little theorem states that \begin{math}b^{q-1} \ mod \ q = 1\end{math} where \begin{math}q\end{math} is prime. So we know if we pick our \begin{math}q\end{math} and \begin{math}b\end{math} (as a square)  in this form \begin{math}(a^{2})^{q+1-1} \ mod \ 2q+1 =1 =  a^{2q} \ mod \ 2q+1 =1\end{math} the property holds.
+One can see that given a generator $g=2 $ and a prime $q=5$, then \begin{math}2^5 \ mod \ 5 = 32 \ mod \ 5 = 2\end{math}. For this to be true, we take the square of numbers modulo a prime in this form \begin{math}2q+1\end{math}. This is also called a strong prime. By using this mathematical structure this property holds. We can choose \begin{math}b=a^2\end{math}. Then we see the property holds \begin{math}b^{q} = 1 \ mod \ 2q+1\end{math}. Using the same values as before, it is clear that \begin{math}(2^2)^5 \ mod \ 11 = 1024 \ mod \ 11 = 1\end{math}. Fermat little theorem states that \begin{math}b^{q-1} \ mod \ q = 1\end{math} where \begin{math}q\end{math} is prime. So we know if we pick our \begin{math}q\end{math} and \begin{math}b\end{math} (as a square)  in this form \begin{math}(a^{2})^{q+1-1} \ mod \ 2q+1 =1 =  a^{2q} \ mod \ 2q+1 =1\end{math} the property holds.\\
+
+\noindent
+The generators is found in the set between $2$ and $2q-1$.  We remove $1$ because if $1$ get squared it will always gives $1$ and can therefor not be used as a generator. We remove $2q$ because $(2q)^2 = 1 \ mod \ 2q+1$. That means if you square $2q$ it will also give $1$.
 
 \subsection{Ballot casting}
-An example for clarification on the computations of \begin{math}X_i\end{math}. The following is computation of the $X_i$ to tallier 1 ($X_1$), tallier 2 ($X_2$) and tallier 3 ($X_3$).
+A simplified example for clarification on the computations of \begin{math}X_i\end{math}. The following is computation of the $X_i$ to tallier 1 ($X_1$), tallier 2 ($X_2$) and tallier 3 ($X_3$).
 
 \begin{alignat*}{3}
 X_1 &=\prod\limits_{j=0}^{t-1} C_j^{i^j} &&= C_0^{1^0}  \cdot  C_1^{1^1}  \cdot  C_2^{1^2}\\
@@ -238,7 +244,7 @@ In this section we will elaborate the mathematical justification of the interact
 %----------------------------------------------------------------------
 \subsection{DLEQ interactive proof between voters and verifier} \label{proofs:dleq_voter_verifier}
 %----------------------------------------------------------------------
-DLEQ stands for discrete logarithm equality. It proofs that the exponent are equal \begin{math}X_i=g^{p(i)}  \land Y_i=y_i^{p(i)} \end{math} without revealing \begin{math}{p(i)} \end{math} and if the prover was honest, then it should be the case that we get the same computed values in the end meaning $a_1 = g^w= g^r \cdot X_i^C$ and $a_2= y_i^w = y_i^r \cdot Y_i^C$. We will present the protocol and after that we will give concrete examples. Last we will describe the mathematical justification.\\
+DLEQ stands for discrete logarithm equality. It proofs that the exponent are equal \begin{math}X_i=g^{p(i)}  \land Y_i=y_i^{p(i)} \end{math} without revealing \begin{math}{p(i)} \end{math} and if the prover is honest, then it should be the case that we get the same computed values in the end meaning $a_1 = g^w= g^r \cdot X_i^C$ and $a_2= y_i^w = y_i^r \cdot Y_i^C$. We will present the protocol and after that we will give concrete examples. Last we will describe the mathematical justification.\\
 
 \noindent
 The verification of the shares in the interactive proof happens by the following  interaction between the prover and the verifier.
