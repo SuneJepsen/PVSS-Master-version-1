@@ -196,7 +196,7 @@ To solve the computing of the votes one can compute \begin{math}G^0, G^1, G^3,..
 \textbf{Strong prime} In our implementation we will pick a prime, \begin{math}q\end{math}, so we avoid doing the gcd computation. The protocol states that we have to compute in a group of order q. This means that when we are doing operations in the exponent this property should be satisfied \begin{math}g^q=1\end{math} where \begin{math}q\end{math} is prime. If we are doing \begin{math}mod \ q \end{math} in the exponent we have \begin{math}g^q=g^0\end{math}. The reason for doing operation in the exponent \begin{math}mod \ q\end{math} is because we are using Sharmir secret sharing which require a finite field.\\
 
 \noindent
-One can see that if \begin{math}q\end{math} is a prime say \begin{math}q=5\end{math}, then \begin{math}2^5 \ mod \ 5 = 32 \ mod \ 5 = 2\end{math}. For this to be true, we take the square of numbers modulo a prime in this form \begin{math}2q+1\end{math}. This is also called a strong prime. By using this mathematical structure this property holds. We can choose \begin{math}b=a^2\end{math}. Then we see the property holds \begin{math}b^{2q} = 1 \ mod \ 2q+1\end{math}. By example it is clear that \begin{math}(2^2)^5 \ mod \ 11 = 1024 \ mod \ 11 = 1\end{math}. Fermat little theorem states that \begin{math}b^{q-1} \ mod \ q = 1\end{math} where \begin{math}q\end{math} is prime. So we know if we pick our \begin{math}q\end{math} and \begin{math}b\end{math} (as a square)  in this form \begin{math}(b^{2})^{q+1-1} \ mod \ 2q+1 =1 =  b^{2q} \ mod \ 2q+1 =1\end{math} the property holds.
+One can see that given a generator $g=2 $ and a prime $q=5$, then \begin{math}2^5 \ mod \ 5 = 32 \ mod \ 5 = 2\end{math}. For this to be true, we take the square of numbers modulo a prime in this form \begin{math}2q+1\end{math}. This is also called a strong prime. By using this mathematical structure this property holds. We can choose \begin{math}b=a^2\end{math}. Then we see the property holds \begin{math}b^{q} = 1 \ mod \ 2q+1\end{math}. Using the same values as before, it is clear that \begin{math}(2^2)^5 \ mod \ 11 = 1024 \ mod \ 11 = 1\end{math}. Fermat little theorem states that \begin{math}b^{q-1} \ mod \ q = 1\end{math} where \begin{math}q\end{math} is prime. So we know if we pick our \begin{math}q\end{math} and \begin{math}b\end{math} (as a square)  in this form \begin{math}(a^{2})^{q+1-1} \ mod \ 2q+1 =1 =  a^{2q} \ mod \ 2q+1 =1\end{math} the property holds.
 
 \subsection{Ballot casting}
 An example for clarification on the computations of \begin{math}X_i\end{math}. The following is computation of the $X_i$ to tallier 1 ($X_1$), tallier 2 ($X_2$) and tallier 3 ($X_3$).
@@ -279,7 +279,7 @@ The verification of the shares in the interactive proof happens by the following
 
 
 \noindent
-Note that the verifier sends a challenge \textit{C}, after the prover has computed \begin{math}a_1\end{math} and  \begin{math}a_2\end{math}. The check only passes if the prover used the same exponents. The proof shows that there exist some element \begin{math} \alpha\end{math} such that \begin{math}g^\alpha = X_i \ \land \ y_i^\alpha=Y_i \end{math} where  \begin{math} \alpha\end{math}. In the following there is an argument why $DLEQ$ works through Zero knowledge proof.\\ 
+Note that the verifier sends a challenge \textit{C}, after the prover has computed \begin{math}a_1\end{math} and  \begin{math}a_2\end{math}. The check only passes if the prover used the same exponents. The proof shows that there exist some element \begin{math} \alpha\end{math} such that \begin{math}g^\alpha = X_i \ \land \ y_i^\alpha=Y_i \end{math}. In the following there is an argument why $DLEQ$ works through Zero knowledge proof.\\ 
 
 
 
@@ -482,7 +482,7 @@ The same arguments holds for correctness, soundness and zero knowledge, which is
 %----------------------------------------------------------------------
 \subsection{Description of $ \mathbf{PROOF_U} $}
 %----------------------------------------------------------------------
-In this section we show with $PROOF_U$ that the voter either votes  1 or 0. The voter proves that there is consistency between the exponents of how \begin{math}U\end{math} and \begin{math}C_0\end{math} and is constructed from \begin{math}U=G^{s+v}\end{math} and \begin{math}C_0 = g^s\end{math} and the exponents only differs from the vote hence 0 or 1. We will show the interactive proof and through Fiat–Shamir  we transform an interactive proof of knowledge into a non-interactive proof of knowledge. \\
+In this section we show with $PROOF_U$ that the voter either votes  1 or 0. The voter proves that there is consistency between the exponents of how \begin{math}U\end{math} and \begin{math}C_0\end{math} and is constructed from \begin{math}U=G^{s+v}\end{math} and \begin{math}C_0 = g^s\end{math} and the exponents only differs from the vote hence 0 or 1. We will show the interactive proof and through Fiat–Shamir  we transform an interactive proof of knowledge into a non-interactive proof of knowledge. The protocol illustration includes both scenarios where the voter votes either 0 or 1. If the voter votes 0 step 1a, 2, 3a, 4 will be followed. If the voter votes 1 step 1b, 2, 3b, 4 will be followed.\\
 
 \begin{figure}[H]
     \centering        
@@ -498,7 +498,7 @@ In this section we show with $PROOF_U$ that the voter either votes  1 or 0. The 
         & \text{\textsf{Prover}} & \text{\textsf{Verifier}} \\
         \hline
         Step \ 1a   &           \begin{array}{l}
-                                    v=0             \\ 
+                                    if\ vote (v) = 0             \\ 
                                     w\in_R \{1,...,q-1\}, \\ 
                                     r_1\in_R\{1,...,q-1\},\\
                                     d_1\in_R\{1,...,q-1\},      \\ 
@@ -511,7 +511,7 @@ In this section we show with $PROOF_U$ that the voter either votes  1 or 0. The 
                     &                   \xrightarrow{\hspace{1em}a_0, a_1, b_0, b_1\hspace{1em}} \ \textbf{Publish to bulletin}&  & \\                                
                     &                   &               & \\
         Step \ 1b   &           \begin{array}{l}
-                                    v=1             \\ 
+                                    if\ vote (v) =1             \\ 
                                     w\in_R \{1,...,q-1\},\\ r_0\in_R\{1,...,q-1\},\\
                                     d_0\in_R\{1,...,q-1\},      \\ 
                                     a_0 = g^{r_0} \cdot C^{d_0}_0,\\
@@ -528,7 +528,7 @@ In this section we show with $PROOF_U$ that the voter either votes  1 or 0. The 
                                 \xleftarrow{\hspace{2em}C\hspace{2em}}\\
                                 \end{array}  \\
         Step \ 3a   &          \begin{array}{l}
-                                   v=0             \\ 
+                                   if\ vote (v) = 0             \\ 
                                    d_0= C-d_1\ mod\ q,\\
                                    r_0=w-s \cdot d_0 \ mod\ q\\  
                                 \end{array}     &               & \\
@@ -536,7 +536,7 @@ In this section we show with $PROOF_U$ that the voter either votes  1 or 0. The 
                     &                   \xrightarrow{\hspace{1em}d_0,\ r_0,\ d_1,\ r_1\hspace{1em}} \ \textbf{Publish to bulletin}&  & \\                                
                     &                   &               & \\
         Step \ 3b   &           \begin{array}{l}
-                                    v=1             \\ 
+                                    if\ vote (v) =1             \\ 
                                     d_1= C-d_0\ mod\ q, \\
                                     r_1=w-s \cdot d_1 \ mod\ q\\ 
                                 \end{array}     &               & \\
@@ -570,7 +570,7 @@ In step 1 the voter publish \begin{math}a_0,\ b_0,\ a_1,\ b_1\end{math}. Note th
                     \begin{enumerate}
                         \item  Voter votes 0 and creates: \begin{math}v=0,\ w\in_R \{1,...,q-1\},\ r_1\in_R\{1,...,q-1\},\ d_1\in_R\{1,...,q-1\}\end{math} and 
                                 publish: \begin{math}a_0 = g^w,\ b_0 = G^w,\ a_1 = g^{r_1} \cdot C^{d_1}_0,\ b_1 = G^{r_1}  \cdot  (\frac{U}{G^{1-v}})^{d_1} = G^{r_1}  \cdot  (\frac{U}{G})^{d_1} \end{math}.
-                        \item  Voter votes 1 and creates: \begin{math}v=1,\ w\in_R \{1,...,q-1\},\ r_0\in_R\{1,...,q-1\},\ d_0\in_R\{1,...,q-1\}\end{math} and publish: \begin{math}a_1 = g^w,\ b_1 = G^w,\ a_0 = g^{r_0} \cdot C^{d_0}_0,\ b_0 = G^{r_0}  \cdot  (\frac{U}{G^{1-v}})^{d_0}=  G^{r_0}  \cdot  U^{d_0} \end{math}
+                        \item  Voter votes 1 and creates: \begin{math}v=1,\ w\in_R \{1,...,q-1\},\ r_0\in_R\{1,...,q-1\},\ d_0\in_R\{1,...,q-1\}\end{math} and publish: \begin{math}a_1 = g^w,\ b_1 = G^w,\ a_0 = g^{r_0} \cdot C^{d_0}_0,\ b_0 = G^{r_0}  \cdot  (\frac{U}{G^{1-v}})^{d_0}=  G^{r_0}  \cdot (\frac{U}{1})^{d_0}  =  G^{r_0}  \cdot  U^{d_0} \end{math}
                     \end{enumerate}
 
     
