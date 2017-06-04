@@ -48,7 +48,7 @@ In this section we will present 8 phases of the QAW. Despite that a workshop is 
 In this phase we will present our case.
  
 \subsubsection{3. Architectural Plan Presentation}
-We will use this step to wrap up our first iteration for a high level overview of the system. This first overview is all based on the knowledge we got from the first part. We illustrate this overview through a component connector view. This viewpoint is concerned with the run-time functionality of the system.  At this point we have a component for a voter, tallier, observer, bulletinboard and a registration process. We see the voter, tallier and the observers as clients and as active processes which all are communicating with the  bulletinboard. Therefor their must be a connector between the clients and bulletinboard. The purpose of the registration authority is that every active participant must be registered through some registration authority before they can attend the electronic voting election. 
+We will use this step to wrap up our first iteration for a high level overview of the system. This first overview is all based on the knowledge we got from the first part. We illustrate this overview through a component connector view. This viewpoint is concerned with the run-time functionality of the system.  At this point we have a component for a voter, tallier, observer, Bulletinboard and a registration process. We see the voter, tallier and the observers as clients and as active processes which all are communicating with the Bulletinboard. Therefor their must be a connector between the clients and Bulletinboard. The purpose of the registration authority is that every active participant must be registered through some registration authority before they can attend the electronic voting election. 
 
 \begin{center}
      \makebox[\textwidth]{\includegraphics[scale=0.90]{CC_View_2.jpg}}
@@ -105,15 +105,15 @@ The purpose of this step is to design quality attribute scenarios (QAS), based o
 \hline
 Scenario \#      & Description                                                                                                                                                                                                                                                                          & Votes \\ \hline
 1        & \begin{tabular}[c]{@{}l@{}}A user casts a vote under \\ runtime and the PVSS client registers\\ the vote with a confirm message, within\\ 5 seconds.\end{tabular}                                                                                                                    &       \\ \hline
-2     & \begin{tabular}[c]{@{}l@{}}An internal crash occurs and the\\ Bulletin board is out of reach\\ during normal operation. The response\\ is that the error is logged and the \\ system is running in degraded mode.\\ The system should be up running\\ within 5 minutes.\end{tabular} &       \\ \hline
-3 & \begin{tabular}[c]{@{}l@{}}A PVSS client cast a vote to the\\ Bulletin board from a given device\\ with internet connection  under runtime and\\ the system is updated and 100\% \\ of the information is exchanged \\ and processed correctly.\end{tabular}                                                                          &       \\ \hline
-4 & \begin{tabular}[c]{@{}l@{}}An observer client validates\\ a vote from the the Bulletin board \\ under runtime. The validation is \\ processed, and the Bulletin board is\\ updated and 100\% of the information \\ is exchanged and processed correctly.\end{tabular} &       \\ \hline
+2     & \begin{tabular}[c]{@{}l@{}}An internal crash occurs and the\\ Bulletinboard is out of reach\\ during normal operation. The response\\ is that the error is logged and the \\ system is running in degraded mode.\\ The system should be up running\\ within 5 minutes.\end{tabular} &       \\ \hline
+3 & \begin{tabular}[c]{@{}l@{}}A PVSS client cast a vote to the\\ Bulletinboard from a given device\\ with internet connection  under runtime and\\ the system is updated and 100\% \\ of the information is exchanged \\ and processed correctly.\end{tabular}                                                                          &       \\ \hline
+4 & \begin{tabular}[c]{@{}l@{}}An observer client validates\\ a vote from the the Bulletinboard \\ under runtime. The validation is \\ processed, and the Bulletinboard is\\ updated and 100\% of the information \\ is exchanged and processed correctly.\end{tabular} &       \\ \hline
 5      & \begin{tabular}[c]{@{}l@{}}5 mill. users intiate their votes \\to the Bulletinboard \\ under normal operation.\\ The votes are processed and saved \\ with average latency of\\ 2 seconds.\end{tabular} &       \\ \hline
 6      & \begin{tabular}[c]{@{}l@{}}An unitester should be able to\\ code a unit on the system\\ under development and the test suite\\ are executed  and result are captured\\ and 85\% of the system are coverage \\ within 3 hours.\end{tabular} &       \\ \hline
 7       & \begin{tabular}[c]{@{}l@{}}A developer should be able to make a\\ change to the registration code under \\ runtime and the change are made and tested\\ within 3 hours.\end{tabular}                                                                                          &       \\ \hline
 8       & \begin{tabular}[c]{@{}l@{}}A developer should be able to make a \\ change to the random number generator\\ code under runtime and the change are made\\ and tested within 3 hours.\end{tabular}                                                                                                   &       \\ \hline
 9         & \begin{tabular}[c]{@{}l@{}}A cheater cast a invalid vote to the Bulletin\\ board under normal operation. All valid data\\ should be preserved and the system\\ should be able to detect invalid from \\ valid data before the total counting of \\ the votes.\end{tabular}           &       \\ \hline
-10      & \begin{tabular}[c]{@{}l@{}}1000 transactions are initiates towards \\ the bulletin board under normal operation.\\ The transaction are processed and there are\\ a max latency of 5 seconds.\end{tabular}                                                                            &       \\ \hline
+10      & \begin{tabular}[c]{@{}l@{}}1000 transactions are initiates towards \\ the bulletinboard under normal operation.\\ The transaction are processed and there are\\ a max latency of 5 seconds.\end{tabular}                                                                            &       \\ \hline
 \end{tabular}
 \caption{First step towards quality attributes scenarios}
 \end{table}
@@ -150,7 +150,7 @@ The purpose of this step is to form QAS based on Bass et al, where divide into s
 \begin{center}
 \begin{tabular}{|p{0.3cm}|p{2.5cm}|p{8cm}|}
   \hline
-  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \#  1: A PVSS client cast a vote to the Bulletin board from a given device with internet connection  under runtime and the system is updated and 100\% of the information is exchanged  and processed correctly\\
+  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \#  1: A PVSS client cast a vote to the Bulletinboard from a given device with internet connection  under runtime and the system is updated and 100\% of the information is exchanged  and processed correctly\\
   \hline
   \multicolumn{2}{|p{3cm}|}{\bfseries Relevant Quality Attributes:} & Interoperability\\
   \hline
@@ -177,7 +177,7 @@ The purpose of this step is to form QAS based on Bass et al, where divide into s
 \begin{center}
 \begin{tabular}{|p{0.3cm}|p{2.5cm}|p{8cm}|}
   \hline
-  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \#  2: A cheater cast a invalid vote to the Bulletin board under normal operation. All valid data should be preserved and the system should be able to detect invalid from  valid data before the total counting of the votes\\
+  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \#  2: A cheater cast a invalid vote to the Bulletinboard under normal operation. All valid data should be preserved and the system should be able to detect invalid from  valid data before the total counting of the votes\\
   \hline
   \multicolumn{2}{|p{3cm}|}{\bfseries Relevant Quality Attributes:} & Security\\
   \hline
@@ -319,10 +319,10 @@ This tactic is related to QAS 1. Interoperability is about how systems meaningfu
 
 
 \noindent
-With Discover service we will create a clear line between clients and the bulletinboard. We will use a REST to implement a web service for this tactic.\\
+With Discover service we will create a clear line between clients and the Bulletinboard. We will use a REST to implement a web service for this tactic.\\
 
 \noindent
-REST stands for Representation State Transfer. The implementation of REST is as follows. We have a tallycontroller and a votercontroller etc. within the bulletin board, which is build upon the REST design principles. The clients are webclients and they are build on pure javascript. All communcation will be through ajax call to the bulletin board.\\
+REST stands for Representation State Transfer. The implementation of REST is as follows. We have a tallycontroller and a votercontroller etc. within the Bulletinboard, which is build upon the REST design principles. The clients are webclients and they are build on pure javascript. All communcation will be through ajax call to the Bulletinboard.\\
 
 
 \noindent
@@ -346,13 +346,13 @@ This tactic is related to QAS 2. Security is concerned with ability to protect d
 The DLEQ and $PROOF_U$ proofs verifies the message integrity. With the proofs the protocol will be able to detect attacks. The verify message integrity consists of:
 
 \begin{enumerate}
-    \item The DLEQ proof provided in ballocasting process ensures consistency in the encryption process.
+    \item The DLEQ proof provided in ballot casting process ensures consistency in the encryption process.
     \item  The $PROOF_U$ ensures that the voter votes either 0 or 1.
     \item  The DLEQ proof in the tallying process ensures that the decryption is done correct.
 \end{enumerate}
 
 \noindent
-As already described this tactic is a part of the protocol. Our work consists of realizing the tactic in code. Another important decision to make is if an attack is detected then system, must react. One way could be marking the vote as inactive on the bulletin board and hereafter inform an administrator about the detection of an attack.\\   
+As already described this tactic is a part of the protocol. Our work consists of realizing the tactic in code. Another important decision to make is if an attack is detected then system, must react. One way could be marking the vote as inactive on the Bulletinboard and hereafter inform an administrator about the detection of an attack.\\   
 
 \noindent
 \textbf{Model viewpoint}\\
@@ -381,7 +381,7 @@ This tactic is limited to webclient since they contain all computations and the 
 
 \noindent
 \textbf{Module viewpoint}\\
-This viewpoint shows the use of a strategy pattern. The idea with the strategy pattern is to define a family of business rule, encapsulate each one and make them interchangeable. The strategy pattern lets the business rules vary independently from clients that use it. It delegates the responsibility to an object instead of doing the work it self. The VoterClient gets an instance of a randomGen which has a method randBetween. It can either be an instance of a RandomGenStrategy or a FixedNumberStrategy. Each of these classes has their implementation of the method randBetween. The RandomGenStrategy implements the reel random number generator. The FixedNumberStrategy returns a controlled value which we in can be fixed for testing purposes.\\
+This viewpoint shows the use of a strategy pattern. The idea with the strategy pattern is to define a family of business rule, encapsulate each one and make them interchangeable. The strategy pattern lets the business rules vary independently from clients that use it. It delegates the responsibility to an object instead of doing the work it self. The VoterClient gets an instance of a randomGen which has a method randBetween. It can either be an instance of a RandomGenStrategy or a FixedNumberStrategy. Each of these classes has their implementation of the method randBetween. The RandomGenStrategy implements the reel random number generator. The FixedNumberStrategy returns a controlled value which we can set, for testing purposes.\\
 \begin{center}
      \makebox[\textwidth]{\includegraphics[scale=0.60]{M_View_RandomNumberGenerator.jpg}}
 \end{center}

@@ -21,6 +21,7 @@ Zero knowledge proof is a important part of the PVSS protocol. It is used for ve
 
 %------------------------------------------------------------------------------------
 \subsection{Discrete Logarithm problem} % and One way functions
+\label{sec:discrete_logarithm_problem}
 %------------------------------------------------------------------------------------
 
 \parahead{One-way function} One-way functions are easy to compute but it is very difficult to compute their inverse functions. Thus, having data $x$ it is easy to calculate $f(x)$ but,  
@@ -169,6 +170,7 @@ The security of the PVSS protocol can be reduced down to the hardness of the DL 
 
 %------------------------------------------------------------------------------------
 \subsection{Solving the Discrete Logarithm Problem}
+\label{sec:Solving_the_Discrete_Logarithm_Problem}
 %------------------------------------------------------------------------------------
 We will here look at some of the known algorithms to solve the DL problem. It is known that the DL problem can be solved given enough time and compute power, so we only ask that this cannot be done within \textcolor{red}{What do we need here?  polynomial time?}. In order to increase the computation time needed to solve the DL problem, we increase the size of the groups we operate within. However the consequence of increasing the group size is an increased execution time of our protocol. \\
 
@@ -195,7 +197,7 @@ Below we have listed some of the known algorithms. These algorithms all takes th
     
     \item \textbf{Index-Calculus attacks} \\
     Index-Calculus attacks are the best known attack against DL problem, but it only
-    works in certain groups, in particularly $\Z_p^* $ and $ GF(2^m)^* $. \\
+    works in certain groups, in particularly $\Z_p^*$. \\
     
     This means in practice that $p$ needs to between $ 2^{1024} $ to $ 2^{2048}$
 \end{enumerate}
