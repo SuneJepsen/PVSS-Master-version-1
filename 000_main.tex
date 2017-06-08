@@ -17,6 +17,7 @@
 \usepackage{rotating}
 \usepackage{multirow}
 \usepackage{dirtytalk}
+\usepackage[titletoc]{appendix}
 
 %Setup of the TableOfContent to incl. subsubsection
 \setcounter{tocdepth}{3}
@@ -182,7 +183,7 @@ Ignacio \textsc{Cascudo} % Supervisor's Name
 %***************************************************************
 %               Part 2: Voting
 %***************************************************************  
-\chapter{Voting}    
+\chapter{Voting} \label{chap:voting}    
     \input{070_Voting.tex}
 
 
@@ -244,13 +245,10 @@ Ignacio \textsc{Cascudo} % Supervisor's Name
 %***************************************************************
 %               Part 7: Implementation in practices
 %***************************************************************
-\chapter{Implementation in practices}
-    \input{400_Implementation_in_practices.tex}
-
-    \input{410_Proof_of_concept.tex}
-
-    \input{420_Implementing_the_application.tex}
-
+\chapter{Software implementation}
+    \input{400_Software_Implementation.tex}
+    
+    \clearpage
     \input{430_Issue_table.tex}
 
 \part{Reflecting}    
@@ -277,7 +275,9 @@ Ignacio \textsc{Cascudo} % Supervisor's Name
 %***************************************************************
 %               Appendex
 %***************************************************************
-\chapter{Appendex}
-    \input{950_Appendex.tex}
 
+    \begin{appendices}
+        \input{950_Appendex.tex}
+    \end{appendices}
+   
 \end{document}

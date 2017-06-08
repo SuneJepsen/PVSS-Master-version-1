@@ -164,15 +164,14 @@ The DDH problem is no harder then CDH problem
 \end{lemma}
 
 \parahead{In the PVSS protocol}  
-\textcolor{red}{Needs some more filling :)}
 
 The security of the PVSS protocol can be reduced down to the hardness of the DL problem. Which means that if there can be found a efficient algorithm to solve the DL problem with large expoents then the entire PVSS protocol is insecure. In the next subsection we will look at known algorithms for solving the DL problem. 
 
 %------------------------------------------------------------------------------------
 \subsection{Solving the Discrete Logarithm Problem}
-\label{sec:Solving_the_Discrete_Logarithm_Problem}
+\label{sec:solving_the_discrete_logarithm_problem}
 %------------------------------------------------------------------------------------
-We will here look at some of the known algorithms to solve the DL problem. It is known that the DL problem can be solved given enough time and compute power, so we only ask that this cannot be done within \textcolor{red}{What do we need here?  polynomial time?}. In order to increase the computation time needed to solve the DL problem, we increase the size of the groups we operate within. However the consequence of increasing the group size is an increased execution time of our protocol. \\
+We will here look at some of the known algorithms to solve the DL problem. It is known that the DL problem can be solved given enough time and compute power, so we only ask that this cannot be done within polynomial time. In order to increase the computation time needed to solve the DL problem, we increase the size of the groups we operate within. However the consequence of increasing the group size is an increased execution time of our protocol. \\
 
 \noindent
 Below we have listed some of the known algorithms. These algorithms all takes the same input and gives the same output. The input is a cyclic group $G$, an generator $g$ and a element $c \in G$, and we can calculate the $t = ord(G)$. The output is an integer $a$ that solves $g^a = c$
@@ -312,7 +311,7 @@ Hash functions is a function that takes a message of arbitrary size and outputs 
 A function hash function: $\{0,1\}^{\leq L} \rightarrow \{0,1\}^\ell$ is called collision resistant if it is hard to find $x \in \{0,1\}^{\leq L}$ and $x' \in \{0,1\}^{\leq L}$ such that $x \neq x'$ and $H(x)=H(x')$ - the value $(x,x')$ is called a collision. Here $\{0,1\}^{\leq L}$ denotes the set of bitstrings of length at most $L$. If $L \geq \ell$, then of course collisions exist, so they can be found given enough time, which is fine as we only ask that they are computationally hard to find.  
 
 %------------------------------------------------------------------------------------
-\subsection{Fiat Sharmir}
+\subsection{Fiat Shamir} \label{sec:fiat_shamir}
 %------------------------------------------------------------------------------------
 The Fiat–Shamir heuristic is a technique in cryptography for taking an interactive proof of knowledge into a non interactive proof. This way, some fact (for example, knowledge of a certain number secret to the public) can be proven without revealing underlying information. This means that transforming a interactive proof into a non-interactive proof. Instead of the verifier creates a challenge the prover creates a challenge, on some previous data, based on a hash function.
 

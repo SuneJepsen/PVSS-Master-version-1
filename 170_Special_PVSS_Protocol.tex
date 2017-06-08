@@ -4,7 +4,10 @@ In this section we look at the electronic voting protocol described in \cite{Sch
 Giving the complexity of the protocol we divided this description into three parts. In the first part we will describe the protocol as simple as possible, leaving out mathematical justification and proofs. In second part we will be looking at the mathematical justification, describing this in the same order as in the first part. Finally we will look though the proofs in the last part. 
 
 
-\section{The protocol}
+%--------------------------------------------------------------------------
+\section{The protocol}   \label{sec:the_protocol}
+%--------------------------------------------------------------------------
+
 
 \noindent
 The overall concept of the protocol is to allow a group of voters to cast there votes in the form "yes" or "no", and publish the result to a public Bulletinboard. When a deadline is reach or when all votes have been casted a group of talliers takes the votes and calculates the end result. 
@@ -74,7 +77,7 @@ t &\in \Z_q^* &&= \{1,2,3,...,q-1\}
 \end{alignat*}
 
 \noindent
-The prime $q$ is uniformly randomly chosen from $\Z$, but in practise we use the subset $2^{l-1}$ to $2^l$. $l$ is chosen  larger then 1024 because of the security requirements described in section \ref{sec:Solving_the_Discrete_Logarithm_Problem}. The generators $g$ and $G$ are computed as squares from the sets $f$ and $F$, the reason for this is elaborated in section \ref{sec:protocol_details_initialization}.  $2q+1$ must also be a prime and the reason why we use $2q +1$ is because we are working with Shamirs scheme in the exponents which also is described in section \ref{sec:protocol_details_initialization}. $t$ is chosen based on the system requirements for our fault tolerance against corrupted parties.\\
+The prime $q$ is uniformly randomly chosen from $\Z$, but in practise we use the subset $2^{l-1}$ to $2^l$. $l$ is chosen  larger then 1024 because of the security requirements described in section \ref{sec:solving_the_discrete_logarithm_problem}. The generators $g$ and $G$ are computed as squares from the sets $f$ and $F$, the reason for this is elaborated in section \ref{sec:protocol_details_initialization}.  $2q+1$ must also be a prime and the reason why we use $2q +1$ is because we are working with Shamirs secret sharing in the exponents which also is described in section \ref{sec:protocol_details_initialization}. $t$ is chosen based on the system requirements for our fault tolerance against corrupted parties.\\
 
 \noindent
 \textbf{The tallier generates a private key $x_i$ and a public key $y_i$.}
@@ -118,10 +121,10 @@ Hidden \ vote : U&=G^{s+v}
 \end{alignat*}
 
 \noindent
-$p(i)$ refers to the share in a point corresponding to a given tallier. The shares are encrypted using the talliers public key $y_i$. $U$ is a DL problem that hides the vote as the exponentiation. As the vote $v$ only can hold the values $0$ or $1$ this wouldn't make for a hard problem. By reusing the secret $s$ and adding this to $v$, then given a large $s$, $U$ should be a hard problem. The above is then published to the Bulletinboard. \\
+Each voter creates encrypted shares tallier $1$, tallier $2$,..., tallier $n$. The $p(i)$ refers to the share in a point corresponding to a given tallier. The shares are encrypted using the talliers public key $y_i$. $U$ is a DL problem that hides the vote as the exponentiation. As the vote $v$ only can hold the values $0$ or $1$ this wouldn't make for a hard problem. By reusing the secret $s$ and adding this to $v$, then given a large $s$, $U$ should be a hard problem. The above is then published to the Bulletinboard. \\
 
 \noindent
-Besides the above, the proofs $PROOF_U$ and $DLEQ$ are computed and published. $PROOF_U$ proofs that the vote is either $0$ or $1$ without revealing the actual value of the vote. The $DLEQ$ proofs that the shares are constructed correctly and consistent. Both proofs are elaborated in details later in section \ref{sec:proofs}
+Besides the above, the proofs $PROOF_U$ and $DLEQ$ are computed and published. The $PROOF_U$ proofs that the vote is either $0$ or $1$ without revealing the actual value of the vote. The $DLEQ$ proofs that the shares are constructed correctly and consistent. Both proofs are elaborated in details later in section \ref{sec:proofs}
 
 %--------------------------------------------------------------------------
 \subsection{Tallying}
@@ -154,55 +157,48 @@ Note that besides decrypting the shares the tallier will publish a $DLEQ$ proof 
 
 \noindent
 \textbf{A master authority applies Lagrange interpolation}\\
-With all the $S^*$ we can compute the sum of the secrets.   One can now use lambda, which is computed from the  Lagrange interpolation formular, \begin{math} \lambda_j \end{math} and multiply these values which will be the same as the sum of the exponents. See figure \ref{info:Computing_the_coefficients} \\
-
-\noindent
-The \begin{math}p_j(0) \end{math} correspond to the sum of the secret values of \textit{s} for the voters. This \begin{math}p_j(0)\end{math} corresponds to the evaluation of \begin{math}h(0)\end{math}. See figure  \ref{info:Applying_Lagrange_polynomial_interpolation}
+After the tallier has published their decrypted shares $S_i^*$ a master authority will be able to compute the sum of the secrets from the voters.
 
 
 \begin{alignat*}{2}
-(Y_1^*)^{\lambda_1  \cdot  \ (mod \ q)}  \cdot  (Y_2^*)^{\lambda_2 \ (mod \ q)}  \cdot  (Y_n^*)^{\lambda_n \ (mod \ q)} \ (mod \ 2 \cdot q+1)
+(S_1^*)^{\lambda_1  \cdot  \ (mod \ q)}  \cdot  (S_2^*)^{\lambda_2 \ (mod \ q)}  \cdot  (S_n^*)^{\lambda_n \ (mod \ q)} \ (mod \ 2 \cdot q+1) = G^{ \sum\limits_{j=1}^m s_j}
 \end{alignat*}
-
 
 \noindent
-We can substitute the $Y^*$ with $G$. The final result in the exponents is a evaluation in some polynomium in $0$ which corresponds to the sum of all random values $s$.
-
-\begin{alignat*}{2}
-&=G^{ \sum\limits_{j=1}^m \lambda_j p_j(1)} \cdot G^{ \sum\limits_{j=1}^m \lambda_j p_j(2)} \cdot...\cdot G^{ \sum\limits_{j=1}^m \lambda_j p_j(n)}\\
-&=G^{ \sum\limits_{j=1}^m \lambda_j p_j(1) +  \sum\limits_{j=1}^m \lambda_j p_j(2) +...+  \sum\limits_{j=1}^m \lambda_j p_j(n)}\\
-&=G^{ \sum\limits_{j=1}^m (\lambda_j p_j(1)+\lambda_j p_j(2)+,...,+\lambda_{j}p_j(n))} = G^{ \sum\limits_{j=1}^m p_j(0)}= G^{ \sum\limits_{j=1}^m s_j}
-\end{alignat*}
+With all the $S_i^*$ we can compute the sum of the secrets. We apply the lambdas to exponents on $S_i^*$, which is computed from the  Lagrange interpolation formular, \begin{math} \lambda_j \end{math} from section \ref{sec:shamir_secret_sharing_lagrange_interpolation}. We can then multiply the $S_i^*$ which can be  reduces to the sum of the exponents, which are equal to the sum of the secrets.\\
 
 
 \noindent
 \textbf{A master authority computes the votes}\\
-The last step is to isolate the votes and then compute the final result. By combining \begin{math}U_j \end{math} we obtain the following.
+The last step is to isolate the votes and then compute the final result. By multiplying \begin{math}U_j \end{math} from the voters we obtain the following.
 
 \begin{alignat*}{2}
 (\prod\limits_{j=1}^{m} U_{j}) \ (mod \ 2 \cdot q+1)=  G^{ \sum\limits_{j=1}^m s_j +v_j}
 \end{alignat*}
 
 \noindent
-By dividing with $G^{ \sum\limits_{j=1}^m s_j}$ we isolate \textit{v}
+From the previous step we computed $G^{ \sum\limits_{j=1}^m s_j}$. To  isolate the sum of votes \textit{v} in the exponent we can multiply  $(\prod\limits_{j=1}^{m} U_{j})$ by the inverse of $(G^{ \sum\limits_{j=1}^m s_j})^{-1}$ in the following.
 
 \begin{alignat*}{2}
-\frac{G^{ \sum\limits_{j=1}^m s_j +v_j}}{{ G^{ \sum\limits_{j=1}^m s_j} }} =G^{ \sum\limits_{j=1}^m s_j +v_j -\sum\limits_{j=1}^m s_j} = G^{ \sum\limits_{j=1}^m v_j}
+ G^{ \sum\limits_{j=1}^m s_j +v_j} \cdot (G^{ \sum\limits_{j=1}^m s_j})^{-1} = G^{ \sum\limits_{j=1}^m v_j}
 \end{alignat*}
 
+
 \noindent
-To solve the computing of the votes one can compute \begin{math}G^0, G^1, G^3,..., G^{v_j} \end{math} by exhaustive search. A more efficient algorithm is to use Baby-step giant-step algorithm. 
+To solve the computing of the votes one can compute \begin{math}G^0, G^1, G^3,..., G^{v_j} \end{math} by exhaustive search. The final vote count will be the exponent raised on $G$. A more efficient algorithm is to use Baby-step giant-step algorithm described in section \ref{sec:solving_the_discrete_logarithm_problem}. 
 
 %--------------------------------------------------------------------------
 \section{Protocol details} \label{sec:protocol_details}
 %--------------------------------------------------------------------------
+In this part we will elaborate on the mathematical justification based on our explanation of the protocol.  
+
 
 \subsection{Initialization} \label{sec:protocol_details_initialization}
-\noindent
+\textbf{Elaboration of computation of  $2q+1$}\\
 In our implementation we will pick a prime, \begin{math}q\end{math}, so we avoid doing the gcd computation. The protocol states that we have to compute in a group of order q. This means that when we are doing operations in the exponent this property should be satisfied \begin{math}g^q=1\end{math} where \begin{math}q\end{math} is prime. If we are doing \begin{math}mod \ q \end{math} in the exponent we have \begin{math}g^q=g^0\end{math}. The reason for doing operation in the exponent \begin{math}mod \ q\end{math} is because we are using Sharmir secret sharing which require a finite field.\\
 
 \noindent
-One can see that given a generator $g=2 $ and a prime $q=5$, then \begin{math}2^5 \ mod \ 5 = 32 \ mod \ 5 = 2\end{math}. For this to be true, we take the square of numbers modulo a prime in this form \begin{math}2q+1\end{math}. This is also called a strong prime. By using this mathematical structure this property holds. We can choose \begin{math}b=a^2\end{math}. Then we see the property holds \begin{math}b^{q} = 1 \ mod \ 2q+1\end{math}. Using the same values as before, it is clear that \begin{math}(2^2)^5 \ mod \ 11 = 1024 \ mod \ 11 = 1\end{math}. Fermat little theorem states that \begin{math}b^{q-1} \ mod \ q = 1\end{math} where \begin{math}q\end{math} is prime. So we know if we pick our \begin{math}q\end{math} and \begin{math}b\end{math} (as a square)  in this form \begin{math}(a^{2})^{q+1-1} \ mod \ 2q+1 =1 =  a^{2q} \ mod \ 2q+1 =1\end{math} the property holds.\\
+One can see that given a generator $g=2 $ and a prime $q=5$, then \begin{math}2^5 \ mod \ 5 = 32 \ mod \ 5 = 2\end{math}. For this to be true, we take the square of numbers modulo a prime in this form \begin{math}2q+1\end{math}. This is also called a strong prime. By using this mathematical structure this property holds. We can choose \begin{math}b=a^2\end{math}. Then we see the property holds \begin{math}b^{q} = 1 \ mod \ 2q+1\end{math}. Using the same values as before, it is clear that \begin{math}(2^2)^5 \ mod \ 11 = 1024 \ mod \ 11 = 1\end{math}. Fermat little theorem states that \begin{math}b^{q-1} \ mod \ q = 1\end{math} where \begin{math}q\end{math} is prime. So we know if we pick our \begin{math}q\end{math} and \begin{math}b\end{math} (as a square)  in this form \begin{math}(a^{2})^{q+1-1} \ mod \ 2q+1 =1 =  a^{2q} \ mod \ 2q+1 =1\end{math} the property holds. This means if we are working in the exponents we $(mod \ q)$ and if we are working in the bases we $(mod \ 2q+1)$.\\
 
 \noindent
 The generators is randomly chosen in the set between $2$ and $2q-1$.  We remove $1$ because if $1$ get squared it will always gives $1$ and can therefor not be used as a generator. We remove $2q$ because $(2q)^2 = 1 \ mod \ 2q+1$. That means if you square $2q$ it will also give $1$ and can therefor not be used as a generator.
@@ -213,37 +209,44 @@ The generators is randomly chosen in the set between $2$ and $2q-1$.  We remove 
 The $Y_i$ is the shares encrypted using the talliers public key $y_i$ as described in section \ref{sec:ballot_casting}.
  
 \begin{alignat*}{5}
-&Voter \ 1&: Y_{1,1}&&=y_{1,1}^{p_1(1)},Y_{2,1}&&=y_{2,1}^{p_2(2)} ,.., Y_{n,1}&&=y_n^{p_n(n)}\\
-&Voter \ 2&: Y_{1,2}&&=y_{1,2}^{p_1(1)},Y_{2,2}&&=y_{2,2}^{p_2(2)} ,.., Y_{n,2}&&=y_n^{p_n(n)}\\
-&Voter \ \textit{m}&: Y_{1,m}&&=y_{1,m}^{p_1(1)} , Y_{2,m}&&=y_{2,m}^{p_2(2)} ,.., Y_{n,m}&&=y_n^{p_n(n)}
+&Voter \ 1 &&: Y_{1,1}&&=y_{1,1}^{p_1(1)},Y_{2,1}&&=y_{2,1}^{p_2(2)} ,.., Y_{n,1}&&=y_n^{p_n(n)}\\
+&Voter \ 2 &&: Y_{1,2}&&=y_{1,2}^{p_1(1)},Y_{2,2}&&=y_{2,2}^{p_2(2)} ,.., Y_{n,2}&&=y_n^{p_n(n)}\\
+&Voter \ \textit{m}&&: Y_{1,m}&&=y_{1,m}^{p_1(1)} , Y_{2,m}&&=y_{2,m}^{p_2(2)} ,.., Y_{n,m}&&=y_n^{p_n(n)}
 \end{alignat*}
 
 
 \noindent
-When computing the encryption of the shares $Y_i$, then each voter will compute the the above to each of the talliers. For clarification we add the tallier to the notation such that we have $Y_{ij}$ where $i$ is the $i$-th voter and $j$ is the $j$-th tallier. \\
+When computing the encryption of the shares $Y_i$, then each voter will compute the the above to each of the talliers. For clarification we add the tallier to the notation such that we have $Y_{ij}$ where $i$ is the $i$-th tallier and $j$ is the $j$-th voter referring to $ Y_{1,1}, \  Y_{1,2}$ etc. \\
 
 
 \noindent
-\textbf{Constructing the Proofs $Proofu$ and $DLEQ$}\\
-As briefly described in the previous section, the voter also publishes proofs that he have voted and distributed this vote accurately. The $DLEQ$, proofs that each share have been constructed in the same manner and that this is correct. In order to construct the proofs we need the following variables. 
+\textbf{Constructing the variable $C_j$ and $X_i$ to proofs  $DLEQ$ and $Proofu$}\\
+As briefly described in the previous section, the voter also publishes proofs that he have voted and distributed this vote accurately. The proof $Proofu$ uses the variable $C_0$ and the $DLEQ$ uses the variable $X_i$. In order to construct the proofs each voter creates the following variables. 
+
+\begin{flalign*}
+&hidden \ coeffiens : C_j = g^{\alpha_j},\ j \in \{0,1,2,3,....,t-1 \}, \ where \ \alpha_0 = s  \\ 
+&multiplum \ of \ hidden \ coeffiens: X_i = \prod\limits_{j=0}^{t-1} C_j^{i^j} =g^{p(i)}, \ 1\leq i\leq n \\ 
+\end{flalign*}
+
+\noindent
+$C_j$ holds all the coeffiens $\alpha_j$ including the secret $\alpha_0$, as these are hidden in the exponent of $G$, this is secured by the DL problem.\\
+
+\noindent
+The $p(i)$ raised in the exponent of $g$ is the polynomial $p(i)=\alpha_0+\alpha_1i^1+\alpha_2i^2+,...,+\alpha_{t-1}i^{t-1}$ created by each voter in the Ballot casting phase described in section ~\ref{sec:ballot_casting}.  The way we can reduce the following statement  $X_i = \prod\limits_{j=0}^{t-1} C_j^{i^j}$ to $g^{p(i)}$ is as follows. 
+
+\begin{flalign*}
+ X_i = \prod\limits_{j=0}^{t-1} C_j^{i^j} = \prod\limits_{j=0}^{t-1} (g^{\alpha_j})^{i^j} =g^{ \sum\limits_{j=0}^{t-1} \alpha_j \cdot i^{j}} = g^{ \alpha_0 \cdot i^{0} + \alpha_1 \cdot i^{1}+ \alpha_2 \cdot i^{2},..., \alpha_{t-1} \cdot i^{t-1} }  = g^{p(i)}
+\end{flalign*}
+
+
+\noindent
+To clarify, if the voter creates $3$ shares, that means the voter has to compute $X_1$, $X_2$ and $X_3$  which means one $X_i$ foreach share. This makes sense because the voter has to prove his honesty foreach of the shares.
+
 
 \begin{alignat*}{3}
-hidden \ coeffiens &: C_j = g^{\alpha_j},\ j \in \{0,1,2,3,....,t-1 \}, \ where \ \alpha_0 = s  \\ 
-multiplum \ of \ hidden \ coeffiens &: X_i = \prod\limits_{j=0}^{t-1} C_j^{i^j} =g^{p(i)}, 1\leq i\leq n
-\end{alignat*}
-
-\noindent
-$C_j$ holds all the coeffiens $\alpha_j$ including the secret $\alpha_j^0$, as these are hidden in the exponent of $G$, this is secured by the DL problem. \\
-
-
-\noindent
-The following is the computation of the $X_i$ to tallier 1 ($X_1$), tallier 2 ($X_2$) and tallier 3 ($X_3$).
-
-
-\begin{alignat*}{3}
-X_1 &=\prod\limits_{j=0}^{t-1} C_j^{i^j} &&= C_0^{1^0}  \cdot  C_1^{1^1}  \cdot  C_2^{1^2}\\
-X_2 &=\prod\limits_{j=0}^{t-1} C_j^{i^j} &&= C_0^{2^0}  \cdot  C_1^{2^1}  \cdot  C_2^{2^2}\\
-X_3 &=\prod\limits_{j=0}^{t-1} C_j^{i^j} &&= C_0^{3^0}  \cdot  C_1^{3^1}  \cdot  C_2^{3^2}
+X_1 &=\prod\limits_{j=0}^{t-1} C_j^{i^j} &&= C_0^{1^0}  \cdot  C_1^{1^1}  \cdot  C_2^{1^2} &&=  g^{ \alpha_0 \cdot i^{0} + \alpha_1 \cdot i^{1}+ \alpha_2 \cdot i^{2}}  = g^{p(i)}\\
+X_2 &=\prod\limits_{j=0}^{t-1} C_j^{i^j} &&= C_0^{2^0}  \cdot  C_1^{2^1}  \cdot  C_2^{2^2}  &&=  g^{ \alpha_0 \cdot i^{0} + \alpha_1 \cdot i^{1}+ \alpha_2 \cdot i^{2}}  = g^{p(i)}\\
+X_3 &=\prod\limits_{j=0}^{t-1} C_j^{i^j} &&= C_0^{3^0}  \cdot  C_1^{3^1}  \cdot  C_2^{3^2}  &&=  g^{ \alpha_0 \cdot i^{0} + \alpha_1 \cdot i^{1}+ \alpha_2 \cdot i^{2}}  = g^{p(i)}
 \end{alignat*}
 
 
@@ -268,34 +271,89 @@ y_i^{\sum\limits_{j=1}^m p_j(i)}=(G^{x_i})^{\sum\limits_{j=1}^m p_j(i)} = G^{x_i
 We derive  $S_i^*$ by applying the talliers private key to $Y_i^*$. Note that we are raising to the multiplicative inverse of the private key in  \textit{q}. The $p_j$ is the polynomium $p$ used by the $j$-th voter. More concrete this can be written as the following.
 
 \begin{alignat*}{3}
-Y_1^* &= y^{(p_1(1) + p_2(1) + p_3(1),.., p_n(1))}, \ &&S_1^* &&= G^{(p_1(1) + p_2(1) + p_3(1),.., p_n(1))}  \\
-Y_2^* &= y^{(p_1(2) + p_2(2) + p_3(2),.., p_n(2))}, \ &&S_2^* &&= G^{(p_1(2) + p_2(2) + p_3(2),.., p_n(2))} \\
-Y_n^* &= y^{(p_1(n) + p_2(n) + p_3(n),.., p_n(n))}, \ &&S_n^* &&= G^{(p_1(n) + p_2(n) + p_3(n),.., p_n(n))}
+Y_1^* &= y_1^{(p_1(1) + p_2(1) + p_3(1),.., p_n(1))}, \ &&S_1^* &&= G^{(p_1(1) + p_2(1) + p_3(1),.., p_n(1))}  \\
+Y_2^* &= y_2^{(p_1(2) + p_2(2) + p_3(2),.., p_n(2))}, \ &&S_2^* &&= G^{(p_1(2) + p_2(2) + p_3(2),.., p_n(2))} \\
+Y_n^* &= y_n^{(p_1(n) + p_2(n) + p_3(n),.., p_n(n))}, \ &&S_n^* &&= G^{(p_1(n) + p_2(n) + p_3(n),.., p_n(n))}
 \end{alignat*}
 
 
 
 \noindent
-Each tallier can publish $S_i^*$ and $Y_i^*$. Note that exponent on the $y$ and $G$ is the evaluation from each voter in some point in a given polynomial $h(1)= p_1(1) + p_2(1) + p_3(1),.., p_n(1),\ h(2)= p_1(2) + p_2(2) + p_3(2),.., p_n(2),...,\ h(n)=p_1(n) + p_2(n) + p_3(n),.., p_n(n) $.
+Each tallier can publish $S_i^*$ and $Y_i^*$. Note that the exponent on the $y_i$ and $G$ is the evaluation from each voter in some point in a given polynomial $h(1)= p_1(1) + p_2(1) + p_3(1),.., p_n(1),\ h(2)= p_1(2) + p_2(2) + p_3(2),.., p_n(2),...,\ h(n)=p_1(n) + p_2(n) + p_3(n),.., p_n(n) $.
 
 
 \begin{center}
 Tallier 1 publish: \begin{math}S_1^* = G^{ \sum\limits_{j=1}^m p_j(1)}   \end{math} and $Y_i^*= y_i^{\sum\limits_{j=1}^m p_j(1)}$\\
 Tallier 2 publish: \begin{math}S_2^* = G^{ \sum\limits_{j=1}^m p_j(2)}   \end{math} and $Y_i^*= y_i^{\sum\limits_{j=1}^m p_j(2)}$\\
-Tallier \textit{n} publish: \begin{math}S_n^* = G^{ \sum\limits_{j=1}^m p_j(n)}  \end{math} and $Y_i^*= y_i^{\sum\limits_{j=1}^m p_j(n)}$
+Tallier \textit{n} publish: \begin{math}S_n^* = G^{ \sum\limits_{j=1}^m p_j(n)}  \end{math} and $Y_i^*= y_i^{\sum\limits_{j=1}^m p_j(n)}$\\
 \end{center}
 
+\noindent
+\textbf{Elaboration of the step where the master authority applies Lagrange interpolation}
+
+
+\begin{alignat*}{2}
+(S_1^*)^{\lambda_1  \cdot  \ (mod \ q)}  \cdot  (S_2^*)^{\lambda_2 \ (mod \ q)}  \cdot  (S_n^*)^{\lambda_n \ (mod \ q)} \ (mod \ 2 \cdot q+1) = G^{ \sum\limits_{j=1}^m s_j}
+\end{alignat*}
+
+
+\noindent
+We can substitute the $S^*$ with $G$. The final result in the exponents is a evaluation in some polynomium in $0$ which corresponds to the sum of secrets $s$ computed by the voters.
+
+\begin{alignat*}{2}
+&=G^{ \sum\limits_{j=1}^m \lambda_j p_j(1)} \cdot G^{ \sum\limits_{j=1}^m \lambda_j p_j(2)} \cdot...\cdot G^{ \sum\limits_{j=1}^m \lambda_j p_j(n)}\\
+&=G^{ \sum\limits_{j=1}^m \lambda_j p_j(1) +  \sum\limits_{j=1}^m \lambda_j p_j(2) +...+  \sum\limits_{j=1}^m \lambda_j p_j(n)}\\
+&=G^{ \sum\limits_{j=1}^m (\lambda_j p_j(1)+\lambda_j p_j(2)+,...,+\lambda_{j}p_j(n))} = G^{ \sum\limits_{j=1}^m p_j(0)}= G^{ \sum\limits_{j=1}^m s_j}
+\end{alignat*}
+
+
+\noindent
+The \begin{math}p_j(0) \end{math} correspond to the sum of the secret values of \textit{s} for the voters. This \begin{math}p_j(0)\end{math} corresponds to the evaluation of a polynomial $h(0)= s_1 + s_2,..., s_n$.\\
+
+\noindent
+\textbf{Elaboration of the step where the master authority computes the votes}
+
+\begin{alignat*}{2}
+Sum \ of \ the \ secrets \ and \ the \  votes: (\prod\limits_{j=1}^{m} U_{j}) \ (mod \ 2 \cdot q+1)=  G^{ \sum\limits_{j=1}^m s_j +v_j}
+\end{alignat*}
+
+\noindent
+From the previous we saw that by multiplying \begin{math}U_j \end{math} we obtained the sum of the secrets and the votes in the exponent. To recap more concrete we have the following. \\
+
+\noindent
+The voters computes $U$
+
+
+\begin{alignat*}{2}
+Voter \ 1 &: U_1 &&=G^{s_1+v_1}\\
+Voter \ 2 &:U_2 &&=G^{s_2+v_2}\\
+Voter \ n &:U_m &&=G^{s_m+v_m}
+\end{alignat*}
+
+\noindent
+The  master  authority  mulitplies  the $U$
+
+\begin{alignat*}{2}
+(\prod\limits_{j=1}^{m} U_{j}) = U_1 \cdot U_2 \cdot,..., \cdot U_m = G^{s_1 + s_2,...,s_m + v_1 + v_2,..., v_m}
+\end{alignat*}
+
+\noindent
+To isolate the votes in the exponent we multiply the  $(\prod\limits_{j=1}^{m} U_{j})$ by the inverse of $(G^{ \sum\limits_{j=1}^m s_j})^{-1}$. This leads to the following  mathematical justification.
+
+\begin{alignat*}{2}
+\frac{G^{ \sum\limits_{j=1}^m s_j +v_j}}{{ G^{ \sum\limits_{j=1}^m s_j} }} = G^{ \sum\limits_{j=1}^m s_j +v_j -\sum\limits_{j=1}^m s_j} = G^{ \sum\limits_{j=1}^m v_j}
+\end{alignat*}
 
 
 %--------------------------------------------------------------------------
 \section{Proofs} \label{sec:proofs}
 %--------------------------------------------------------------------------
-In this section we will elaborate the mathematical justification of the proofs $DLEQ$ and $PROOF_U$. We will present an interactive and a non-interactive proof of the $DLEQ$ between the voter and the verifier.
+In this section we will elaborate the mathematical justification of the proofs $DLEQ$ and $PROOF_U$. We will present an interactive and a non-interactive proof of the $DLEQ$ between the voter and the verifier. The non-interactive $DLEQ$ proof is elaborated in appendix ~\ref{sec:dleq_non-interactive-proof-between_voters_and_verifier}. As mentioned there is also a $DLEQ$ proof provided by the tallier which is elaborated in appendix ~\ref{sec:dleq_proof_by_the_talliers}.
 
 %----------------------------------------------------------------------
-\subsection{DLEQ interactive proof between voters and verifier} \label{proofs:dleq_voter_verifier}
+\subsection{DLEQ interactive proof between voters and verifier} \label{sec:dleq_voter_verifier}
 %----------------------------------------------------------------------
-DLEQ stands for discrete logarithm equality. It proofs that the exponent are equal $X_i=g^{p(i)}$ and  $Y_i=y_i^{p(i)}$ without revealing \begin{math}{p(i)} \end{math} and if the prover is honest, then it should be the case that we get the same computed values in the end meaning $a_1 = g^w= g^r \cdot X_i^C$ and $a_2= y_i^w = y_i^r \cdot Y_i^C$. We will present the protocol and after that we will give concrete examples. Last we will describe the mathematical justification.\\
+DLEQ stands for discrete logarithm equality. It proofs that the exponent are equal $X_i=g^{p(i)}$ and  $Y_i=y_i^{p(i)}$ without revealing \begin{math}{p(i)} \end{math} and if the prover is honest, then it should be the case that we get the same computed values in the end meaning $a_1 = g^w= g^r \cdot X_i^C$ and $a_2= y_i^w = y_i^r \cdot Y_i^C$. The prover must compute same amount of $X_i$ as he creates shares. In practice this means that the prover supply a $DLEQ$ proof foreach of the shares. We will present the protocol and after that we will give concrete examples. Last we will describe the mathematical justification.\\
 
 \noindent
 The verification of the shares in the interactive proof happens by the following  interaction between the prover and the verifier.
@@ -309,7 +367,7 @@ The verification of the shares in the interactive proof happens by the following
     \hline                      \
     \textbf{DLEQ protocol}      \\
     \hline                      \
-    Public:  g,X_i,y_i,Y_i \ where \ X_i = g^{x_i} \ and \ Y_i=y_i^{x_i}     \\
+    Input:  g,X_i,y_i,Y_i \ where \ X_i = g^{\alpha_i} \ and \ Y_i=y_i^{\alpha_i}     \\
     \\
 	\begin{array}{L{2cm}ccc}
         & \text{\textsf{Prover}} & & \text{\textsf{Verifier}} \\
@@ -336,7 +394,7 @@ The verification of the shares in the interactive proof happens by the following
 
 
 \noindent
-Note that the verifier sends a challenge \textit{C}, after the prover has computed \begin{math}a_1\end{math} and  \begin{math}a_2\end{math}. The check only passes if the prover used the same exponents. The proof shows that there exist some element \begin{math} \alpha\end{math} such that \begin{math}g^\alpha = X_i \ \land \ y_i^\alpha=Y_i \end{math}. In the following there is an argument why $DLEQ$ works through Zero knowledge proof.\\ 
+Note that the verifier sends a challenge \textit{C}, after the prover has computed \begin{math}a_1\end{math} and  \begin{math}a_2\end{math}. The check only passes if the prover used the same exponents. The proof shows that there exist some element \begin{math} \alpha\end{math} such that $g^\alpha = X_i$ and   $y_i^\alpha=Y_i$. In the following there is an argument why $DLEQ$ works through Zero knowledge proof.\\ 
 
 
 
@@ -439,107 +497,12 @@ The prover has to be honest if this equation must be true. It is overwhelming un
 \textbf{Zero knowledge}\\
 The zero knowledge in this context means that the verifier doesn't learn anything about the $p(i)$. One way to argue zero knowledge is by showing that the values sent in the protocol doesn't depend on the $p(i)$. So if one can construct the values $a_1, \ a_2, \ r$  without knowing  $p(i)$  shows that they do not depend on $p(i)$ and we thereby do not learn anything about $p(i)$. One way of doing this is though experiment where on can change the order of the protocol. In is out of this thesis scope to go further depth on this subject.\\
 
-%----------------------------------------------------------------------
-\subsection{DLEQ non-interactive proof between voters and verifier}
-%----------------------------------------------------------------------
-Here we present how one can turn an interactive proof to a non interactive proof. This is also known as the Fiat Shamir where we are transforming a interactive proof into a non interactive proof (signature scheme). Instead of the verifier computes a challenge, the prover computes the challenge as a random function (hash).  We will present two ways off doing this transformation, a non optimized and a optimized version. Last we will describe an example on how this can be done.\\
-
-
-\parahead{The prover computes} \begin{math}a_1=g^w \ (mod\ q)  \land a_2=y_i^w \ (mod\ q),  w\in_R \Z_q \end{math}. Then the prover computes the hash \begin{math}C=H(X_i,Y_i,a_1,a_2) \end{math}. Then the prover computes  \begin{math}r=w-p(i)  \cdot  C \ (mod\ q)\end{math}. Last the prover publish \begin{math}a_1, a_2,r,C\end{math}. \\
-
-\noindent
-\parahead{The verifier computes} the following computations \begin{math}a_1 = g^r \cdot X_i^C  \ (mod\ q)\end{math} and \begin{math} a_2=y_i^r  \cdot  Y_i^C \ (mod\ q)\end{math} and \begin{math}C=H(X_i,Y_i,a_1,a_2)\end{math}.
-
-
-\begin{figure}[H]
-    \centering        
-    
-    $
-    \begin{array}{l}
-    \hline                      \
-    \textbf{DLEQ protocol}      \\
-    \hline                      \
-    Public:  g,X_i,y_i,Y_i   \ where \ X_i = g^{x_i} \land Y_i=y_i^{x_i}
-    \\
-	\begin{array}{L{1.1cm}lcl}
-        & \text{\textsf{Prover}} & & \text{\textsf{Verifier}} \\
-        \hline
-        Step \ 1    &           \begin{array}{l}
-                                    w\in_R \Z_q             \\ 
-                                    a_1=g^w \ (mod\ q)      \\ 
-                                    a_2=y_i^w \ (mod\ q)    \\
-                                    C=H(X_i,Y_i,a_1,a_2)    \\
-                                    r=w-p(i)  \cdot  C \ (mod\ q)
-                                \end{array}     &               & \\
-                    &                   &               & \\
-        Step \ 2    &                   &               \xrightarrow{\hspace{0.4em}a_1 , a_2 , r , C\hspace{0.4em}} & \begin{array}{l}
-            checks \ if: \\      
-            a_1 = g^r \cdot X_i^C \\ 
-            a_2=y_i^r \cdot Y_i^C \\
-            C=H(X_i,Y_i,a_1,a_2)
-        \end{array} \\
-        \hline
-    \end{array}
-    \end{array}
-    $    
-    \caption{DLEQ non interactive}
-	\label{fig:DLEQ_1}
-\end{figure}
-
-
-\noindent
-Note in above that there is no interaction between the prover and the verifier. \\
-
-\noindent 
-\textbf{DLEQ optimized}\\
-In the following we will show how one can improve the amount of computation of the challenge \textit{C}. Instead of computing the challenge \textit{n} times, one can compute it once and reuse the challenge.
-
-\begin{enumerate}
-    \item The prover publish  \begin{math}a_{1,i}=g^{w_i} \ (mod\ q)  \land a_{2,i}=y_i^{w_i} \ (mod\ q)\end{math}  for  \begin{math} 1\leq i \leq n, \ w_i\in_R \Z_q \end{math}.
-    \item The prover computes the hash \begin{math}C=H(X_i,Y_i,...,X_n,Y_n,a_{1,1},a_{2,1},\\a_{1,2},a_{2,2},...,a_{1,n},a_{2,n})\end{math}.
-    \item The prover computes \begin{math}r_i\end{math}:  \begin{math}r_i=w_i-p(i)  \cdot  C \ (mod\ q)\end{math} and publish \begin{math}r_i,C\end{math}.
-    \item The verification contains of the following computation:
-    \begin{enumerate}        
-        \item The verifier checks if:   \begin{math}a_{1,i} = g^{r,i} \cdot X_i^C \ (mod\ q) \end{math}
-        \item The verifier checks if:  \begin{math} a_{2,i}=y_i^{r_{i}}  \cdot  Y_i^C \ (mod\ q)\end{math}
-         \item The verifier checks if:  $C=H(X_i,Y_i,...,X_n,Y_n,a_{1,1},a_{2,1},$\\
-$a_{1,2},a_{2,2},...,a_{1,n},a_{2,n})$
-    \end{enumerate}
-\end{enumerate}
-
-\noindent 
-\textbf{DLEQ computation for 3 voters}\\
-Hence the hash contains all the  \begin{math}a_i \end{math} the prover will compute this proof once for all  \begin{math}p(i) \end{math} which improve efficiency. This means that if there are 3 voters, then the above computation has to be done 3 times for every tallier, but same hash can be computed once for every tallier. 
-
-
-
-\begin{enumerate}
-    \item The prover publish $a_{1,1},a_{2,1},a_{1,2},a_{2,2},a_{1,3},a_{2,3}$.
-    \item The prover publish $C,r_1,r_2,r_3$.
-    \item The prover selects  $w_1, w_2,w_3\in_R \Z_q$.
-    \item The prover computes $a_{1,i}=g^w_i \ (mod\ q) \land a_{2,i}=y_i^{w_i} \ (mod\ q)$.
-    \item The prover computes the hash  $C=H(X_i,Y_i,...,X_n,Y_n,a_{1,1},a_{2,1},$\\
-$a_{1,2},a_{2,2},...,a_{1,n},a_{2,n})$.
-    \item The prover computes $\ r_i:  r_i=w_i-p(i)  \cdot  C \ (mod\ q)$ .
-    \item The verification contains of the following computation:
-    \begin{enumerate}        
-        \item The verifier checks if: $a_{1,i} = g^{r,i} \cdot X_i^C \ (mod\ q) $
-        \item The verifier checks if:$a_{2,i} =y_i^{r_{i}}  \cdot  Y_i^C \ (mod\ q)  $ 
-         \item The verifier checks if: $C=H(X_i,Y_i,...,X_n,Y_n,a_{1,1},a_{2,1},$\\
-$a_{1,2},a_{2,2},...,a_{1,n},a_{2,n})$
-    \end{enumerate}
-\end{enumerate}
-
-
-
-\noindent
-\textbf{Zero knowledge proof for the $DLEQ$}\\
-The same arguments holds for correctness, soundness and zero knowledge, which is described in section \ref{proofs:dleq_voter_verifier} about the interactive $DLEQ$. 
+ 
 
 %----------------------------------------------------------------------
-\subsection{Description of $ \mathbf{PROOF_U} $}
+\subsection{Description of $ \mathbf{PROOF_U} $} \label{sec:proof_u}
 %----------------------------------------------------------------------
-In this section we show with $PROOF_U$ that the voter either votes  1 or 0. The voter proves that there is consistency between the exponents of how \begin{math}U\end{math} and \begin{math}C_0\end{math} and is constructed from \begin{math}U=G^{s+v}\end{math} and \begin{math}C_0 = g^s\end{math} and the exponents only differs from the vote hence 0 or 1. We will show the interactive proof and through Fiat–Shamir  we transform an interactive proof of knowledge into a non-interactive proof of knowledge. The protocol illustration includes both scenarios where the voter votes either 0 or 1. If the voter votes 0 step 1a, 2, 3a, 4 will be followed. If the voter votes 1 step 1b, 2, 3b, 4 will be followed.\\
+In this section we show with $PROOF_U$ that the voter either votes  1 or 0. The voter proves that there is consistency between the exponents of how \begin{math}U\end{math} and \begin{math}C_0\end{math} is constructed from \begin{math}U=G^{s+v}\end{math} and \begin{math}C_0 = g^s\end{math}. The exponents only vary when 1 or 0 is voted. We will show the interactive proof and through Fiat–Shamir  we transform an interactive proof of knowledge into a non-interactive proof of knowledge. The protocol illustration includes both scenarios where the voter votes either 0 or 1. If the voter votes 0 step 1a, 2, 3a, 4 will be followed. If the voter votes 1 step 1b, 2, 3b, 4 will be followed.\\
 
 \begin{figure}[H]
     \centering        
@@ -565,7 +528,7 @@ In this section we show with $PROOF_U$ that the voter either votes  1 or 0. The 
                                     b_1 = G^{r_1}  \cdot  (\frac{U}{G^{1-v}})^{d_1} = G^{r_1}  \cdot  (\frac{U}{G})^{d_1} \\
                                 \end{array}     &               & \\
                                 \\
-                    &                   \xrightarrow{\hspace{1em}a_0, a_1, b_0, b_1\hspace{1em}} \ \textbf{Publish to bulletin}&  & \\                                
+                    &                   \xrightarrow{\hspace{1em}a_0, a_1, b_0, b_1\hspace{1em}} \ \ {\scriptstyle  \textbf{Publish to bulletin}} &  & \\                                
                     &                   &               & \\
         Step \ 1b   &           \begin{array}{l}
                                     if\ vote (v) =1             \\ 
@@ -578,9 +541,9 @@ In this section we show with $PROOF_U$ that the voter either votes  1 or 0. The 
                                 \end{array}     &               & \\
                     &                   &               & \\
                     \\
-                    &                   \xrightarrow{\hspace{1em}a_0, a_1, b_0, b_1\hspace{1em}} \ \textbf{Publish to bulletin} & \\
+                    &                   \xrightarrow{\hspace{1em}a_0, a_1, b_0, b_1\hspace{1em}} \  {\scriptstyle  \textbf{Publish to bulletin}} & \\
         Step \ 2    &                    & \begin{array}{l}
-                                \textbf{Create \ challenge:} \\      
+                                {\scriptstyle  \textbf{Publish to bulletin}} \\      
                                 C\in_R \{0,...,q-1\} \\ 
                                 \xleftarrow{\hspace{2em}C\hspace{2em}}\\
                                 \end{array}  \\
@@ -590,7 +553,7 @@ In this section we show with $PROOF_U$ that the voter either votes  1 or 0. The 
                                    r_0=w-s \cdot d_0 \ mod\ q\\  
                                 \end{array}     &               & \\
                                 \\
-                    &                   \xrightarrow{\hspace{1em}d_0,\ r_0,\ d_1,\ r_1\hspace{1em}} \ \textbf{Publish to bulletin}&  & \\                                
+                    &                   \xrightarrow{\hspace{1em}d_0,\ r_0,\ d_1,\ r_1\hspace{1em}} \ \  {\scriptstyle  \textbf{Publish to bulletin}} &  & \\                                
                     &                   &               & \\
         Step \ 3b   &           \begin{array}{l}
                                     if\ vote (v) =1             \\ 
@@ -598,10 +561,10 @@ In this section we show with $PROOF_U$ that the voter either votes  1 or 0. The 
                                     r_1=w-s \cdot d_1 \ mod\ q\\ 
                                 \end{array}     &               & \\
                                 \\
-                    &                   \xrightarrow{\hspace{1em}d_0,\ r_0,\ d_1,\ r_1\hspace{1em}} \ \textbf{Publish to bulletin}&  &\\
+                    &                   \xrightarrow{\hspace{1em}d_0,\ r_0,\ d_1,\ r_1\hspace{1em}} \ \ {\scriptstyle  \textbf{Publish to bulletin}} &  &\\
                     &                   &               & \\
         Step \ 4   &                    & \begin{array}{l}
-                                \textbf{Verification:} \\      
+                                {\scriptstyle \textbf{Verification:}} \\        
                                 C = d_1 + d_0,\\
                                 a_0=g^{r_0}  \cdot  C^{d_0}_0,\\
                                 b_0 = G^{r_0} \cdot U^{d_0},\\
@@ -730,76 +693,7 @@ The voter votes 0 and we show that  \begin{math}b_1= G^{r_1}  \cdot (\frac{U}{G}
 
 
 \noindent
-We will not go to depth in Soundness and Zero knowledge for $PROOF_U$. Here we will refer to another paper. 
+We will not go to depth in Soundness and Zero knowledge for $PROOF_U$. Here we will refer to another paper. \cite{Cramer1994}
 
 
 
-
-%----------------------------------------------------------------------
-\subsection{DLEQ proof by the talliers}
-%----------------------------------------------------------------------
-The tallier will do computations on each of their shares. Each tallier uses the DLEQ to prove that the decryption of their shares is done correctly. It proofs that the exponent are equal \begin{math}G = y_i^{x_i}  \land Y_i=S_i^{x_i} \end{math} without revealing \begin{math}x_i \end{math} and if the prover was honest, then it should be the case that we get same computed values in the end meaning \begin{math}a_1=G^w = G^r \cdot y_i^C\end{math} and \begin{math}a_2=S_i^w = S_i^r \cdot Y_i^C\end{math}.\\
-
-\noindent
-First we show the interactive proof and then transform it to a non-interactive proof. The input values are \begin{math}(G,\ y_i,\ S_i, Y_i)\end{math} where \begin{math}G = y_i^{x_i}\end{math} and  \begin{math} Y_i=S_i^{x_i}\end{math}. We have some initial values
- \begin{math}g_1 =G,\ h_i=y_i,\ g_2=S_i,\ h_2=Y_i,\ \alpha=x_i \end{math} and \begin{math}w \in_R \{0,...,q-1\}\end{math}.\\
- 
- 
- 
-\noindent 
-In step 1 the prover computes \begin{math}a_1=G^w,\ a_2=S_i^w\end{math}. In step 2
-the verifier creates a challenge \begin{math}C\end{math}. In step 3 the tallier computes \begin{math}r=w-C \cdot x_i\end{math}. In step 4 the verifier computes \begin{math}a_1=G^r \cdot y_i^C,\ a_2=S_i^r \cdot Y_i^C\end{math}.
- 
- 
- 
-\begin{figure}[H]
-    \centering        
-    
-    $
-    \begin{array}{l}
-    \hline                      \
-    \textbf{DLEQ protocol by the talliers}      \\
-    \hline                      \
-    Input:  G,\ y_i,\ S_i, \ Y_i \ where \ G = y_i^{x_i} \land Y_i=S_i^{x_i}     \\
-    Output: 0 \ or \ 1
-    \\
-	\begin{array}{L{2cm}ccc}
-        & \text{\textsf{Prover}} & & \text{\textsf{Verifier}} \\
-        \hline
-        Step \ 1 & w\in_R \Z_q & & \\
-        & a_1=G^w     & & \\
-        & a_2=S_i^w   & \xrightarrow{\hspace{1em}a_1 , a_2\hspace{1em}} & \\
-        Step \ 2 & & & C\in_R \Z_q \\
-        & & \xleftarrow{\hspace{2em}C\hspace{2em}} & \\
-        Step \ 3 & r=w-x_i  \cdot  C    & & \\
-        Step \ 4 & & \xrightarrow{\hspace{2em}r\hspace{2em}} & \begin{array}{c}
-        checks \ if: \\      
-        a_1 = G^r \cdot y_i^C \\ 
-        a_2=S_i^r \cdot Y_i^C
-        \end{array} \\
-        \hline
-    \end{array}
-    \end{array}
-    $    
-    \caption{DLEQ}
-	\label{fig:DLEQ_by_talliers}
-\end{figure} 
-
-\noindent
-Note the interaction in step 2 where the verifier create a challenge to the prover. Through Fiat–Shamir we transform an interactive proof of knowledge into a non-interactive proof of knowledge by replacing step 2 with a hashing algorithm  \begin{math}C=H(G,\ y_i,\ S_i,\ Y_i,\ a_1,\ a_2)\end{math}.\\
- 
- \noindent
-\textbf{Mathematical justification}\\
-To justify correctness of the computations in step 4, we can do the following verification on \begin{math}a_1=G^w \stackrel{?}{=} G^r \cdot y_i^C\end{math} and \begin{math}a_2=S_i^w \stackrel{?}{=} S_i^r \cdot Y_i^C\end{math}.
-
-
-\begin{alignat*}{5}
-a_1 &=G^r \cdot y_i^C &=G^r \cdot y_{x_i}^C &=G^{r+x_iC} =G^{w-Cx_i+x_iC} =G^w\\
-a_2 &= S_i^r \cdot Y_i^C &=S^r \cdot Y_{x_i^C} &=S^{w-Cx_i} \cdot S_i^{x_i \cdot C} =S^{w-Cx_i+x_i \cdot C}&=S_i^w
-\end{alignat*}
-
-
-
-
-\noindent
-To show soundness and zero knowledge the same process from section \ref{proofs:dleq_voter_verifier} can be followed.
