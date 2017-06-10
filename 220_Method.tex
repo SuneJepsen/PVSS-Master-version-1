@@ -1,33 +1,58 @@
+%***********************************************
 \section{Method}
-To ensure a solid systematic approach for this part of the thesis we will use   
+%***********************************************
+To ensure a solid systematic approach for this part of the thesis we will use
 
 
 \begin{enumerate}
     \item Case
+    \item 3+1 description approach
     \item Functional requirements
     \item Quality attribute workshop
         \begin{enumerate}
             \item Quality attributes
             \item Quality attribute scenario
         \end{enumerate}
-    \item Architectural decision
-       \begin{enumerate}
-            \item Tactics and patterns
-        \end{enumerate}
-    \item Architectural evaluation
+    \item Tactics
 \end{enumerate}
 
 
 \begin{description}
     \item[Case] The purpose of the case is an informal description of the requirements for the electronic voting application. We use this as a introduction to a business/mission for the most important requirements for the electronic voting application.
     
-    
     \item[Functional requirements]  The purpose of the functional requirement is to capture the electronic voting application behavior based on the case description. We will take these requirements an categorize them according to the security requirements. Event though the functional requirements isn't in focus in this thesis we will use these requirements helpfull information in the discussion part of the Quality attribute workshop.  
     
     \item[Quality attribute workshop]  The purpose of the Quality Attribute Workshops (QAWs) is a systematic method for identifying a system's architecture critical quality attributes, such as availability, security and modifiability, that are derived from mission or business goals. For the scope of this thesis we will follow the phases in the QAW on a theoretical level, to derive the most important QA for the electronic voting application. We will use the structure of the QAW but we will not hold a practical workshop.  Based on the QA we will formulate the most important Quality attribute scenarios and describe related tactics.
     
-    \item[Architectural decision]  This part is about describing the rationale behind the architectural decision. Questions such as what made us end up with this design should be clear. A decision exclude another decision which should also be reflected in this part. We will use Tyree and Akerman approach for describing our decisions. 
-    
-    \item[Architectural evaluation]  Evaluating a software architecture is about whether the system meets the quality requirements. Here we will cover how well our architecture meets the quality goals in relation to tradeoffs between quality attributes. We use ATAM analysis for this purpose.  
+    \item [Tactics] For the selected QAS we will describe tactics that meets QAS response. For a given tactic we will describe the tactic and support it with diagrams which illustrate the influence on the architecture. 
 
 \end{description}
+
+%***********************************************
+\section{General design concepts}
+%***********************************************
+In the follwoing we will explain some general design concepts which will be used through out our software sections \cite{Baerbak10}. 
+
+\begin{description}
+    \item[Design pattern] A solution to a repeated design problem in a given context.  
+     \item[Maintainability (According to ISO 9126) ] The capability of a software product to be modified. Modifiaction may include corrections, improvements or adaptation of the software to changes in the enviroment and in requirements and functinal specifications.   
+    \item[Variability point] A well defined section of the code whose behavior it should be possible to vary.  
+    \item[Change by addition] We are only adding new code instead of modifying existing code. 
+    \item[Coupling] Coupling is the degree of how dependent one software module is on other software modules. 
+    \item[Cohesion] Cohesion refers to the degree of how related the responsibility of a software module belong together.    
+   \item[Test stubs] Test stubs are replacement that simulate the behaviors of a software module that a module undergoing tests depends on.
+
+\end{description}
+
+
+\noindent
+The compositional process is as follows \cite{Baerbak10}.
+
+
+\begin{enumerate}
+    \item Identify the behavior that varies. 
+
+    \item Always program against an interface which encapsulate the variable behavior.
+    
+    \item Delegate the responsibility to a specialized class which handle the concrete responsibility.
+\end{enumerate}

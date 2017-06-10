@@ -2,7 +2,7 @@ In this chapter we will briefly describe electronic voting in general. In order 
 
 
 \section{Introduction}
-In many aspects of our life's we encounter the act of voting, from simple things as voting whats for dinner, to the more complex things as a government election. The later involving a large number of people from different geographical locations. These election is normally handled by dividing the people into sections based on location, each section handling it's own sub-election and submitting the result to a overall tally. Though many countries still mostly rely on the old fashioned paper based ballots, we have in the recent years seen an increase in electronic voting. Electronic voting refers to the act of voting though an electronic devices and depending on the voting equipment and location, it can be divide into five categories \cite{Cet09}. 
+In many aspects of our life's we encounter the act of voting, from simple things as voting whats for dinner, to the more complex things as a government election. The later involving a large number of people from different geographical locations. These election is normally handled by dividing the people into sections based on location, each section handling it's own sub-election and submitting the result to a overall tally. Though many countries still mostly rely on the old fashioned paper based ballots, we have in the recent years seen an increase in electronic voting. Electronic voting refers to the act of voting though an electronic devices and depending on the voting equipment and location, this can be divide into five categories \cite{Cet09}. 
 
 \section{Classification}
 
@@ -19,8 +19,11 @@ In many aspects of our life's we encounter the act of voting, from simple things
 
 \end{description}
 
+\noindent
+The electronic voting application design and implemented in this thesis will be working within the \textbf{Remote internet voting} classification. 
 
-\section{The Voting Process}
+
+\section{The Voting Process} \label{sec:the_voting_process}
 Similar to the classification, there exist several of different systems and protocols for electronic voting. But they typically all follows the same process and includes the same actors as illustrated and describe below \cite{Cet09}. 
 
 \begin{figure}[H]
@@ -55,6 +58,8 @@ The voting process as illustrated on figure \ref{fig:Voting_Process} holds true 
     \item[Tallying] In this final stage the votes are counted, and of course only valid votes are being included. Ones the counting process is finished the final count is published. 
 \end{description}
 
+\noindent
+The terminologies introduced in this section will be used throughout the rest of the thesis. 
 
 \section{Challenges}
 Though the process of electronic voting have many similarities with paper based voting systems, there is still concern of the security. In paper based voting systems, the security is easily noticeable as this is represented by officials observing every stages of the process. the process typically goes along the lines of: When arriving to the polling site a voter typically already have proofs that he is eligible and is simply registered and handed the paper ballots. The paper ballot is fulfilled in a voting booth where only the voter himself is present. When the ballot is fulfilled, it is folded or put in an envelope, in order to hide the vote, and then put in a ballot box located on the polling site. Note that ballot is anonymous and typical only requires a simple mark. Ones all the votes have been cast or a deadline is reached then the votes is counted. Throughout this entire process there are neutral officials physical present typically along with represents from each party in the election and passive observers.   \\
@@ -121,11 +126,7 @@ To construct a electronic voting system that fulfills these security requirement
     \item[Homomorphic encryption]
 \end{description}
 
-This that are to be detailed in this chapter: 
 
-\begin{description}
-    \item[Voter]
-    \item[Tallier]
-    \item[Observer]
-    \item[Bulletin board]
-\end{description}
+
+
+3.8. Bulletin Board A bulletin board (Chaum, 1981) is a public broadcast channel with universally accessible memory where a party may write information via secure communication in the designated areas. The information can be read by any party. Bulletin boards are commonly used in electronic voting protocols. All communications with the bulletin boards are public and therefore can be monitored. Generally, data already written into a bulletin board cannot be altered or deleted in any way, but it can be read or appended. In traditional paper-based voting systems, people cannot make individual verifiability directly. However, the voter casts his vote into the ballot box by himself. Since the security of the ballot box is guaranteed, individual verifiability is, in a way, assured. Although this requirement is not directly satisfied in paper based voting, it should explicitly be fulfilled in electronic voting protocols due to the nature of computer systems and electronic equipment. Besides the voter’s individual verification, the voting process, steps and published tally would be verified by third party observers. Thus bulletin board gives full support to fulfil the verification and accuracy requirements of the eVoting systems.

@@ -1,48 +1,296 @@
-In chapter 6 we described the theoretical aspect behind our implementation and doing so described the architectural design of the implementation. In this chapter we describe how we have implemented the design, which challenges we have encountered doing so. We will also be looking at the performance and security of the implementation.
+In chapter \ref{chap:application} we described the theoretical aspect behind our system. A software architecture was designed and the most significant scenarios was formalized and solved on a theoretical level. In this chapter we describe how we implemented the design into a application.    
 
-
+%********************************************************************
 \section{Introduction}
+%********************************************************************
+Implementing a software design can be a difficult task, as design modules rarely maps directly into code. Using the approach of different viewpoints and scenarios helps in this regard, but challenges due arise which could not have been foresee nor illustrate in the design phase. Challenges can come from our design of the development environment to the physical restricts of the deployment environment. 
+
+%********************************************************************
+\section{Method}
+%********************************************************************
+The final result is described in a top-down approach, We start with an informal description of the system, and from here gradually go into details starting with the module views which describes the static structures of the implementation. Then, follows the component and connector view to describe the dynamic structures. After the presentation of the implementation we will look at how the specific tactic have been implemented and how we have taken solved the functional requirements of an electronic election.
+
+%********************************************************************
+\section{Development environment}
+%********************************************************************
+The implementation have been done using Microsoft ASP.NET framework, C\# and Javascript programming language. ASP.net is a widely used and supported framework for creating web application. This framework is used both as the backend RESTful server, BulletinBoard and for the web server hosting the clients. The clients, voter and tallier is implemented using javascript. Javascript have the benefits of running inside all modern browser and is widely used, thous giving us a very large set of libraries to our disposal. \\
 
 
+\section{Final result}
+In this section we describe the final implementation of the software design. 
 
-
-\section{Implementing the application}
-
-
-
-\subsection{Design and Implementation}
+%********************************************************************
+\subsection{Overview}
+%********************************************************************
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.50]{Deployment_view.png}
+    \includegraphics[scale=0.90]{Overview.jpg}
+    \caption{Overview of the system}
+    \label{fig:informal_overview}
+\end{figure}
+
+The figure \ref{fig:informal_overview} above illustrates an overview of system and the information flow in the different phases of the protocol. From left to right we see the voters each casting there votes and hiding the votes within a secret which, though secret sharing, is divided and encrypted into pieces corresponding to the number of talliers. the ballot casting phase ends with the voters publishing there votes and secret to the BulletinBoard. Ending the Ballot casting phase starts the tallying phase where the talliers each collects there individual pieces of the secret, multiplying the shares together, decrypting the multiplum and publishes the decrypted multiplum to the BulletinBoard. The last segment of the tally phase, where the votes are calculated is not illustrated in the figure, but is none the less implemented by letting a dedicated tally do the calculating and posting the result to the BulletinBoard. \\
+
+\noindent
+The overview does not introduce many new elements to the implementation not previously known from the protocol, in fact the only new element introduced is the Client server which serves as a web-server for the voters, to which the voters logon in order to cast there votes. However the overview clearly shows the topology of the implementation, namely a star topology with a server (BulletinBoard) in the middle and Clients all around. There is no directly communication between the clients, all communication goes through the Server. This is due to the nature of an election, though we require the talliers to have a persistent connection to the server we don't expect voters to stay connected throughout an entire election. The reason the Bulletinboard needs to have an persistent connection to the talliers is because after the ballot casting phase, The Bulletinboard needs to be able to notify the talliers for tallying phase.
+
+%********************************************************************
+\subsection{Viewpoints}
+%********************************************************************
+We use viewpoint as we further describes the implementation in details. We start with the module view points which shows the static elements of the implementations, elements like packages, interfaces and classes.  \\
+
+%********************************************************************
+\subsubsection{Module view}
+%********************************************************************
+Starting from the top we look at how the implementation is structured into packages, where each packages contains elements that focuses on the same responsibility. Structuring our implementation this way follows the design principles of high Cohesion and low Coupling introduced in chapter \ref{chap:application} and lays the ground for code that is flexible and easily maintainable. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.60]{Moduleview_packages_overview.jpg}
+    \caption{Package overview}
+    \label{fig:package_overview}
+\end{figure}
+
+\noindent
+Figure \ref{fig:package_overview} shows a package overview of the entire implementation. The figure show both the packages included in the implementation of the Client and the Bulletinboard. The Client include packages containing logic specific for Voter, Tally, Admin and the Domain package which holds logic used across the Client. The package overview of the Bulletinboard with only the two packages BusinessLogic and WebApi looks on the surface very simply, but below we unfold each package showing a more complex structure. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.60]{Moduleview_packages_BulletinBoard.jpg}
+    \caption{Package overview of Bulletinboard business logic}
+    \label{fig:package_overview_of_bulletinboard_businesslogic}
+\end{figure}
+
+\noindent
+Figure \ref{fig:package_overview_of_bulletinboard_businesslogic} shows the packages revealed when unfolding the BusinessLogic package. This include the sub-packages BusinessLogic, Storage, Doubles and Domain. The packages BusinessLogic, Storage and Domain is fairly self explanatory, the package Double holds the logic we used in order to unit test our implementation. \\
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.60]{Moduleview_Class.jpg}
+    \caption{Module view of Bulletinboard}
+    \label{fig:module_over_of_bulletinboar}
+\end{figure}
+
+\noindent
+Figure \ref{fig:module_over_of_bulletinboar} shows the interfaces and classes within the BusinessLogic package of the Bulletinboard. Note that the package Doubles have been left outside the container of the BusinessLogic, this is due to the fact that its responsibilities only evolves around testing and the packages is not used in the production environment. Also noticeable is the Domain package have not been specified further, the reason for this is, that it simply holds the representation of physical elements like a Ballot, a voter, a share etc, there is no business logic within these classes.
+
+\begin{description}
+    \item[IRegistrationService] is an interface that holds the responsibility of the \textit{Registration authority} specified in section \ref{sec:the_voting_process}. Is validates and registries eligible voters.  For this implementation we only included the class \textbf{FakeRegistrationService} which implements responsibilities from the IRegistrationService. 
+    
+    \item[IServant] is an interface that have the responsibilities of the \textit{BulletinBoard} also the described in section \ref{sec:the_voting_process}. It handles the communication with the Clients and insures the persistence of the election data such as the ballots, the shares etc. The class \textbf{BulletinBoardServant} implements the responsibilities of the IServant. A key functionality of the BulletinBoardServant is that most of its methods is read-only, this helps to ensure that no honest or dishonest user removes information. 
+    
+    \item[IStorage] is an interface that have the responsibilities of persisting and retrieving data. Both the classes \textbf{MongoStorage} and \textbf{FakeStorage} implements the responsibilities of the IStorage. The \textbf{MongoStorage} also acts as a client to a Mongo database to which it stores the data, where the \textbf{FakeStorage} simply stores the data in memory, meaning that the data is lost when the application stops. 
+    
+\end{description}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.60]{Moduleview_Class_Client.jpg}
+    \caption{Module view of Client}
+    \label{fig:module_view_of_client}
+\end{figure}
+
+\noindent
+Figure \ref{fig:module_view_of_client} shows the interfaces and classes of the Client. Again the package Double is left outside the contain of the Client, due to the same arguments stated above. 
+
+\begin{description}
+    \item[util] is a simple class that holds some helper function, that is used a cross he system. 
+    
+    \item[bignum] is a class that inherits the functionlitites from its superclass \textbf{bigInteger}. This structure enables us to expand or alter the functionalities of the \textbf{bigInteger} without changing the class. 
+    
+    \item[INumberGenerator] is an interface which have the responsibility of generating random integers and primes. The classes \textbf{RandomGenStrategy} and \textbf{FixedNumberStrategy} both implements the responsibilities of INumberGenerator. \textbf{FixedNumberGenerator} is used for testing and enabling us to control the numbers return. 
+
+    \item[AdminClient] is a class that holds the responsibilities of creating an election and generating the public elements used in the election. The AdminClient is depending on the class Bignum, and the Interface INumberGenerator. 
+    
+    \item[VoterClient] is a class that holds the responsibilities of a \textit{Voter} described in the protocol, section ~\ref{sec:ballot_casting}. This class, like the AdminClient is depending on Bignum and INumberGenerator.    
+    
+    \item[TallyClient] is a class that holds the responsibilities of a \textit{Tally} described in the protocol, section ~\ref{sec:tallying}. This class, is also depending on the Bignum and INumberGenerator. 
+\end{description}
+
+\noindent
+This last module view concludes the overall static structure of the implementation, we however have not further specified the elements in the Webapi package shown in figure \ref{fig:package_overview}. The reason for this, is that it does not hold any elements related to the protocol but only elements regarding the implementation of the REST interface describe in the Interoperability tactic in section \ref{sec:interoperability:restapi} and this implementation is discussed later. \\
+
+%********************************************************************
+\subsubsection{Component and Connector view}
+%********************************************************************
+For this next part we will look at how the dynamic components in the implementation interacts during runtime. We will present an overall insight of the system's interaction. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=.7]{CC_Overall_View.jpg}
+    \caption{Overall Component and Connector view}
+    \label{fig:CC_overall_View}
+\end{figure}
+
+\noindent
+Figure \ref{fig:CC_overall_View} shows how the system interact overall. As we have seen in the module views, there is no interacting between the components in the Client. They each operates independently and they all communicates with the Bulletinboard through the REST API.  The communication between the Clients and the Bulletinboard is done through an HTTPS connection. This connection uses Secure Socket Layer (SSL) or Transport Layer Security (TLS) to encrypt the messages sent or received. All successful communication done with the REST API is forward to the Servant component that handles the business logic. If there is a need for persisting data, then the Servant sends the data to the Storage. \\
+
+\noindent
+The following sequence diagram shows the overall flow of the system from the ballot casting phase to the result. The internal method calls and calculations done on each individual class is not show, in order to present a better overview.  
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=.7]{CC_SekvensDiagram.jpg}
+    \caption{Overall Sequence diagram}
+    \label{fig:CC_sequence_diagram}   
+\end{figure}
+
+%********************************************************************
+\subsubsection{Allocation view}
+%********************************************************************
+Finishing out the viewpoints we lastly have a deployment view showing the systems requirements to the deployment environment. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=.7]{deployment_view.jpg}
     \caption{Final deployment view}
+    \label{fig:final_deployment_view}
+\end{figure}
+
+\noindent
+Figure \ref{fig:final_deployment_view} shows that the system requires three servers, a database server running a mongo database, a web-server with a Internet Information Server (IIS) installed to host the Bulletinboard RESTful Webapi and lastly a web-server also with IIS installed to host the Webclient. We also require that devices that is to communicate with the system needs to have a modern browser installed, that is able to execute JavaScripts. 
+
+
+%********************************************************************
+\section{Implementing the tactics}
+%********************************************************************
+In this section we will highlight selected implementation of previously described tactics from chapter \ref{chap:application}.
+
+%********************************************************************
+\subsection{Interoperability: REST API}
+%********************************************************************
+As stated earlier we use a REST interface which should be easily accessible by everyone. This means that our Bulletinboard is build on some of the REST principles. Figure \ref{fig:rest_electronic_voting_web_service_model} illustrate an informal webservice model which describes our resources on the Bulletinboard. The process of constructing this diagram gives overview and insight of how we could design a REST interface on the different resources. 
+
+\begin{figure}[H]
+    \centering
+     \makebox[\textwidth]{\includegraphics[scale=0.60]{rest-classdiagram.jpg}}
+     \caption{Overview of REST electronic voting web service model}
+     \label{fig:rest_electronic_voting_web_service_model}
 \end{figure}
 
 
+\noindent
+Figure \ref{fig:rest_api_to_the_Bulletinboard} shows our final REST api. The urls shows how the REST api can be accessed together with the HTTP methods which shows which methods can be invoked on the different urls. 
 
 
-\section{Analyzing the implementation}
-We will in this section analyze of implementation. We will analyze the chosen tactics, the code quality and evaluate the security in the implementation. 
+\begin{table}[H]\fontsize{8}{9}\selectfont
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+Resource                                                    & URL                                                & HTTP methods                                                            \\ \hline
+Elections                                                   & /elections                                         & \begin{tabular}[c]{@{}l@{}}GET GetAllElections\\ POST CreateElection\end{tabular} \\ \hline
+Election                                                    & /elections/\{electionId\}                                  & GET GetElection                                                                   \\ \hline
+Votes                                                       & /elections/\{id\}/votes                            & \begin{tabular}[c]{@{}l@{}}GET GetAllVotes\\ POST CreateVote\end{tabular}         \\ \hline
+Talliers                                                    & /elections/\{id\}/talliers                         & \begin{tabular}[c]{@{}l@{}}GET GetAllTalliers\\ POST Register\end{tabular}        \\ \hline
+Shares                                                      & /elections/\{id\}/talliers/\{id\}/shares           & \begin{tabular}[c]{@{}l@{}}GET GetAllTallyShares \\  POST CreateDecryptShare     \end{tabular}                                                            \\ \hline
+\begin{tabular}[c]{@{}l@{}}Decrypted \\ shares\end{tabular} & /elections/\{id\}/talliers/shares        & \begin{tabular}[c]{@{}l@{}}GET GetAllDecrypted\\ TallyShares\end{tabular}                                                        \\ \hline
+\end{tabular}
+\caption{REST api to the Bulletinboard}
+\label{fig:rest_api_to_the_Bulletinboard}
+\end{table}
 
-\subsection{Security analyze}
-In Section \ref{sec:security_requirements} several security requirements that a secure 
-and complete cryptography voting protocol should satisfy where listed. We will look at
-these requirements and see if our implementation satisfy these. We will also 
+
+\noindent
+Since our webclients is build purely on javascript, all communication is through ajax call to the Bulletinboard. Listings \ref{lst:javascript_rest_api} illustrates how one can interact with REST api. The example shows how to create an election. This is called by the Admin client which starts the election.   \\ 
 
 
-\subsubsection{Generating Prime}
+\begin{lstlisting}[language=Javascript, caption=Javascript example, label=lst:javascript_rest_api]
+    $.ajax({
+        type: "POST",
+        url: "api/bulletinboard/elections",
+        data: jsonData,
+        success: function (data) {
+            if (callBack)
+                callBack(data);
+        },
+        contentType: "application/json"
+    });
+\end{lstlisting}
 
-\subsubsection{Generating Prime}
+
+ 
+%********************************************************************
+\subsection{Modifiability: Number generator}
+%******************************************************************** 
+Implementing this tactic proved to be fairly easy. However as the dynamic nature of Javascript does not support the concept
+of interfaces as we know it from Java and C\#, we had to introduce a method to secure that the injected NumberGenerator strategy
+applies to its responsibilities. To construct this method we utilizes the concept of \textit{Duck Typing} which basically states that
+if an object walks like a duck and quarks like a duck, then to the concerns of Javascript it is a duck!. 
+
+\begin{lstlisting}[language=Javascript, caption=Implementation of Duck typing, label=lst:ducktyping]
+    // example duck typing method
+    var InterfaceMethods = function (obj /*, method list as strings */) {
+        var i = 1, methodName;
+        while ((methodName = arguments[i++])) {
+            if (typeof obj[methodName] != 'function') {
+                return false;
+            }
+        }
+        return true;
+    }
+\end{lstlisting}
+
+\noindent
+In the following listing \ref{lst:interface_randgen} we show how the InterfaceMethod method is used to check
+for an interface object. It checks if the methods specified in the parameters is to be found on the object passed as the 
+first parameter. In the example below it checks for the methods "randBetween" and "randPrimeBetween".
+
+\begin{lstlisting}[language=Javascript, caption=Checking for an interface, label=lst:interface_randgen]
+var voterClient = function (serv, options) {
+    ...
+    ...
+    var randomGen;                     
+
+    if (options) {
+        if (options.randomGen) {
+            if (util.InterfaceMethods(options.randomGen, 'randBetween', 'randPrimeBetween')) {
+                randomGen = options.randomGen;
+            }
+        }
+    } 
+\end{lstlisting}
+ 
+\noindent
+As shown in the listing \ref{lst:interface_randgen} the NumberGenerator strategy is simply injected
+into the VoterClient upon creation. Methods within the VoterClient can now execute the methods
+randBetween and randPrimeBetween on the injected object through the variable randomGen. 
+ 
+ 
+
+%********************************************************************
+\section{Challenges}
+%********************************************************************
+
+%********************************************************************
+\subsection{Parsing a custom class}
+%********************************************************************
+
+
+%********************************************************************
+\subsection{Same-origin security policy}
+%********************************************************************
+Access-Control-Allow-Origin
+- CORS
+
+%********************************************************************
+\subsection{Generating Prime}
+%********************************************************************
 Generating very large primes is a computationally hard task and thous time consuming. Given the fact
 that the prime $q$ used in our implementation is public known, it is easy to think that one could simply
 use one or a set of very large hardcoded primes. However, by performing a large precomputation for a given
 prime an adversary can quickly calculate arbitrary discrete logarithms in that group, efficiently reducing 
 computation cost for all targets that uses this group \cite{Adrian:2015:IFS:2810103.2813707}. 
 
+%********************************************************************
+\section{Analyzing the application}
+%********************************************************************
+We will in this section analyze of implementation. We will analyze the chosen tactics, the code quality and evaluate the security in the implementation. 
 
-
-\subsubsection{Electronic voting secure requirements}
-
+%********************************************************************
+\subsection{Electronic voting secure requirements}
+%********************************************************************
 \begin{description}
     \item[Voter Privacy]
         No one should be able to link a vote back to the specific voter, and only the voter should
@@ -128,14 +376,24 @@ computation cost for all targets that uses this group \cite{Adrian:2015:IFS:2810
         in our implementation there is no link between a vote and a voter when the  
         
         It would be desirable if a voter could be able to check that his encrypted vote
-was counted and tabulated correctly in the final tally. The problem is that
-the combination of receipt-freeness and individual verifiability requirements
-obviously conflict with each other. One would need some kind of receipt in
-order to achieve verifiability, but then the same receipt could be used for
-vote buying or selling. As a consequence this voting application has given
-preference to receipt-freeness and thus no functionality for verifying votes
-later in the process are implemented.
+        was counted and tabulated correctly in the final tally. The problem is that
+        the combination of receipt-freeness and individual verifiability requirements
+        obviously conflict with each other. One would need some kind of receipt in
+        order to achieve verifiability, but then the same receipt could be used for
+        vote buying or selling. As a consequence this voting application has given
+        preference to receipt-freeness and thus no functionality for verifying votes
+        later in the process are implemented.
         
 
 \end{description}
 
+%********************************************************************
+\subsection{Security analyze}
+%********************************************************************
+In Section \ref{sec:security_requirements} several security requirements that a secure 
+and complete cryptography voting protocol should satisfy where listed. We will look at
+these requirements and see if our implementation satisfy these. We will also 
+
+%********************************************************************
+\section{Lessons learned}
+%********************************************************************

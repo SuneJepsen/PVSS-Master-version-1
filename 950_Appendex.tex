@@ -1,5 +1,5 @@
 %----------------------------------------------------------------------
-\chapter{DLEQ non-interactive proof between voters and verifier}
+\section{DLEQ non-interactive proof between voters and verifier}
 \label{sec:dleq_non-interactive-proof-between_voters_and_verifier}
 %----------------------------------------------------------------------
 In section  ~\ref{sec:dleq_voter_verifier} we elaborated an interactive $DLEQ$ proof between voter and verifer. Here we present how one can turn an interactive proof to a non interactive proof. This is also known as the Fiat Shamir where we are transforming a interactive proof into a non interactive proof which is described in section ~\ref{sec:fiat_shamir}. Instead of the verifier computes a challenge, the prover computes the challenge as a random function (hash).  We will present two ways off doing this transformation, a non optimized and a optimized version. Last we will describe an example on how this can be done.\\
@@ -99,7 +99,7 @@ The same arguments holds for correctness, soundness and zero knowledge, which is
 
 
 %----------------------------------------------------------------------
-\chapter{DLEQ proof by the talliers}
+\section{DLEQ proof by the talliers}
 \label{sec:dleq_proof_by_the_talliers}
 %----------------------------------------------------------------------
 The tallier will do computations on each of their shares. Each tallier uses the $DLEQ$ to prove that the decryption of their shares is done correctly. It proofs that the exponent are equal \begin{math}G = y_i^{x_i}  \ and \ Y_i=S_i^{x_i} \end{math} without revealing \begin{math}x_i \end{math} and if the prover was honest, then it should be the case that we get same computed values in the end meaning \begin{math}a_1=G^w = G^r \cdot y_i^C\end{math} and \begin{math}a_2=S_i^w = S_i^r \cdot Y_i^C\end{math}.\\
@@ -168,9 +168,9 @@ a_2 &= S_i^r \cdot Y_i^C &=S^r \cdot Y_{x_i^C} &=S^{w-Cx_i} \cdot S_i^{x_i \cdot
 To show soundness and zero knowledge the same process from section \ref{sec:dleq_voter_verifier} can be followed.
 
 
-
+\chapter{Calculations}
 %----------------------------------------------------------------------
-\chapter{Simple review of calculations in the protocol}
+\section{Simple review of calculations in the protocol}
 \label{sec:simple_review_of_calculations_in_the_protocol}
 %----------------------------------------------------------------------
 We will present a simplified example of the calculations through the protocol, which illustrate casting the votes and tallying the final counts of the votes. The structure follows the protocol as described in section \ref{sec:the_protocol}. In this calculation there are $3$ voters ($m$) and $3$ talliers ($n$). The example shows  3 voters which cast their votes and how 3 Tallier are able to reconstruct the sum of all votes.\\
@@ -346,7 +346,7 @@ The final computation is solving the following $G^x \ (mod \ 11) = 4$	where $x$ 
 
 
 %----------------------------------------------------------------------
-\chapter{Simple review of calculation of $DLEQ$ between voter and verifier}
+\section{Simple review of calculation of $DLEQ$ between voter and verifier}
 \label{sec:simple_review_of_calculation_of_dleq_between_voter_and_verifier}
 %----------------------------------------------------------------------
 We will present a simplified example of the calculations through the $DLEQ$, which proofs that the shares are constructed correctly and consistent as described in section \ref{sec:dleq_voter_verifier}.  The calculation will be based on the values  from appendix \ref{sec:simple_review_of_calculations_in_the_protocol}. We will use voter 1 with a polynomial $2+2x+4x^2$ and we will use Tallier 1 as the verifier. This means we will also  use calculation with these values $y_1 = 5, \ Y_1= 4, \ y_2 = 3, \ Y_2= 9, \ y_3 = 4, \ Y_3= 3$ since the $DLEQ$ needs the variables $g,X_i,y_i,Y_i$. Since the example is based on $3$ shares, there will be $3$ corresponding $DLEQ$ proves. To compute $X_1, \ X_2, \ X_3$ we first need to compute the $C_j$.
@@ -517,7 +517,7 @@ $C^{2^{3}}_2$           & $3^{2} = 9 = 4$          & $5^{4} = 9 \ (mod \ 11)$   
 \end{figure}
 
 %----------------------------------------------------------------------
-\chapter{Simple review of calculation of $PROOF_u$ between voter and verifier}
+\section{Simple review of calculation of $PROOF_u$ between voter and verifier}
 \label{sec:simple_review_of_calculation_of_proof_u_between_voter_and_verifier}
 %----------------------------------------------------------------------
 We will present a simplified example of the calculations through the $PROOF_u$. As described in section  \ref{sec:proof_u} the $PROOF_U$ proofs that the vote  either is $0$ or $1$ without revealing the actual value of the vote. The calculation will be based on the values  from appendix \ref{sec:simple_review_of_calculations_in_the_protocol}. The example will show a voter which votes $1$. We use voter 1 vote $v=1$ and his secret $s=2$ in this example.
@@ -577,3 +577,107 @@ We will present a simplified example of the calculations through the $PROOF_u$. 
     \caption{$PROOF_U$}
 	\label{fig:PROOF_U}
 \end{figure}
+
+
+
+
+
+\chapter{QAS}
+%----------------------------------------------------------------------
+\section{QAS - Availibility}
+\label{sec:the_remaining_qas:Availibility}
+%----------------------------------------------------------------------
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|p{0.3cm}|p{2.5cm}|p{8cm}|}
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \#  6: An internal crash occurs and the Bulletinboard is out of reach during normal operation. The response is that the error is logged and the system is running in degraded mode. The system should be up running within 5 minutes.\\
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Relevant Quality Attributes:} & Availibility\\
+  \hline
+  \multirow{6}{*}{\begin{sideways}{\bfseries Scenario Parts}\end{sideways}}
+  & {\bfseries Source:} & Internal  \\
+  \cline{2-3}
+  & {\bfseries Stimulus:} & Crash \\
+  \cline{2-3}
+  & {\bfseries Artifact} &  Bulletinboard \\
+  \cline{2-3}
+  & {\bfseries Environment:} &  Normal operation \\
+  \cline{2-3}
+  & {\bfseries Response:} &  Error is logged\\
+  \cline{2-3}
+  & {\bfseries Response Measure:} &  The system is running in degraded mode in max 5 minutes\\
+  \hline
+\end{tabular}
+\caption{Availibility QAS}
+\end{center}
+\end{table}
+
+
+
+
+
+%----------------------------------------------------------------------
+\section{QAS - Performences}
+\label{sec:the_remaining_qas:Performence}
+%----------------------------------------------------------------------
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|p{0.3cm}|p{2.5cm}|p{8cm}|}
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \#  7: 5 mill. users intiate votes to the Bulletinboard under normal operation. The votes are processed and saved with average latency of 2 seconds.\\
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Relevant Quality Attributes:} & Performence\\
+  \hline
+  \multirow{6}{*}{\begin{sideways}{\bfseries Scenario Parts}\end{sideways}}
+  & {\bfseries Source:} & 5 mill. users \\
+  \cline{2-3}
+  & {\bfseries Stimulus:} & Initiate their votes \\
+  \cline{2-3}
+  & {\bfseries Artifact} &  Bulletinboard \\
+  \cline{2-3}
+  & {\bfseries Environment:} &  Normal operation \\
+  \cline{2-3}
+  & {\bfseries Response:} &  The votes are processed and saved\\
+  \cline{2-3}
+  & {\bfseries Response Measure:} &  With average latency of 2 seconds\\
+  \hline
+\end{tabular}
+\caption{Performence QAS}
+\end{center}
+\end{table}
+
+
+
+%----------------------------------------------------------------------
+\section{QAS - Modifiability}
+\label{sec:the_remaining_qas:Modifiability}
+%----------------------------------------------------------------------
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|p{0.3cm}|p{2.5cm}|p{8cm}|}
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \#  9: A developer needs to replace the user interface for the voter client under design time. The replacement is made within $3$ hours.\\
+  \hline
+  \multicolumn{2}{|p{3cm}|}{\bfseries Relevant Quality Attributes:} & Modifiability\\
+  \hline
+  \multirow{6}{*}{\begin{sideways}{\bfseries Scenario Parts}\end{sideways}}
+  & {\bfseries Source:} & A developer \\
+  \cline{2-3}
+  & {\bfseries Stimulus:} & Needs to replace the user interface \\
+  \cline{2-3}
+  & {\bfseries Artifact} &  Voter client interface \\
+  \cline{2-3}
+  & {\bfseries Environment:} &  Design time \\
+  \cline{2-3}
+  & {\bfseries Response:} &  Replacement made\\
+  \cline{2-3}
+  & {\bfseries Response Measure:} &  Within 3 hours\\
+  \hline
+\end{tabular}
+\caption{Modifiability QAS}
+\end{center}
+\end{table}
+

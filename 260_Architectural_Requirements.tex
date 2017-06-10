@@ -50,9 +50,13 @@ In this phase we will present our case.
 \subsubsection{3. Architectural Plan Presentation}
 We will use this step to wrap up our first iteration for a high level overview of the system. This first overview is all based on the knowledge we got from the first part. We illustrate this overview through a component connector view. This viewpoint is concerned with the run-time functionality of the system.  At this point we have a component for a voter, tallier, observer, Bulletinboard and a registration process. We see the voter, tallier and the observers as clients and as active processes which all are communicating with the Bulletinboard. Therefor their must be a connector between the clients and Bulletinboard. The purpose of the registration authority is that every active participant must be registered through some registration authority before they can attend the electronic voting election. 
 
-\begin{center}
-     \makebox[\textwidth]{\includegraphics[scale=0.90]{CC_View_2.jpg}}
-\end{center}
+\begin{figure}[H]
+\centering
+     \includegraphics[scale=0.90]{CC_View_2.jpg}
+     \caption{Initial draft of component \& connector viewpoint}     
+\end{figure}
+ 
+
 
 \subsubsection{4. Identify architectural drivers}
 The purpose of this step is to identify architectural drivers. Architectural drivers are the keys to realizing quality attribute goals for the system. The architectural drivers are often found through requirements and business goals. We found architectural drivers by reflection and discussion against the security requirements of earlier described electronic voting application. Based on our architectural drivers, we begin to see the following quality attributes.\\
@@ -63,9 +67,8 @@ The purpose of this step is to identify architectural drivers. Architectural dri
 \begin{tabular}{|l|l|}
 \hline
 \multicolumn{2}{|l|}{Voters point of view}                \\ \hline
-Usability    & The system should be easy to use for a voter                   \\ \hline
-Availability    & \begin{tabular}[c]{@{}l@{}}The system should be reliability and should \\ give detailed feedback \end{tabular}   \\ \hline 
-Availability & The system should be available when needed                     \\ \hline
+Usability    & \begin{tabular}[c]{@{}l@{}}The system should be easy to use for a voter \\ and give feedback \end{tabular}                  \\ \hline
+Availability & \begin{tabular}[c]{@{}l@{}}The system should be available when needed \\ and if errors occours then the user should be \\ least affected by this. \end{tabular}                       \\ \hline
 Interoperability         & \begin{tabular}[c]{@{}l@{}} A voter should be able to cast a vote \\ from a given device with a internet \\ connection\end{tabular}                                                                   \\ \hline
 
 \end{tabular}
@@ -95,49 +98,62 @@ Modifiable       & \begin{tabular}[c]{@{}l@{}}The system should modifiable such 
 \subsubsection{5. Scenario brainstorming}
 The purpose of this step is to design quality attribute scenarios (QAS), based on our AD's. That is, here we form QAS in a form such as Bass et al. Here there  should be a clear stimulus and clear response measure.
 
-\begin{table}[H]
-\centering
-
-
-\begin{tabular}{|l|l|l|}
+\begin{longtable}[c]{|p{1.8cm}|p{8cm}|l|} 
 \hline
-Scenario \#      & Description                                                                                                                                                                                                                                                                          & Votes \\ \hline
-1        & \begin{tabular}[c]{@{}l@{}}A user casts a vote under \\ runtime and the PVSS client registers\\ the vote with a confirm message, within\\ 5 seconds.\end{tabular}                                                                                                                    &       \\ \hline
-2     & \begin{tabular}[c]{@{}l@{}}An internal crash occurs and the\\ Bulletinboard is out of reach\\ during normal operation. The response\\ is that the error is logged and the \\ system is running in degraded mode.\\ The system should be up running\\ within 5 minutes.\end{tabular} &       \\ \hline
-3 & \begin{tabular}[c]{@{}l@{}}A PVSS client cast a vote to the\\ Bulletinboard from a given device\\ with internet connection  under runtime and\\ the system is updated and 100\% \\ of the information is exchanged \\ and processed correctly.\end{tabular}                                                                          &       \\ \hline
-4 & \begin{tabular}[c]{@{}l@{}}An observer client validates\\ a vote from the the Bulletinboard \\ under runtime. The validation is \\ processed, and the Bulletinboard is\\ updated and 100\% of the information \\ is exchanged and processed correctly.\end{tabular} &       \\ \hline
-5      & \begin{tabular}[c]{@{}l@{}}5 mill. users intiate their votes \\to the Bulletinboard \\ under normal operation.\\ The votes are processed and saved \\ with average latency of\\ 2 seconds.\end{tabular} &       \\ \hline
-6      & \begin{tabular}[c]{@{}l@{}}An unitester should be able to\\ code a unit on the system\\ under development and the test suite\\ are executed  and result are captured\\ and 85\% of the system are coverage \\ within 3 hours.\end{tabular} &       \\ \hline
-7       & \begin{tabular}[c]{@{}l@{}}A developer should be able to make a\\ change to the registration code under \\ runtime and the change are made and tested\\ within 3 hours.\end{tabular}                                                                                          &       \\ \hline
-8       & \begin{tabular}[c]{@{}l@{}}A developer should be able to make a \\ change to the random number generator\\ code under runtime and the change are made\\ and tested within 3 hours.\end{tabular}                                                                                                   &       \\ \hline
-9         & \begin{tabular}[c]{@{}l@{}}A cheater cast a invalid vote to the Bulletin\\ board under normal operation. All valid data\\ should be preserved and the system\\ should be able to detect invalid from \\ valid data before the total counting of \\ the votes.\end{tabular}           &       \\ \hline
-10      & \begin{tabular}[c]{@{}l@{}}1000 transactions are initiates towards \\ the bulletinboard under normal operation.\\ The transaction are processed and there are\\ a max latency of 5 seconds.\end{tabular}                                                                            &       \\ \hline
-\end{tabular}
+Scenario \#      & Description   \\ \hline
+1     & A user should be able to cast a vote under runtime and the PVSS client registers the vote with a confirm message, within 2 minutes experimentation. \\ \hline
+2     & An internal crash occurs and the Bulletinboard is out of reach during normal operation. The response is that the error is logged and the system is running in degraded mode. The system should be up running within 5 minutes. \\ \hline
+3     & A PVSS client cast a vote to the  Bulletinboard from a given device  with internet connection  under runtime and the system is updated and 100\% of the information is exchanged and processed correctly. \\ \hline
+4     & An observer client validates a vote from the the Bulletinboard  under runtime. The validation is processed, and the Bulletinboard is updated and 100\% of the information is exchanged and processed correctly. \\ \hline
+5      & 5 mill. users intiate their votes to the Bulletinboard under normal operation. The votes are processed and saved with average latency of 2 seconds. \\ \hline
+6      & An unitester should be able to code a unit on the system under development and the test suite are executed  and result are captured and 85\% of the system are coverage  within 3 hours. \\ \hline
+7       & A developer should be able to make a change to the registration code under  runtime and the change are made and tested within 3 hours.\\ \hline
+8       & A developer should be able to make a change to the random number generator code under runtime and the change are made and tested within 3 hours.\\ \hline
+9         & A cheater cast a invalid vote to the Bulletinboard under normal operation. All valid data should be preserved and the system should be able to detect invalid from  valid data before the total counting of the votes.\\ \hline
+
 \caption{First step towards quality attributes scenarios}
-\end{table}
+\label{tab:myfirstlongtable}
+\end{longtable}
 
 \subsubsection{6. Scenario consideration}
 The purpose of this step is to merge scenarios that have similar features. At the workshop there were no scenarios that could be merged.\\
 
 \noindent
-We merge the two architectural driver regarding availability. These two architectural drivers are closely related since the both are about the system performing the required functions without falling when needed.
+Usability is very vague described. It turns out that usability is closely related to modifiability in terms of preparing the architecture so the user interface can easily be replaced. Therefore, it's about building an architecture where business logic does not have a high coupling with the user interface, so one can easily add a new user interface. \\ 
+
+\noindent
+Scenario $3$ and $4$ are both interoperability. We choose to remove scenario $4$.  We merge scenario $4$ with scenario $4$, which means that scenario $4$ is removed. This means that scenario $3$ should contain the parts where the votes get validated. And of cause the scenario should take into account that an observer client should be able to communicate with the Bulletinboard.
+
+
 
 \subsubsection{7. Scenario prioritization}
-The purpose of this step is to draw up a priority list based on the total votes. The list is long but we will limit this thesis to focusing on a few and the rest we will comment. The list is prioritized based on the security requirements.
+The purpose of this step is to draw up a priority list based on the total votes. The list is long but we will limit this thesis to focusing on a few and the rest we will comment. The list is primarily prioritized based on the security requirements.
 
 \begin{description}
-    \item [Scenario 3 + 8]
-        Since the PVSS is a public verifiable protocol, there will be a high focus on fulfilling the universal verifiability requirement. This means if there are invalid votes they should be detected through public verification. To achieve that we will create web application which can be access by everyone how has a device connected to the internet. 
+    \item [Scenario 3]
+       There is focus on the fact that as many people as possible can access electronic voting. One way to achieve a widely used client is to create web application which can be access almost by everyone who has a device connected to the internet. In addition to a web application, we want to ensure that as many devices as possible can communicate with our electronic voting system. One way to ensure that is to construct a standardized interfacing which is compatible with different clients.
     
-    \item [Scenario 6 + 7]    
-        To ensure eligibility and uniqueness there will be high focus on creating a flexible registration module which first of all ensures authentication and authorization such that only registered voters can vote and only have permissions to vote one time. But the module should be flexible enough to be change to integrate to other registration data. There wil be high focus on ensuring the fairness property regarding that none should be able to gain any knowledge of the outcome of the election. Also the uncoercibility property part regarding no one should be able to extract the value of a vote. Therefor the need to have a module which can generate/compute large numbers. The security can change over time and the need of computing larger numbers will therefor be a demand. The code should therefor be flexible if there is need for replacing the module with another number generator.  
+     \item [Scenario 9]
+         Since the PVSS is a public verifiable protocol, there will be a high focus on fulfilling the universal verifiability requirement. This means if there are invalid votes they should be detected through public verification. The PVSS protocol has proves which ensures that if there is a "cheater" who cheats with their vote they will high with probability be discovered.
+    
+    \item [Scenario 6]
+        To ensure accuracy that final tally is computed correctly there will be high focus on ensuring the complex part of the code is testable. 
+    
+    \item [Scenario 7]    
+        To ensure eligibility and uniqueness there will be high focus on creating a flexible registration module which first of all ensures authentication and authorization such that only registered voters can vote and only have permissions to vote one time. But the module should be flexible enough to be change to integrate to other registration data. 
         
-    \item [Scenario 5]
-        To ensure accuracy that final tally is computed correctly there will be high focus on ensuring the complex part of the code is testable.    
-    
+     \item [Scenario 8]    
+        There wil be high focus on ensuring the fairness property regarding that none should be able to gain any knowledge of the outcome of the election. Also the uncoercibility property part regarding no one should be able to extract the value of a vote. Therefor the need to have a module which can generate/compute large numbers. The security can change over time and the need of computing larger numbers will therefor be a demand. The code should therefor be flexible if there is need for replacing the module with another number generator.       
+     
+    \item [Scenario 2]
+        If the electronic voting application should be used by many participants then the architecture must be able to carry out the task it is supposed to do when needed. The architecture must be ready to mask or repair it erorrs within a given time period.
+     
+     \item [Scenario 5]
+        If the electronic voting application should be used by many participants then the architecture must be ready to handle such a load. 
+        
+    \item [Scenario 1]
+        The electronic voting application should be easy to use. One way of finding the best candidate to an user interface is to create usability test. Based on the test result we must be able to change the user interface with breaking the whole codebase. 
   \end{description}
-
-
 
 
 \subsubsection{8. Scenario Refinement}
@@ -166,7 +182,7 @@ The purpose of this step is to form QAS based on Bass et al, where divide into s
   & {\bfseries Response Measure:} & 100 \% of the information is exchange and processed correctly \\
   \hline
 \end{tabular}
-\caption{Quality Attribute Scenario}
+\caption{Interoperability QAS}
 \end{center}
 \end{table}
 
@@ -193,35 +209,39 @@ The purpose of this step is to form QAS based on Bass et al, where divide into s
   & {\bfseries Response Measure:} & 100 \% of the information is exchange and processed correctly \\
   \hline
 \end{tabular}
-\caption{Quality Attribute Scenario}
+\caption{Security QAS}
 \end{center}
 \end{table}
+
 
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{|p{0.3cm}|p{2.5cm}|p{8cm}|}
   \hline
-  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \#  3: A developer should be able to make a change to the random number generator code under runtime and the change are made and tested within 3 hours. \\
+  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \#  3: An unitester should be able to code a unit on the system under development and the test suite are executed and result are captured and 85 \% of the system are coverage within 3 hours. \\
   \hline
-  \multicolumn{2}{|p{3cm}|}{\bfseries Relevant Quality Attributes:} & Modifiability\\
+  \multicolumn{2}{|p{3cm}|}{\bfseries Relevant Quality Attributes:} & Testability\\
   \hline
   \multirow{6}{*}{\begin{sideways}{\bfseries Scenario Parts}\end{sideways}}
-  & {\bfseries Source:} & Developer \\
+  & {\bfseries Source:} & Unitester \\
   \cline{2-3}
-  & {\bfseries Stimulus:} & Needs to replace the random generator \\
+  & {\bfseries Stimulus:} & Code unit completed \\
   \cline{2-3}
   & {\bfseries Artifact} &  Code \\
   \cline{2-3}
   & {\bfseries Environment:} &  Design time \\
   \cline{2-3}
-  & {\bfseries Response:} &  Replacement made and Unit tested\\
+  & {\bfseries Response:} &  Result captured\\
   \cline{2-3}
-  & {\bfseries Response Measure:} & In three hours\\
+  & {\bfseries Response Measure:} & 85 \% path coverage in three hours\\
   \hline
 \end{tabular}
-\caption{Quality Attribute Scenario}
+\caption{Testability QAS}
 \end{center}
 \end{table}
+
+
+
 
 \begin{table}[H]
 \begin{center}
@@ -245,102 +265,91 @@ The purpose of this step is to form QAS based on Bass et al, where divide into s
   & {\bfseries Response Measure:} & In three hours\\
   \hline
 \end{tabular}
-\caption{Quality Attribute Scenario}
+\caption{Modifiability QAS}
 \end{center}
 \end{table}
 
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{|p{0.3cm}|p{2.5cm}|p{8cm}|}
-  \hline
-  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \#  5: 5 mill. users intiate votes to the Bulletinboard under normal operation. The votes are processed and saved with average latency of 2 seconds.\\
-  \hline
-  \multicolumn{2}{|p{3cm}|}{\bfseries Relevant Quality Attributes:} & Performence\\
-  \hline
-  \multirow{6}{*}{\begin{sideways}{\bfseries Scenario Parts}\end{sideways}}
-  & {\bfseries Source:} & 5 mill. users \\
-  \cline{2-3}
-  & {\bfseries Stimulus:} & Initiate their votes \\
-  \cline{2-3}
-  & {\bfseries Artifact} &  Bulletinboard \\
-  \cline{2-3}
-  & {\bfseries Environment:} &  Normal operation \\
-  \cline{2-3}
-  & {\bfseries Response:} &  The votes are processed and saved\\
-  \cline{2-3}
-  & {\bfseries Response Measure:} &  With average latency of 2 seconds\\
-  \hline
-\end{tabular}
-\caption{Quality Attribute Scenario}
-\end{center}
-\end{table}
 
 
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{|p{0.3cm}|p{2.5cm}|p{8cm}|}
   \hline
-  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \#  6: An unitester should be able to code a unit on the system under development and the test suite are executed and result are captured and 85 \% of the system are coverage within 3 hours. \\
+  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \#  5: A developer should be able to make a change to the random number generator code under runtime and the change are made and tested within 3 hours. \\
   \hline
-  \multicolumn{2}{|p{3cm}|}{\bfseries Relevant Quality Attributes:} & Testability\\
+  \multicolumn{2}{|p{3cm}|}{\bfseries Relevant Quality Attributes:} & Modifiability\\
   \hline
   \multirow{6}{*}{\begin{sideways}{\bfseries Scenario Parts}\end{sideways}}
-  & {\bfseries Source:} & Unitester \\
+  & {\bfseries Source:} & Developer \\
   \cline{2-3}
-  & {\bfseries Stimulus:} & Code unit completed \\
+  & {\bfseries Stimulus:} & Needs to replace the random generator \\
   \cline{2-3}
   & {\bfseries Artifact} &  Code \\
   \cline{2-3}
   & {\bfseries Environment:} &  Design time \\
   \cline{2-3}
-  & {\bfseries Response:} &  Result captured\\
+  & {\bfseries Response:} &  Replacement made and Unit tested\\
   \cline{2-3}
-  & {\bfseries Response Measure:} & 85 \% path coverage in three hours\\
+  & {\bfseries Response Measure:} & In three hours\\
   \hline
 \end{tabular}
-\caption{Quality Attribute Scenario}
+\caption{Modifiability QAS}
 \end{center}
 \end{table}
 
+
+
+
+
+
+
+
 \subsection{Tactics}
-This section is about tactics which satisfies the QAS. A tactic is a design decision that influences the achievement of a quality attribute response. We will discuss our choosen tactics based on our QAS developed from the QAW. We will describe them in the same order in which they are arranged above. For each tactic there will be a description and an argument of the choosen tactic. After that it follows with how this influences our model-, component and connector- and allocation viewpoint. 
+This section is about tactics which satisfies the QAS. A tactic is a design decision that influences the achievement of a quality attribute response. We will discuss our choosen tactics based on our QAS developed from the QAW. We will describe them in the same order in which they are arranged above. For each tactic there will be a description and an argument of the choosen tactic. Depending on the tactics, we will complement with the necessary views that affect the architecture including module-, component and connector- or allocation viewpoint. 
 
 
 \noindent
-\subsubsection{Interoperability}
-This tactic is related to QAS 1. Interoperability is about how systems meaningfully exchange information through interfaces in a given context. Since there will be different devices interacting with the bulletinboard there is a demand on designing a standard interface which can serve these devices. Discover Service stands for the location of a data exchange service and that it is visible to those who need it. The service can be located by type of service, by name, by location or by some other attribute.
+\subsubsection{Interoperability} \label{sec:interoperability:restapi}
+This tactic is related to QAS 1. Interoperability is about how systems meaningfully exchange information through interfaces in a given context. Since there will be different devices interacting with the Bulletinboard there is a demand on designing a standard interface which can serve these devices. Discover Service stands for the location of a data exchange service and that it is visible to those who need it. The service can be located by type of service, by name, by location or by some other attribute.
 
-
-\begin{center}
-     \makebox[\textwidth]{\includegraphics[scale=0.60]{tactic_interoperability.jpg}}
-\end{center}
-
-
-\noindent
-With Discover service we will create a clear line between clients and the Bulletinboard. We will use a REST to implement a web service for this tactic.\\
-
-\noindent
-REST stands for Representation State Transfer. The implementation of REST is as follows. We have a tallycontroller and a votercontroller etc. within the Bulletinboard, which is build upon the REST design principles. The clients are webclients and they are build on pure javascript. All communcation will be through ajax call to the Bulletinboard.\\
+\begin{figure}[H]
+\centering
+    \makebox[\textwidth]{\includegraphics[scale=0.60]{tactic_interoperability.jpg}}
+  \caption{Interoperability tactics \cite{Bass}}   
+\end{figure}
 
 
 \noindent
-\textbf{Module viewpoint}\\
-Show class diagram of the REST "interface". Vi følger ikke hele REST tankegangen. Arrange sit webapi således den er nemt tilgængelig. Vi benytter principper bag REST. Vi benytter den overordnet struktur i forhold til HTTP metoderne post, get, put og delete. Ved udvidelse kan det udvides med hyperlink (struktur). Ivores tilfælde kommer vi ikke til at bruge. Vi skal ikke henvise videre til. Et endpoint refere ikke videre til et andet endpoint. Når en admin opretter et valg kunne der gives adgang til alle valg. Vis eksempler som fra facebook https://developers.facebook.com/docs/graph-api/reference/v2.9/album \\
+With Discover service we will create a clear line between clients and the Bulletinboard. We will implement a REST API for this tactic.\\
 
 \noindent
-\textbf{Component and Connector viewpoint}\\
+\textbf{REST - Representation State Transfer}\\
+The idea behind REST is that every resource has it’s own URL (name) and you use the different HTTP methods to interact with those resources. REST consists of set of principles \cite{Fielding}, but we will only use a subset of these principles as follows.
+
+\begin{enumerate}
+    \item Transferring a representation of data in a format matching one of standard data types such as JSON, XML, HTML etc.
+    \item A resource is information that is identified by a URL provided by the server. A URL is Uniform Resource Locator which describe the address of a particular resource on the internet.
+    \item Interactions are stateless where each request contains all the information necessary. This is because of the scaling property.
+\end{enumerate}
+
 
 \noindent
-\textbf{Allocation viewpoint}\\
+The HTTP methods such as GET, POST, PUT and DELETE allow us to interact with the resources through an interface.
+
 
 
 \noindent
 \subsubsection{Security}
 This tactic is related to QAS 2. Security is concerned with ability to protect data and information from unauthorized access while still providing access to people/systems that are authorized. The PVSS protocol ensures that only valid votes are accepted and counted. This prevents that invalid votes are counted in the final counts and thereby they will not effect the result. The verify message integrity tactic employs techniques such as checksums or hash values to verfy the integrity of a message. After the system has detected an attack the system must react on the attack.
 
-\begin{center}
-     \makebox[\textwidth]{\includegraphics[scale=0.60]{tactic_security.jpg}}
-\end{center}
+
+\begin{figure}[H]
+\centering
+    \makebox[\textwidth]{\includegraphics[scale=0.80]{tactic_security.jpg}}
+  \caption{Security tactics \cite{Bass}}   
+\end{figure}
+
+
 The $DLEQ$ and $PROOF_U$ proofs verifies the message integrity. With the proofs the protocol will be able to detect attacks. The verify message integrity consists of:
 
 \begin{enumerate}
@@ -350,93 +359,158 @@ The $DLEQ$ and $PROOF_U$ proofs verifies the message integrity. With the proofs 
 \end{enumerate}
 
 \noindent
-As already described this tactic is a part of the protocol. Our work consists of realizing the tactic in code. Another important decision to make is if an attack is detected then system, must react. One way could be marking the vote as inactive on the Bulletinboard and hereafter inform an administrator about the detection of an attack.\\   
-
-\noindent
-\textbf{Module viewpoint}\\
-
+As already described this tactic is a part of the protocol which is described in section \ref{sec:proofs}. We use the verify message integrity tactic in relation with the proofs which ensures that the vote is either 1 or 2 and that the shares are constructed correctly and consistent. Our work consists of realizing the tactic in code. Another important decision to make is if an attack is detected then the system, must react. The tactic \textit{Inform actors} includes other systems to be notified. One way could be marking the vote in the database as not valid. The means that the vote is not counted in the tallying phase.\\   
 
 \noindent
 \textbf{Component and Connector viewpoint}\\
-Show sequence diagram of the proofs\\
+This viewpoint shows the runtime functionality regards how responsibility are flows in creating and verifying the proofs between the prover, Bulletinboard and the verifier. 
 
-\noindent
-\textbf{Allocation viewpoint}\\
-
-
-\noindent
-\subsubsection{Modifiability}
-This tactic is related to QAS 3. Modifiability is concerned with the ease with which the system supports change. To further prove the security of the implementation we must take into account that the random generator easily can be changed. This is an advantage if we need to work with larger numbers in the near further. The encapsulate tactics reduces the coupling between modules. The goal is to create an interface to the number generate so that we are able to shield of the concrete implementation of a given number generator and thereby reduce the coupling between modules. If  we later then need to change the implementation we can create a new implementation of the number generator and  replace the old one. 
+\begin{figure}[H]
+\centering
+     \includegraphics[scale=0.65]{security_proofs.jpg}
+     \caption{Sequence diagram which shows an overall flow of verifying the proofs}     
+\end{figure}
 
 
-\begin{center}
-     \makebox[\textwidth]{\includegraphics[scale=0.60]{tactic_modifiability.jpg}}
-\end{center}
+\begin{description}
+    \item[Step 1] The vote is casted and the voter creates the data for the proofs. The voter is an active process which the double bars on the box indicates. The voter is active process because it constantly awaits input from the user.  
 
-\noindent
-This tactic is limited to webclient since they contain all computations and the number generator. The following will be a description of our implementation of the concrete number generator and how we implemented an interface for this number generator in javascript.\\
+    \item[Step 2] The Bulletinboard recieves the ballot from the voter. It saves the ballot into a storage. It notifies the tally with the ballot. The Bulletinboard is an active process since it always listen on a specific port with purpose to serve incoming request.   
+    
+    \item[Step 3] The tally verifies the proofs and revoke a method on the Bulletinboard with a parameter which indicate if the proof was accepted or rejected. For now we have choosen that the tally is an active process under the entire election. 
+    
+    \item[Step 4] The Bulletinboard saves the ballot proof into a storage. We will emphasize that we always saves and never update. This constraint helps the system resist unauthorized users from updating any data in the storage. The storage is an active process because it constantly awaits incoming request.  
 
-
-\noindent
-\textbf{Module viewpoint}\\
-This viewpoint shows the use of a strategy pattern as described in \cite{Baerbak10}. The idea with the strategy pattern is to define a family of business rule, encapsulate each one and make them interchangeable. The strategy pattern lets the business rules vary independently from clients that use it. It delegates the responsibility to an object instead of doing the work it self. The VoterClient gets an instance of a randomGen which has a method randBetween. It can either be an instance of a RandomGenStrategy or a FixedNumberStrategy. Each of these classes has their implementation of the method randBetween. The RandomGenStrategy implements the reel random number generator. The FixedNumberStrategy returns a controlled value which we can set, for testing purposes.\\
-\begin{center}
-     \makebox[\textwidth]{\includegraphics[scale=0.60]{M_View_RandomNumberGenerator.jpg}}
-\end{center}
+\end{description}
 
 
-
-
-
-
-\noindent
-\textbf{Component and Connector viewpoint}\\
-Insert sequence diagram - delegation p.123\\
-\begin{center}
-     \makebox[\textwidth]{\includegraphics[scale=0.80]{sequenceDiagram_vote.jpg}}
-\end{center}
-
-\noindent
-\textbf{Allocation viewpoint}\\
-
-
-
-\noindent
-\subsubsection{Modifiability}
-This tactic is related to QAS 4. Modifiability is concerned with the ease with which the system supports change. In a reel electronic voting application scenario there will be need of a certain registration process. Depending on the scenario it could be local municipality. Therefor the system must be able to support changes on the registration process depending on the use.  \\
-
-
-\noindent
-\textbf{Module viewpoint}\\
-Class diagram of the registration module. Show strategy pattern\\
-
-\noindent
-\textbf{Component and Connector viewpoint}\\
-
-\noindent
-\textbf{Allocation viewpoint}\\
-
-\noindent
 \subsubsection{Testability}
-This tactic is related to QAS 6. Testability is concerned with the ease with which the software can be made to demonstrate its faults. This application contains a fair amount of computation which is the core of the application - namely to compute the final votes. Testing is needed, to ensure accuracy of the computations. When new features are introduced to the system, one should be able to execute all tests and result are captured and 85 \% of the system are coverage within 3 hours.
+This tactic is related to QAS 3. Testability is concerned with the ease with which the software can be made to demonstrate its faults. This application contains a fair amount of computation which is the core of the application - namely to compute the final votes. Testing is needed, to ensure accuracy of the computations. When new features are introduced to the system, one should be able to execute all tests and results are captured and 85 \% of the system are coverage within 3 hours.
 
 
-\begin{center}
-     \makebox[\textwidth]{\includegraphics[scale=0.60]{tactic_testability.jpg}}
-\end{center}
+\begin{figure}[H]
+\centering
+      \makebox[\textwidth]{\includegraphics[scale=0.60]{tactic_testability.jpg}}
+  \caption{Testability tactics \cite{Bass}}   
+\end{figure}
+
+
+
 \noindent
-The webclient are build in javascript which means that we have to adapt to the opportunities (dynamic, untyped, and interpreted run-time language) which the language provides. This tactic is limited to webclient since they contain all computations. The tactic limit structural complexity is about isolating, encapsulating dependencies and reduce dependencies between components. These principles leads limited complexity and thereby better testability.   \\
+The Voter client is build in javascript which means that we have to adapt to the opportunities (dynamic, untyped, and interpreted run-time language) which the language provides. This tactic is limited to webclient since they contain all computations. The tactic limit structural complexity is about isolating, encapsulating dependencies and reduce dependencies between components. These principles leads to limited complexity and thereby better testability.   \\
 
 \noindent
-\textbf{Module viewpoint}\\
-Here we need to talk about jasmine. We need to get static overview of the javascript code.\\
+ For a system to be testable we need to be able to control components inputs and be able to change its internal state and then observe its output. One of the ways for achieving this is through various design patterns such a strategy pattern. In general one should strive to use composite patterns that encapsulates responsibility which we use in  section ~\ref{sec:modifiability_random_generator}  \\
+
 
 \noindent
 \textbf{Component and Connector viewpoint}\\
-Sequence diagram\\
+Figure ~\ref{fig:voterclient_functions_which_needs_to_be_testable}  shows the flow on the Voter client of the various functions which need to be executed in order to compute the ballot casting and proofs.
+
+\begin{figure}[H]
+\centering
+      \makebox[\textwidth]{\includegraphics[scale=0.70]{testing_sequencediagram.jpg}}
+  \caption{Voter client functions which needs to be testable}  
+   \label{fig:voterclient_functions_which_needs_to_be_testable}
+\end{figure}
+
 
 \noindent
-\textbf{Allocation viewpoint}\\
+All functions ought to be relatively easy to test because they are fairly isolated. The communication with the Bulletinboard can be abstracted away in a testing environment through Test stubs \cite{Baerbak10}. 
+
+
+
+
+\subsubsection{Modifiability}
+This tactic is related to QAS 4. Modifiability is concerned with the ease with which the system supports change. In a reel electronic voting application scenario there will be need of a certain registration process. Depending on the scenario the registration process may go through state authorities, google, linkedin or even a third solution. Therefor the system must be able to support changes on the registration process depending on the use.  \\
+
+
+\noindent
+\textbf{Module viewpoint}\\
+Figure ~\ref{fig:the_registrations_process} shows the module viewpoint of a the strategy pattern on the process of registering a voter.
+
+
+\begin{figure}[H]
+\centering
+    \makebox[\textwidth]{\includegraphics[scale=0.60]{registration_classdiagram.jpg}}
+  \caption{Module viewpoint of the strategy pattern on the registrations process} 
+   \label{fig:the_registrations_process}
+\end{figure}
+\noindent
+The RegistgrationsController gets an instance of the type IRegistrationStrategy. It can either be an instance of a GoogleRegistrationStrategy or a FakeRegistgrationStrategy. Each of these classes has their implementation of the method ValidateVoter. The GoogleRegistrationStrategy should implement a registration process to Google API. The FakeRegistgrationStrategy just contain "true" which means that the voter is a valid voter in the registration process. This strategy is only meant for testing purposes. \\ 
+
+
+\noindent
+The process which led to this pattern is the compositional process which is as follows.
+
+
+\begin{description}
+    \item[Identify the behavior that varies:] In this case it is the registration process.  
+
+    \item[Use interface which encapsulate the variable behavior:]  In this case we create an interface IRegistrationStrategy which defines a  responsibility of registering a voter.     
+    
+    \item[Delegate the responsibility to a specialized classes:] In this case we have FakeRegistgrationStrategy and a GoogleRegistrationStrategy.
+\end{description}
+
+\noindent
+By implementing a strategy pattern on the registration process, we have encapsulated this functionality and made the system ready to change to other registration authorities. Answering the question if we are able to reach the response measure from the QAS, depends on how complicated it is to integrate against an external registration system. 
+
+
+
+
+\subsubsection{Modifiability} \label{sec:modifiability_random_generator}
+This tactic is related to QAS 5.  As described modifiability is concerned with the ease with which the system supports change. To further prove the security of the implementation we must take into account that the random generator easily can be changed. This is an advantage if we need to work with, for example, larger numbers in the future. \\ \\ The tactic \textit{encapsulate} reduces the coupling between modules. The goal is to create an interface to the number generate so that we are able to shield of the concrete implementation of a given number generator and thereby reduce the coupling between modules. If  we later then need to change the implementation we can create a new implementation of the number generator and  replace the old one. 
+
+
+
+\begin{figure}[H]
+\centering
+    \makebox[\textwidth]{\includegraphics[scale=0.60]{tactic_modifiability.jpg}}
+  \caption{Modifiability tactics \cite{Bass}}   
+\end{figure}
+
+\noindent
+This tactic is limited to webclient since they contain all computations and the number generator. The following will be a proposal for an implementation of the concrete number generator and how one can encapsulate it with an interface.\\
+
+
+\noindent
+\textbf{Module viewpoint}\\
+This viewpoint shows the use of a strategy pattern as described in \cite{Baerbak10}. The idea with the strategy pattern is to define a family of business rule, encapsulate each one and make them interchangeable. The strategy pattern lets the business rules vary independently from clients that use it. It delegates the responsibility to an object instead of doing the work it self. 
+
+
+
+\begin{figure}[H]
+\centering
+    \makebox[\textwidth]{\includegraphics[scale=0.60]{M_View_RandomNumberGenerator.jpg}}
+  \caption{Module viewpoint of the strategy pattern on the random number generator} 
+  \label{fig:the_random_number_generator}
+\end{figure}
+
+
+\noindent
+Figure ~\ref{fig:the_random_number_generator}  shows the VoterClient gets an instance of a randomGen which has a method randBetween. It can either be an instance of a RandomGenStrategy or a FixedNumberStrategy. Each of these classes has their implementation of the method randBetween. The RandomGenStrategy implements the reel random number generator. The FixedNumberStrategy returns a controlled value which we can set, for testing purposes.\\
+
+\noindent
+The process which leds to this pattern is the compositional process which is as follows.
+
+
+\begin{description}
+    \item[Identify the behavior that varies:] In this case it is the random number generator.  
+
+    \item[Use interface which encapsulate the variable behavior:]  In this case we create an interface randomGen which defines a  responsibility of returning a random number.     
+    
+    \item[Delegate the responsibility to a specialized classes:] In this case we have RandomGenStrategy and a FixedNumberStrategy.
+\end{description}
+
+\noindent
+By implementing a strategy pattern it should be relative easy to switch out the random number generator and thereby making changes to this part of the system.
+
+
+
+
+
+
+
 
 
 \subsection{Architectural decision}
