@@ -1,7 +1,7 @@
 In this section we look at the electronic voting protocol described in \cite{Schoenmakers1999}. The protocol is based on the PVSS protocol described in the same article. We will only describe the electronic voting protocol but as doing so, the relevant elements from the PVSS protocol will be taking into the description. For the rest of this chapter we will be referring to the electronic voting protocol, as simply the protocol, unless specified otherwise. \\
 
 \noindent
-Giving the complexity of the protocol we divided this description into three parts. In the first part we will describe the protocol as simple as possible, leaving out mathematical justification and proofs. In second part we will be looking at the mathematical justification, describing this in the same order as in the first part. Finally we will look though the proofs in the last part. 
+Giving the complexity of the protocol we divided this description into three parts. In the first part we will describe the protocol as simple as possible, leaving out mathematical justification and proofs.  We provide a calculated example for low values for the basic parts of the protocol in \ref{sec:simple_review_of_calculations_in_the_protocol}.  In second part we will be looking at the mathematical justification, describing this in the same order as in the first part. Finally we will look though the proofs in the last part. 
 
 
 %--------------------------------------------------------------------------
@@ -60,7 +60,7 @@ The protocol is divided into three main parts, each part representing a differen
 In the following we will describe the central parts of the protocol, leaving out the complexity of mathematical justification and proofs. The idea is to get an understanding of how the protocol works without know exactly why it works. \\
 
 \noindent
-For efficiency we will limit the computation of the votes to a finite number of talliers. There are \textit{m} voters and \textit{n} talliers. 
+For efficiency we will limit the computation of the votes to a finite number of talliers. There are \textit{m} voters and \textit{n} talliers.
 %--------------------------------------------------------------------------
 \subsection{Initialization}   \label{sec:the_protocol_initialization}
 %--------------------------------------------------------------------------
@@ -353,7 +353,7 @@ In this section we will elaborate the mathematical justification of the proofs $
 %----------------------------------------------------------------------
 \subsection{DLEQ interactive proof between voters and verifier} \label{sec:dleq_voter_verifier}
 %----------------------------------------------------------------------
-DLEQ stands for discrete logarithm equality. It proofs that the exponent are equal $X_i=g^{p(i)}$ and  $Y_i=y_i^{p(i)}$ without revealing \begin{math}{p(i)} \end{math} and if the prover is honest, then it should be the case that we get the same computed values in the end meaning $a_1 = g^w= g^r \cdot X_i^C$ and $a_2= y_i^w = y_i^r \cdot Y_i^C$. The prover must compute same amount of $X_i$ as he creates shares. In practice this means that the prover supply a $DLEQ$ proof foreach of the shares. We will present the protocol and after that we will give concrete examples. Last we will describe the mathematical justification.\\
+DLEQ stands for discrete logarithm equality. It proofs that the exponent are equal $X_i=g^{p(i)}$ and  $Y_i=y_i^{p(i)}$ without revealing \begin{math}{p(i)} \end{math} and if the prover is honest, then it should be the case that we get the same computed values in the end meaning $a_1 = g^w= g^r \cdot X_i^C$ and $a_2= y_i^w = y_i^r \cdot Y_i^C$. The prover must compute same amount of $X_i$ as he creates shares. In practice this means that the prover supply a $DLEQ$ proof foreach of the shares. We will present the protocol and after that we will give concrete examples. Last we will describe the mathematical justification. An example of the proof is calculated in appendex \ref{sec:simple_review_of_calculation_of_dleq_between_voter_and_verifier}. \\
 
 \noindent
 The verification of the shares in the interactive proof happens by the following  interaction between the prover and the verifier.
@@ -502,7 +502,7 @@ The zero knowledge in this context means that the verifier doesn't learn anythin
 %----------------------------------------------------------------------
 \subsection{Description of $ \mathbf{PROOF_U} $} \label{sec:proof_u}
 %----------------------------------------------------------------------
-In this section we show with $PROOF_U$ that the voter either votes  1 or 0. The voter proves that there is consistency between the exponents of how \begin{math}U\end{math} and \begin{math}C_0\end{math} is constructed from \begin{math}U=G^{s+v}\end{math} and \begin{math}C_0 = g^s\end{math}. The exponents only vary when 1 or 0 is voted. We will show the interactive proof and through Fiat–Shamir  we transform an interactive proof of knowledge into a non-interactive proof of knowledge. The protocol illustration includes both scenarios where the voter votes either 0 or 1. If the voter votes 0 step 1a, 2, 3a, 4 will be followed. If the voter votes 1 step 1b, 2, 3b, 4 will be followed.\\
+In this section we show with $PROOF_U$ that the voter either votes  1 or 0. The voter proves that there is consistency between the exponents of how \begin{math}U\end{math} and \begin{math}C_0\end{math} is constructed from \begin{math}U=G^{s+v}\end{math} and \begin{math}C_0 = g^s\end{math}. The exponents only vary when 1 or 0 is voted. We will show the interactive proof and through Fiat–Shamir  we transform an interactive proof of knowledge into a non-interactive proof of knowledge. The protocol illustration includes both scenarios where the voter votes either 0 or 1. If the voter votes 0 step 1a, 2, 3a, 4 will be followed. If the voter votes 1 step 1b, 2, 3b, 4 will be followed. An example of the proof is calculated in appendex \ref{sec:simple_review_of_calculation_of_proof_u_between_voter_and_verifier}.\\
 
 \begin{figure}[H]
     \centering        

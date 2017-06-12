@@ -122,7 +122,7 @@ The purpose of this step is to merge scenarios that have similar features. At th
 Usability is very vague described. It turns out that usability is closely related to modifiability in terms of preparing the architecture so the user interface can easily be replaced. Therefore, it's about building an architecture where business logic does not have a high coupling with the user interface, so one can easily add a new user interface. \\ 
 
 \noindent
-Scenario $3$ and $4$ are both interoperability. We choose to remove scenario $4$.  We merge scenario $4$ with scenario $4$, which means that scenario $4$ is removed. This means that scenario $3$ should contain the parts where the votes get validated. And of cause the scenario should take into account that an observer client should be able to communicate with the Bulletinboard.
+Scenario $3$ and $4$ are both about interoperability. We choose to remove scenario $4$.  We merge scenario $4$ with scenario $4$, which means that scenario $4$ is removed. This means that scenario $3$ should contain the parts where the votes get validated. And of cause the scenario should take into account that an observer client should be able to communicate with the Bulletinboard.
 
 
 
@@ -157,7 +157,7 @@ The purpose of this step is to draw up a priority list based on the total votes.
 
 
 \subsubsection{8. Scenario Refinement}
-The purpose of this step is to form QAS based on Bass et al, where divide into source, stimulus, artifact, environment, response and response measure. 
+The purpose of this step is to form QAS based on Bass et al, where divide into source, stimulus, artifact, environment, response and response measure. We will work on the first five of the scenarios. The rest can be found in appendex \ref{sec:the_remaining_qas:Availibility}, \ref{sec:the_remaining_qas:Performence} and \ref{sec:the_remaining_qas:Modifiability}.
 
 
 \begin{table}[H]
@@ -421,7 +421,7 @@ All functions ought to be relatively easy to test because they are fairly isolat
 
 
 
-\subsubsection{Modifiability}
+\subsubsection{Modifiability} \label{sec:modifiability_registations_process}
 This tactic is related to QAS 4. Modifiability is concerned with the ease with which the system supports change. In a reel electronic voting application scenario there will be need of a certain registration process. Depending on the scenario the registration process may go through state authorities, google, linkedin or even a third solution. Therefor the system must be able to support changes on the registration process depending on the use.  \\
 
 
@@ -504,41 +504,3 @@ The process which leds to this pattern is the compositional process which is as 
 
 \noindent
 By implementing a strategy pattern it should be relative easy to switch out the random number generator and thereby making changes to this part of the system.
-
-
-
-
-
-
-
-
-
-\subsection{Architectural decision}
-This section is about documentation of software architectural decisions and their rationale. The documentation provides a description of choosen architectural decision and the rejected decisions. Another point of describing the idea / rationale behind the decision is that it provides the basis for not making the same stupid mistake again. Tyree and Akerman have made a documentation template that contains the elements for a design decision.
-
-
-\begin{table}[H]
-\centering
-\begin{tabular}{|l|l|}
-\hline
-\multicolumn{2}{|l|}{\textbf{Decision D01:}}                                                                                                                                                                                                                                       \\ \hline
-Issue                & \begin{tabular}[c]{@{}l@{}}A PVSS client cast a vote to the Bulletin \\ board from a given device with internet\\  connection, under runtime and the system\\  is updated and 100\% of the information \\ is exchanged,and processed correctly\end{tabular} \\ \hline
-Decision             & A REST service is introduced                                                                                                                                                                                                                                \\ \hline
-Status               & Pending                                                                                                                                                                                                                                                     \\ \hline
-Grouping             &                                                                                                                                                                                                                                                             \\ \hline
-Assumptions          &                                                                                                                                                                                                                                                             \\ \hline
-Constraints          &                                                                                                                                                                                                                                                             \\ \hline
-Positions            &                                                                                                                                                                                                                                                             \\ \hline
-Argument             &                                                                                                                                                                                                                                                             \\ \hline
-Implications         &                                                                                                                                                                                                                                                             \\ \hline
-Related decisions    &                                                                                                                                                                                                                                                             \\ \hline
-Related requirements &                                                                                                                                                                                                                                                             \\ \hline
-Related artifacts    &                                                                                                                                                                                                                                                             \\ \hline
-Related principles   &                                                                                                                                                                                                                                                             \\ \hline
-Notes                &                                                                                                                                                                                                                                                             \\ \hline
-\end{tabular}
-\caption{Interoperability decision}
-\end{table}
-
-
-\subsection{Architectural evaluation}
