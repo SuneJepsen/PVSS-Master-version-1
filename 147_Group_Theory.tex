@@ -8,7 +8,7 @@ A \textnormal{group} is a set \begin{math}\mathbb{G}\end{math} along with a bina
 \begin{itemize}
 \item \textnormal{\textbf{(Closure:)}}  \begin{math} For \ all \ g, \ h \in \mathbb{G},\ g \circ h \in \mathbb{G} \end{math}.
 \item \textnormal{\textbf{(Existence of an identity:)}} \begin{math} There \ exists \ an \end{math} \textnormal{identity} \begin{math} e \in \mathbb{G} \end{math} such that for  all \begin{math} g \in \mathbb{G}, e \circ g = g =g \circ e \end{math}
-\item \textnormal{\textbf{(Existence of Inverses:)}} For all \begin{math}g \in \mathbb{G}\end{math} there exists an element \begin{math}h \in \mathbb{G}\end{math} such that \begin{math}g \circ h = e =h \circ g \end{math} such that an h is called an \textnormal{inverse} of g.
+\item \textnormal{\textbf{(Existence of Inverses:)}} For all \begin{math}g \in \mathbb{G}\end{math} there exists an element \begin{math}h \in \mathbb{G}\end{math} such that \begin{math}g \circ h = e =h \circ g \end{math} such that an h is called an \textnormal{inverse} of g and $e$ is an identity.
 \item \textnormal{\textbf{(Associativity:)}} For all \begin{math}g_1, g_2, g_3 \in \mathbb{G}, (g_1 \circ g_2) \circ g_3 = g_1 \circ( g_2 \circ g_3) \end{math}
 \end{itemize}
 When \begin{math}\mathbb{G}\end{math} has a finite number of elements, we say \begin{math}\mathbb{G}\end{math} is a finite group and let
@@ -21,18 +21,18 @@ A group \begin{math}\mathbb{G}\end{math} with operation \begin{math}\circ\end{ma
 %-----------------------------------------------Definition of group end
 
 \noindent
-As we described above we should find a subset of integers which satisfies the group definition. By using modulo we define a subset of integers, as $G= \Zq $ where $q$ is an modulo integer. By example we see the following \begin{math} \Z_4 = \{0,1,2,3\}\end{math}   
+As we described above we should find a subset of integers which satisfies the group definition. By using modulo we define a subset of integers, as $G= \Zq $ where $q$ is an modulo integer. By example we have the following \begin{math} \Z_4 = \{0,1,2,3\}\end{math}   
 
 
-\parahead{Closure} Closure means when we do operations in the set we always end up with an element from the set. that we always do computation in the set. The modulo operation ensures that we always reduce computations into a closed set.
+\parahead{Closure} Closure means when we do operations in the set we always end up with an element from the set. The modulo operation ensures that we always reduce computations into a closed set.
 
 
-\parahead{Existence of Inverses} The inverse means that we want to compute a number such that \begin{math}a\ \cdot x \ mod \ q = 1 \end{math}.  For the integers we have to ensure that the greatest commend divisor is 1 to ensure the inverse property. By example we see the following \begin{math} \Z_4 = \{0,1,2,3\}\end{math}. Removing all the numbers that does have a gcd with $4$ larger then $1$ gives set of $\Z_4^* = \{1,3\}$ . Note the star in the notation. This refers to a set with none greatest common divisor larger then $1$. If we take a prime we know that the gcd holds for every number up to the prime. So  \begin{math} \Z_7 = \{0,1,2,3,4,5,6\}\end{math} becomes \begin{math} \Z_7^* = \{1,2,3,4,5,6\}\end{math}. To compute the inverse we will use Extended Euclidean algorithm.
+\parahead{Existence of Inverses} The inverse means that we want to compute a number such that \begin{math}a\ \cdot x \ mod \ q = 1 \end{math}.  For the integers we have to ensure that the greatest commend divisor is 1 to ensure the inverse property. By example we see the following \begin{math} \Z_4 = \{0,1,2,3\}\end{math}. Removing all the numbers that does have a gcd with $4$ larger then $1$ gives set of $\Z_4^* = \{1,3\}$ . Note the star in the notation. This refers to a set with none greatest common divisor larger then $1$. If we take a prime we know that the gcd holds for every number up to the prime. So  \begin{math} \Z_7 = \{0,1,2,3,4,5,6\}\end{math} becomes \begin{math} \Z_7^* = \{1,2,3,4,5,6\}\end{math}. To compute the inverse we will use Extended Euclidean algorithm which is described in section \ref{sec:modular_arithmetic}.
 
 
 \parahead{Existence of an identity} There should always be a neutral element. When the operation is mulitplication the neutral element is $1$ and when the operation is addition the neutral element is $0$.
 
-\parahead{Associativity} By example one can show that associativity holds. If we take $ \Z_{10}^*$ with the following two expressions $ (3 \cdot 7 \ mod \ 10) \cdot 9 \ mod \ 10 $ and  $ 3 \cdot ( 7 \cdot 9 \ mod \ 10) \ mod \ 10) $. This can be reduced to $ (3 \cdot 7 \ mod \ 10) \cdot 9 \ mod \ 10 = 1 \cdot 9 \ mod \ 10 = 9 \ mod \ 10$. This can be reduced to $ 3 \cdot ( 7 \cdot 9 \ mod \ 10) \ mod \ 10) = 3 \cdot 3 \ mod \ 10 = 9 \ mod \ 10 $.
+\parahead{Associativity} By example one can show that associativity holds. If we take $ \Z_{10}^*$ with the following two expressions $ (3 \cdot 7 \ mod \ 10) \cdot 9 \ mod \ 10 $ and  $ (3 \cdot ( 7 \cdot 9 \ mod \ 10) \ mod \ 10) $. This can be reduced to $ (3 \cdot 7 \ mod \ 10) \cdot 9 \ mod \ 10 = 1 \cdot 9 \ mod \ 10 = 9 \ mod \ 10$. This can be reduced to $ (3 \cdot ( 7 \cdot 9 \ mod \ 10) \ mod \ 10) = 3 \cdot 3 \ mod \ 10 = 9 \ mod \ 10 $.
 
 
 

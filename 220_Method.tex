@@ -6,7 +6,6 @@ To ensure a solid systematic approach for this part of the thesis we will use
 
 \begin{enumerate}
     \item Case
-    \item 3+1 description approach
     \item Functional requirements
     \item Quality attribute workshop
         \begin{enumerate}
@@ -20,7 +19,7 @@ To ensure a solid systematic approach for this part of the thesis we will use
 \begin{description}
     \item[Case] The purpose of the case is an informal description of the requirements for the electronic voting application. We use this as a introduction to a business/mission for the most important requirements for the electronic voting application.
     
-    \item[Functional requirements]  The purpose of the functional requirement is to capture the electronic voting application behavior based on the case description. We will take these requirements an categorize them according to the security requirements. Event though the functional requirements isn't in focus in this thesis we will use these requirements helpfull information in the discussion part of the Quality attribute workshop.  
+    \item[Functional requirements]  The purpose of the functional requirement is to capture the electronic voting application behavior based on the case description. However as described in the introduction to this chapter, we will be using the security requirements of a general electronic voting scheme as functional requirements for our application.  Even though the functional requirements is not in focus in this thesis we will use these requirements as guidelines to help define the architecture. Therefor throughout this chapter we will only be referring to the requirements in relations with the architecture requirements. 
     
     \item[Quality attribute workshop]  The purpose of the Quality Attribute Workshops (QAWs) is a systematic method for identifying a system's architecture critical quality attributes, such as availability, security and modifiability, that are derived from mission or business goals. For the scope of this thesis we will follow the phases in the QAW on a theoretical level, to derive the most important QA for the electronic voting application. We will use the structure of the QAW but we will not hold a practical workshop.  Based on the QA we will formulate the most important Quality attribute scenarios and describe related tactics.
     
@@ -40,14 +39,12 @@ In the follwoing we will explain some general design concepts which will be used
     \item[Change by addition] We are only adding new code instead of modifying existing code. 
     \item[Coupling] Coupling is the degree of how dependent one software module is on other software modules. 
     \item[Cohesion] Cohesion refers to the degree of how related the responsibility of a software module belong together.    
-   \item[Test stubs] Test stubs are replacement that simulate the behaviors of a software module that a module undergoing tests depends on.
-
+   \item[Test stubs] Test stubs are replacements that simulate the behaviors of a software module that a module undergoing tests depends on.
 \end{description}
 
 
 \noindent
 The compositional process is as follows \cite{Baerbak10}.
-
 
 \begin{enumerate}
     \item Identify the behavior that varies. 

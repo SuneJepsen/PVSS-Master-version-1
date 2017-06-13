@@ -8,12 +8,12 @@ Implementing a software design can be a difficult task, as design modules rarely
 %********************************************************************
 \section{Method}
 %********************************************************************
-The final result is described in a top-down approach, We start with an informal description of the system, and from here gradually go into details starting with the module views which describes the static structures of the implementation. Then, follows the component and connector view to describe the dynamic structures. After the presentation of the implementation we will look at how the specific tactic have been implemented and how we have taken solved the functional requirements of an electronic election.
+The final result is described in a top-down approach. We start with an informal description of the system, and from here gradually go into details starting with the module views which describes the static structures of the implementation. Then, follows the component and connector view to describe the dynamic structures. After the presentation of the implementation we will look at how choosen tactics have been implemented and how we solved the functional requirements of an electronic election.
 
 %********************************************************************
 \section{Development environment}
 %********************************************************************
-The implementation have been done using Microsoft ASP.NET framework, C\# and Javascript programming language. ASP.net is a widely used and supported framework for creating web application. This framework is used both as the backend RESTful server, BulletinBoard and for the web server hosting the clients. The clients, voter and tallier is implemented using javascript. Javascript have the benefits of running inside all modern browser and is widely used, thous giving us a very large set of libraries to our disposal. \\
+The implementation have been done using Microsoft ASP.NET framework, C\# and Javascript programming language. ASP.NET is a widely used and supported framework for creating web application. This framework is used both as the backend RESTful server, bulletin board and for the web server hosting the clients. The clients, voter and tallier is implemented using Javascript. Javascript have the benefits of running inside all modern browser and is widely used, thus giving us a very large set of libraries to our disposal. \\
 
 
 \section{Final result}
@@ -30,20 +30,20 @@ In this section we describe the final implementation of the software design.
     \label{fig:informal_overview}
 \end{figure}
 
-The figure \ref{fig:informal_overview} above illustrates an overview of system and the information flow in the different phases of the protocol. From left to right we see the voters each casting there votes and hiding the votes within a secret which, though secret sharing, is divided and encrypted into pieces corresponding to the number of talliers. the ballot casting phase ends with the voters publishing there votes and secret to the BulletinBoard. Ending the Ballot casting phase starts the tallying phase where the talliers each collects there individual pieces of the secret, multiplying the shares together, decrypting the multiplum and publishes the decrypted multiplum to the BulletinBoard. The last segment of the tally phase, where the votes are calculated is not illustrated in the figure, but is none the less implemented by letting a dedicated tally do the calculating and posting the result to the BulletinBoard. \\
+Figure \ref{fig:informal_overview} illustrates an overview of the system and the information flow in the different phases of the protocol. From left to right we see the voters each casting there votes and hiding their votes within a secret. Though secret sharing the vote is divided and encrypted into pieces corresponding to the number of talliers. The ballot casting phase ends with the voters publishing there votes and secret to the bulletin board. Ending the ballot casting phase starts the tallying phase where the talliers each collects there individual pieces of the secret, multiplying the shares together, decrypting the multiplum and publishes the decrypted multiplum to the bulletin board. The last segment of the tally phase, where the votes are calculated is not illustrated in the figure, but is none the less implemented by letting a dedicated tally do the calculating and posting the result to the bulletin board. \\
 
 \noindent
-The overview does not introduce many new elements to the implementation not previously known from the protocol, in fact the only new element introduced is the Client server which serves as a web-server for the voters, to which the voters logon in order to cast there votes. However the overview clearly shows the topology of the implementation, namely a star topology with a server (BulletinBoard) in the middle and Clients all around. There is no directly communication between the clients, all communication goes through the Server. This is due to the nature of an election, though we require the talliers to have a persistent connection to the server we don't expect voters to stay connected throughout an entire election. The reason the Bulletinboard needs to have an persistent connection to the talliers is because after the ballot casting phase, The Bulletinboard needs to be able to notify the talliers for tallying phase.
+The overview does not introduce many new elements to the implementation not previously known from the protocol, in fact the only new element introduced is the Client server which serves as a web-server for the voters, to which the voters logon in order to cast there votes. However the overview clearly shows the topology of the implementation, namely a star topology with a server (bulletin board) in the middle and Clients all around. There is no directly communication between the clients, all communication goes through the Server. This is due to the nature of an election, though we require the talliers to have a persistent connection to the server. We don't expect voters to stay connected throughout an entire election. The reason the bulletin board needs to have an persistent connection to the talliers is because after the ballot casting phase. The bulletin board needs to be able to notify the talliers for tallying phase.
 
 %********************************************************************
 \subsection{Viewpoints}
 %********************************************************************
-We use viewpoint as we further describes the implementation in details. We start with the module view points which shows the static elements of the implementations, elements like packages, interfaces and classes.  \\
+We use viewpoints as we further describes the implementation in details. We start with the module viewpoints which shows the static elements of the implementations, elements like packages, interfaces, classes and relations.
 
 %********************************************************************
 \subsubsection{Module view}
 %********************************************************************
-Starting from the top we look at how the implementation is structured into packages, where each packages contains elements that focuses on the same responsibility. Structuring our implementation this way follows the design principles of high Cohesion and low Coupling introduced in chapter \ref{chap:application} and lays the ground for code that is flexible and easily maintainable. 
+Starting from the top we look at how the implementation is structured into packages, where each packages contains elements that focuses on the same responsibility. Structuring our implementation this way follows the design principles of high cohesion and low coupling introduced in chapter \ref{chap:application} and lays the ground for code that is flexible and easily maintainable. 
 
 \begin{figure}[H]
     \centering
@@ -53,33 +53,33 @@ Starting from the top we look at how the implementation is structured into packa
 \end{figure}
 
 \noindent
-Figure \ref{fig:package_overview} shows a package overview of the entire implementation. The figure show both the packages included in the implementation of the Client and the Bulletinboard. The Client include packages containing logic specific for Voter, Tally, Admin and the Domain package which holds logic used across the Client. The package overview of the Bulletinboard with only the two packages BusinessLogic and WebApi looks on the surface very simply, but below we unfold each package showing a more complex structure. 
+Figure \ref{fig:package_overview} shows a package overview of the entire implementation. The figure show both the packages included in the implementation of the Client and the bulletin board. The Client include packages containing logic specific for a Voter, Tally, Admin and the Domain package which holds logic used across the Client. The package overview of the bulletin board with only the two packages BusinessLogic and WebApi looks on the surface very simply, but below we unfold each package showing a more complex structure. 
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.60]{Moduleview_packages_BulletinBoard.jpg}
-    \caption{Package overview of Bulletinboard business logic}
+    \caption{Package overview of bulletin board business logic}
     \label{fig:package_overview_of_bulletinboard_businesslogic}
 \end{figure}
 
 \noindent
-Figure \ref{fig:package_overview_of_bulletinboard_businesslogic} shows the packages revealed when unfolding the BusinessLogic package. This include the sub-packages BusinessLogic, Storage, Doubles and Domain. The packages BusinessLogic, Storage and Domain is fairly self explanatory, the package Double holds the logic we used in order to unit test our implementation. \\
+Figure \ref{fig:package_overview_of_bulletinboard_businesslogic} shows the packages revealed when unfolding the BusinessLogic package. This include the sub-packages BusinessLogic, Storage, Doubles and Domain. The packages BusinessLogic, Storage and Domain is fairly self explanatory. The package Double holds the logic we used in order to unit test our implementation. \\
 
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.60]{Moduleview_Class.jpg}
-    \caption{Module view of Bulletinboard}
+    \caption{Module view of bulletin board}
     \label{fig:module_over_of_bulletinboar}
 \end{figure}
 
 \noindent
-Figure \ref{fig:module_over_of_bulletinboar} shows the interfaces and classes within the BusinessLogic package of the Bulletinboard. Note that the package Doubles have been left outside the container of the BusinessLogic, this is due to the fact that its responsibilities only evolves around testing and the packages is not used in the production environment. Also noticeable is the Domain package have not been specified further, the reason for this is, that it simply holds the representation of physical elements like a Ballot, a voter, a share etc, there is no business logic within these classes.
+Figure \ref{fig:module_over_of_bulletinboar} shows the interfaces and classes within the BusinessLogic package of the bulletin board. Note that the package Doubles have been left outside the container of the BusinessLogic, this is due to the fact that its responsibilities only evolves around testing and the packages is not used in the production environment. Also noticeable is the Domain package have not been specified further. The reason for this is, that it simply holds the representation of physical elements like a ballot, a voter, a share etc, which contain no business logic.
 
 \begin{description}
     \item[IRegistrationService] is an interface that holds the responsibility of the \textit{Registration authority} specified in section \ref{sec:the_voting_process}. Is validates and registries eligible voters.  For this implementation we only included the class \textbf{FakeRegistrationService} which implements responsibilities from the IRegistrationService. 
     
-    \item[IServant] is an interface that have the responsibilities of the \textit{BulletinBoard} also the described in section \ref{sec:the_voting_process}. It handles the communication with the Clients and insures the persistence of the election data such as the ballots, the shares etc. The class \textbf{BulletinBoardServant} implements the responsibilities of the IServant. A key functionality of the BulletinBoardServant is that most of its methods is read-only, this helps to ensure that no honest or dishonest user removes information. 
+    \item[IServant] is an interface that have the responsibilities of the \textit{bulletin board} also the described in section \ref{sec:the_voting_process}. It handles the communication with the Clients and insures the persistence of the election data such as the ballots and shares etc. The class \textbf{BulletinBoardServant} implements the responsibilities of the IServant. A key functionality of the BulletinBoardServant is that most of its methods is read-only, this helps to ensure that no honest or dishonest user removes information. 
     
     \item[IStorage] is an interface that have the responsibilities of persisting and retrieving data. Both the classes \textbf{MongoStorage} and \textbf{FakeStorage} implements the responsibilities of the IStorage. The \textbf{MongoStorage} also acts as a client to a Mongo database to which it stores the data, where the \textbf{FakeStorage} simply stores the data in memory, meaning that the data is lost when the application stops. 
     
@@ -93,10 +93,10 @@ Figure \ref{fig:module_over_of_bulletinboar} shows the interfaces and classes wi
 \end{figure}
 
 \noindent
-Figure \ref{fig:module_view_of_client} shows the interfaces and classes of the Client. Again the package Double is left outside the contain of the Client, due to the same arguments stated above. 
+Figure \ref{fig:module_view_of_client} shows the interfaces and classes of the Client. Again the package Double is left outside the content of the Client, due to the same arguments stated above. 
 
 \begin{description}
-    \item[util] is a simple class that holds some helper function, that is used a cross he system. 
+    \item[util] is a simple class that holds some helper function, that is used across the system. 
     
     \item[bignum] is a class that inherits the functionlitites from its superclass \textbf{bigInteger}. This structure enables us to expand or alter the functionalities of the \textbf{bigInteger} without changing the class. 
     
@@ -125,7 +125,7 @@ For this next part we will look at how the dynamic components in the implementat
 \end{figure}
 
 \noindent
-Figure \ref{fig:CC_overall_View} shows how the system interact overall. As we have seen in the module views, there is no interacting between the components in the Client. They each operates independently and they all communicates with the Bulletinboard through the REST API.  The communication between the Clients and the Bulletinboard is done through an HTTPS connection. This connection uses Secure Socket Layer (SSL) or Transport Layer Security (TLS) to encrypt the messages sent or received. All successful communication done with the REST API is forward to the Servant component that handles the business logic. If there is a need for persisting data, then the Servant sends the data to the Storage. \\
+Figure \ref{fig:CC_overall_View} shows how the system interact overall. As we have seen in the module views, there is no interacting between the components in the Client. They each operates independently and they all communicates with the bulletin board through the REST API.  The communication between the Clients and the bulletin board is done through an HTTPS connection. This connection uses Secure Socket Layer (SSL) or Transport Layer Security (TLS) to encrypt the messages sent or received. All successful communication done with the REST API is forward to the Servant component that handles the business logic. If there is a need for persisting data, then the Servant sends the data to the Storage. \\
 
 \noindent
 The following sequence diagram shows the overall flow of the system from the ballot casting phase to the result. The internal method calls and calculations done on each individual class is not show, in order to present a better overview.  
@@ -150,7 +150,7 @@ Finishing out the viewpoints we lastly have a deployment view showing the system
 \end{figure}
 
 \noindent
-Figure \ref{fig:final_deployment_view} shows that the system requires three servers, a database server running a mongo database, a web-server with a Internet Information Server (IIS) installed to host the Bulletinboard RESTful Webapi and lastly a web-server also with IIS installed to host the Webclient. We also require that devices that is to communicate with the system needs to have a modern browser installed, that is able to execute JavaScripts. 
+Figure \ref{fig:final_deployment_view} shows that the system requires three servers, a database server running a mongo database, a web-server with a Internet Information Server (IIS) installed to host the bulletin board RESTful Webapi and lastly a web-server also with IIS installed to host the Webclient. We also require that devices that is to communicate with the system needs to have a modern browser installed, that is able to execute Javascripts. 
 
 
 %********************************************************************
@@ -161,7 +161,7 @@ In this section we will highlight selected implementation of previously describe
 %********************************************************************
 \subsection{Interoperability: REST API}
 %********************************************************************
-As stated earlier we use a REST interface which should be easily accessible by everyone. This means that our Bulletinboard is build on some of the REST principles. Figure \ref{fig:rest_electronic_voting_web_service_model} illustrate an informal webservice model which describes our resources on the Bulletinboard. The process of constructing this diagram gives overview and insight of how we could design a REST interface on the different resources. 
+As stated earlier we use a REST interface which should be easily accessible by everyone. This means that our bulletin board is build on some of the REST principles. Figure \ref{fig:rest_electronic_voting_web_service_model} illustrate an informal webservice model which describes our resources on the bulletin board. The process of constructing this diagram gives overview and insight of how we could design a REST interface on the different resources. 
 
 \begin{figure}[H]
     \centering
@@ -187,13 +187,13 @@ Talliers                                                    & /elections/\{id\}/
 Shares                                                      & /elections/\{id\}/talliers/\{id\}/shares           & \begin{tabular}[c]{@{}l@{}}GET GetAllTallyShares \\  POST CreateDecryptShare     \end{tabular}                                                            \\ \hline
 \begin{tabular}[c]{@{}l@{}}Decrypted \\ shares\end{tabular} & /elections/\{id\}/talliers/shares        & \begin{tabular}[c]{@{}l@{}}GET GetAllDecrypted\\ TallyShares\end{tabular}                                                        \\ \hline
 \end{tabular}
-\caption{REST api to the Bulletinboard}
+\caption{REST api to the bulletin board}
 \label{fig:rest_api_to_the_Bulletinboard}
 \end{table}
 
 
 \noindent
-Since our webclients is build purely on javascript, all communication is through ajax call to the Bulletinboard. Listings \ref{lst:javascript_rest_api} illustrates how one can interact with REST api. The example shows how to create an election. This is called by the Admin client which starts the election.   \\ 
+Since our webclients is build purely on Javascript, all communication is done through ajax call to the bulletin board. Listings \ref{lst:javascript_rest_api} illustrates how one can interact with REST api. The example shows how to create an election. This is called by the Admin client which starts the election.   \\ 
 
 
 \begin{lstlisting}[language=Javascript, caption=Javascript example, label=lst:javascript_rest_api]
@@ -263,7 +263,7 @@ randBetween and randPrimeBetween on the injected object through the variable ran
 %********************************************************************
 \section{Analyzing the application}
 %********************************************************************
-We will in this section analyze our implementation. We will analyze the chosen tactics, the code quality and evaluate the security in the implementation. 
+In this section we will list the security requirements from section \ref{sec:security_requirements}.  We will then evaluate these requirements against our application. 
 
 %********************************************************************
 \subsection{Electronic voting secure requirements} \label{sec:analyzing_electronic_voting_secure_requirements}
@@ -274,7 +274,7 @@ We will in this section analyze our implementation. We will analyze the chosen t
         know his vote. These requirements shall hold during and after the election.}  
         
         This requirement is meet by our implementation, infact its one of the core elements in the
-        Election voting protocol from section \ref{sec:the_protocol}. Every voter only publish his vote
+        election voting protocol from section \ref{sec:the_protocol}. Every voter only publish his vote
         though $U = G^{v+s}$ where $G$ is a generator and $v \in \{0,1\}$ and $s \in \Z_q$. As $s$ is only
         known by the voter and is uniformly random picked then the sum of $s$ and $v$ is also unknown for any 
         potential adversary under the security of the DL problem. And one could ague that even if an
@@ -295,13 +295,13 @@ We will in this section analyze our implementation. We will analyze the chosen t
         
         Uniqueness is about making sure only one vote is counted for each eligible
         voter. This requirement is meet by having a separate table in the database with all eligible voters 
-        containing an id and a 0/1 (no or yes). This table will be update when votes arrive to the Bulletinboard. 
+        containing an id and a 0/1 (no or yes). This table will be updated when votes arrive to the bulletin board. 
         
     \item[Fairness]
         \textit{None should be able to gain any knowledge of the outcome of the election, before the ending. This is to prevent voters of voting accordingly to any leaked information.}       
     
         This is achieved in our implementation by only starting the tally phase when all votes are casted or when a deadline is 
-        reached and the ballot casting phase ends. Only the Bulletinboard have the authority to notify the talliers when to begin the tallying phase.  
+        reached and the ballot casting phase ends. Only the bulletin board have the authority to notify the talliers when to begin the tallying phase.  
         
         Through the property of secret sharing used in the protocol, the secret to decrypt the
         vote is shared amoungst three or more talliers. These shares are again encrypted with the public key 
@@ -326,14 +326,14 @@ We will in this section analyze our implementation. We will analyze the chosen t
         Our implementation utilizes the proofs from the protocol to fulfill this requirement. 
         
         \noindent
-        Under the Ballot casting phase of the protocol, we require that the voters proofs the correctness of there votes. This is done through the $Proof_U$ and $DLEQ$ proofs, which is required to be published along side the encrypted vote $U$. Should one of the proofs fail, then the vote is marked invalid and this vote is ignore in the preceding processes. 
+        Under the ballot casting phase of the protocol, we require that the voters proofs the correctness of there votes. This is done through the $Proof_U$ and $DLEQ$ proofs, which is required to be published along side the encrypted vote $U$. Should one of the proofs fail, then the vote is marked invalid and this vote is ignore in the preceding processes. 
         
         \noindent
-        In the tally phase of the protocol, the tally multiplies its shares and then decrypts them and publishes the end result. Along with this result we require that the $DLEQ$ proof is published aswell. This allows us to verify the correctness of the tallying process for each tallier. Should a $DLEQ$ proof from a tallier fail then the tally's shares is ignore in the preceding process. The protocol requires the shares from at least $t$ talliers, in order to extract and calculate the end result. Should it 
+        In the tally phase of the protocol, the tally multiplies its shares and then decrypts them and publishes the end result. Along with this result we require that the $DLEQ$ proof is published aswell. This allows us to verify the correctness of the tallying process for each tally. Should a $DLEQ$ proof from a tally fail then the tally's shares is ignored in the preceding process. The protocol requires the shares from at least $t$ talliers, in order to extract and calculate the end result. Should it 
         be the case that this requirement is not fulfill an re-election is require but untill then the implementation simply ignores the shares from the tally in question.
         
         \noindent
-        Should an adversary gain access to the database serving the Bulletinboard, it would be possible for this adversary to manipulate the verdict of a proof but not
+        Should an adversary gain access to the database serving the bulletin board, it would be possible for this adversary to manipulate the verdict of a proof but not
         the proofs them self, as the construction of the proofs prevent this. Though our application does not take this scenario into account it would be fairly easy to make
         a functionality that reevaluates the proofs, should such a breach have been detected. One could argue that an adversary with full access to the database could also remove elements such as a casted vote or the information that a given voter have voted. The later would effectually enable the given voter the ability to double vote. This scenario is not handled in our application. The first scenario is also possible but given the fact that our application have voter privacy and the votes is secure under the DL problem then the adversary would not know if he is removing and "no" or a "yes" vote. 
         
@@ -342,11 +342,11 @@ We will in this section analyze our implementation. We will analyze the chosen t
         \textit{It should be possible for any participants and observers to validate individual votes as well as the final tally of the election.}
         
         \noindent
-        The protocol is basically designed around this requirement as voters publishes their ballot and proofs to the Bulletinboard. The Tally will also publish a proof under the tallying phase. Any participant or observers can validate the proofs since it is public. 
+        The protocol is basically designed around this requirement as voters publishes their ballot and proofs to the bulletin board. The Tally will also publish a proof under the tallying phase. Any participant or observers can validate the proofs since it is public. 
         
         
         \noindent
-        Everything on the Bulletinboard is publicly available both for participants and none participants of the election. $Proof_U$ verifies that an encrypted vote $U$ is either 0 or 1 and the $DLEQ$ proofs verifies the consistence of the shares for both the voters and the talliers. The end result can be calculated from the publicly known information available after the tallying phase. 
+        Everything on the bulletin board is publicly available both for participants and none participants of the election. $Proof_U$ verifies that an encrypted vote $U$ is either 0 or 1 and the $DLEQ$ proofs verifies the consistence of the shares for both the voters and the talliers. The end result can be calculated from the publicly known information available after the tallying phase. 
             
     \item[Individual Verifiability]
         \textit{Every registered voter should be able to verify that his vote is counted correctly.}

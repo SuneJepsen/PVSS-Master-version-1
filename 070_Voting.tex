@@ -2,16 +2,16 @@ In this chapter we will briefly describe electronic voting in general. In order 
 
 
 \section{Introduction}
-In many aspects of our life's we encounter the act of voting, from simple things as voting whats for dinner, to the more complex things as a government election. The later involving a large number of people from different geographical locations. These election is normally handled by dividing the people into sections based on location, each section handling it's own sub-election and submitting the result to a overall tally. Though many countries still mostly rely on the old fashioned paper based ballots, we have in the recent years seen an increase in electronic voting. Electronic voting refers to the act of voting though an electronic devices and depending on the voting equipment and location, this can be divide into five categories \cite{Cet09}. 
+In many aspects of our life's we encounter the act of voting, from simple things as voting whats for dinner, to the more complex things as a government election. The later involving a large number of people from different geographical locations. These election is normally handled by dividing the people into sections based on location, each section handling it's own sub-election and submitting the result to a overall tally. Though many countries still mostly rely on the old fashioned paper based ballots, we have in the recent years seen an increase in electronic voting. Electronic voting refers to the act of voting through an electronic devices and depending on the voting equipment and location, this can be divide into five categories \cite{Cet09}. 
 
 \section{Classification} \label{sec:voting:classification}
 
 \begin{description}
-\item[DRE voting] Direct Recording Electronic is a specialized standalone electronic voting machine, which have the attributes of being physically hardened and have software specifically for voting installed. Votes casted on a DRE is do within a voting booth located on a polling site, and the votes is then recorded into a electronic ballot box.
+\item[DRE voting] Direct Recording Electronic is a specialized standalone electronic voting machine, which have the attributes of being physically hardened and have software specifically for voting installed. Votes casted on a DRE is done within a voting booth located on a polling site, and the votes is then recorded into a electronic ballot box.
 
-\item[Poll-site voting] The voting is located on a polling site, votes are cast on public computers located on the site, in favour for voting booths. The computers on site are connected to a counting authority server though a closed and controlled network. Authentication can be done prior to the voting period or at the polling site
+\item[Poll-site voting] The voting is located on a polling site, votes are cast on public computers located on the site, in favour for voting booths. The computers on site are connected to a counting authority server though a closed and controlled network. Authentication can be done prior to the voting period or at the polling site.
 
-\item[Poll-site kiosk voting] Votes are casted inside a voting booth located at a polling site, using a terminal. The terminal is connected to a counting authority server though a closed and controlled network. Authentication is done at the polling site before allowed access to the voting booth. 
+\item[Poll-site kiosk voting] Votes are casted inside a voting booth located at a polling site, using a terminal. The terminal is connected to a counting authority server through a closed and controlled network. Authentication is done at the polling site before allowed access to the voting booth. 
 
 \item[Poll-site Internet voting] Votes are casted on public computers located on a polling site. The public computers on site is online and connected to a counting authority server over uncontrolled network. Authentication can be done prior to the voting period or at the polling site
 
@@ -62,12 +62,12 @@ The voting process as illustrated on figure \ref{fig:Voting_Process} holds true 
 The terminologies introduced in this section will be used throughout the rest of the thesis. 
 
 \section{Challenges}
-Though the process of electronic voting have many similarities with paper based voting systems, there is still concern of the security. In paper based voting systems, the security is easily noticeable as this is represented by officials observing every stages of the process. the process typically goes along the lines of: When arriving to the polling site a voter typically already have proofs that he is eligible and is simply registered and handed the paper ballots. The paper ballot is fulfilled in a voting booth where only the voter himself is present. When the ballot is fulfilled, it is folded or put in an envelope, in order to hide the vote, and then put in a ballot box located on the polling site. Note that ballot is anonymous and typical only requires a simple mark. Ones all the votes have been cast or a deadline is reached then the votes is counted. Throughout this entire process there are neutral officials physical present typically along with represents from each party in the election and passive observers.   \\
+Though the process of electronic voting have many similarities with paper based voting systems, there is still concern of the security. In paper based voting systems, the security is easily noticeable as this is represented by officials observing every stages of the process. The process typically goes along the lines of: When arriving to the polling site a voter typically already have proofs that he is eligible and is simply registered and handed the paper ballots. The paper ballot is fulfilled in a voting booth where only the voter himself is present. When the ballot is fulfilled, it is folded or put in an envelope, in order to hide the vote, and then put in a ballot box located on the polling site. Note that ballot is anonymous and typical only requires a simple mark. Ones all the votes have been cast or a deadline is reached then the votes is counted. Throughout this entire process there are neutral officials physical present typically along with represents from each party in the election and passive observers.   \\
 
 \noindent
 In electronic voting systems the security is not this visible and if the system falls into the classification of \textit{Poll-site Internet voting} or \textit{Remote Internet voting} then uncontrolled network is used and the group of potential adversary is significantly increased.
 To ensure security and public trust an electronic vote system should aim to fulfill the goals 
-listed below \cite{Damgaard2003}
+listed below \cite{Damgaard2003}.
 
 \begin{description}
     \item[Privacy] Throughout the process no information should be leaked, only the final counting
@@ -115,18 +115,29 @@ The previous three goals are fairly board and can with benefit be specified into
 \end{itemize}
 
 
-\section{Approaches}
-To construct a electronic voting system that fulfills these security requirements, we look that three cryptographical techniques as follows 
+\section{Cryptography}
+Fulfilling all of the the above security requirements, working within the classification of \textit{Remote Internet voting} is not a simple task. However the field of cryptography provides us with the tooling and the protocols to construct such an application. As the field of cryptography is comprehensive, we will only, in this thesis, be looking at the concepts used in the protocol to which this thesis is based upon. Building on the figure \ref{fig:Voting_Process} from section \ref{sec:the_voting_process} and the concepts described in \cite{Cet09} we show in figure \ref{fig:Voting_Process_cryptography} below how the cryptography interacts with the voting process. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{Voting_Process_cryptography.jpg}
+    \caption{Voting process and cryptography}
+    \label{fig:Voting_Process_cryptography}
+\end{figure}
+
+\noindent
+Marked with the blue boxes we see the cryptography concepts that will be used in this thesis. Most of the concepts will be described in depth in the following chapters, in fact the only concept we will elaborate on here is the bulletin board the rest we will briefly present.
 
 \begin{description}
-    \item[Blind signatures]
-
-    \item[Mix-nets]        
+    \item[Zero Knowlegde proofs] refers to proofs, that have the notion of a prover and a verifier. The proofs promises that if the prover is honest then the verifer will always accept and if the prover is dishonest the verifier would reject with overwhelming probability. It also promises to not leak any information besides the outcome of the verdict. 
+    
+    \item[Homomorphic Encryption] is a concept that allows one to compute on the combination of data entities without having to retrieve the individual entity. Thereby preserving the confidentiality of the individual entity. This also allows one to compute the calculations on encrypted data without decrypting it first. 
+    
+    \item[Threshold Cryptography] is in this thesis represented using Shamirs secret sharing as described in the introduction. 
         
-    \item[Homomorphic encryption]
+    \item[Cryptographic Hash function] is a function that takes a arbitrary size input and outputs a fixed length output. Its required that the output is easily computed given any input, and that it is hard to invert the output into the given input. 
+    
+    \item[Bulletin board] as described in \cite{Cet09}, is a public broadcasting channel where parties may publish there information. All communication to the bulletin board is public an can thereby be monitored. Generally it is only allowed to publish and read information on the bulletin board, no parties is allowed to delete or alter the published information. The public nature of the bulletin board prevents good support in order to fulfill the requirements of \textit{Universal Verifiability} and \textit{Accuracy}. 
 \end{description}
 
 
-
-
-3.8. Bulletin Board A bulletin board (Chaum, 1981) is a public broadcast channel with universally accessible memory where a party may write information via secure communication in the designated areas. The information can be read by any party. Bulletin boards are commonly used in electronic voting protocols. All communications with the bulletin boards are public and therefore can be monitored. Generally, data already written into a bulletin board cannot be altered or deleted in any way, but it can be read or appended. In traditional paper-based voting systems, people cannot make individual verifiability directly. However, the voter casts his vote into the ballot box by himself. Since the security of the ballot box is guaranteed, individual verifiability is, in a way, assured. Although this requirement is not directly satisfied in paper based voting, it should explicitly be fulfilled in electronic voting protocols due to the nature of computer systems and electronic equipment. Besides the voter’s individual verification, the voting process, steps and published tally would be verified by third party observers. Thus bulletin board gives full support to fulfil the verification and accuracy requirements of the eVoting systems.

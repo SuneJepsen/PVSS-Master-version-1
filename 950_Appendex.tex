@@ -1,8 +1,8 @@
 %----------------------------------------------------------------------
-\section{DLEQ non-interactive proof between voters and verifier}
+\section{$DLEQ$ non-interactive proof between voters and verifier}
 \label{sec:dleq_non-interactive-proof-between_voters_and_verifier}
 %----------------------------------------------------------------------
-In section  ~\ref{sec:dleq_voter_verifier} we elaborated an interactive $DLEQ$ proof between voter and verifer. Here we present how one can turn an interactive proof to a non interactive proof. This is also known as the Fiat Shamir where we are transforming a interactive proof into a non interactive proof which is described in section ~\ref{sec:fiat_shamir}. Instead of the verifier computes a challenge, the prover computes the challenge as a random function (hash).  We will present two ways off doing this transformation, a non optimized and a optimized version. Last we will describe an example on how this can be done.\\
+In section \ref{sec:dleq_voter_verifier} we elaborated an interactive $DLEQ$ proof between voter and verifer. Here we present how one can turn an interactive proof to a non interactive proof. This is also known as the Fiat Shamir where we are transforming an interactive proof into a non interactive proof which is described in section ~\ref{sec:fiat_shamir}. Instead of the verifier computes a challenge, the prover computes the challenge as a random function as described in \ref{sec:hash_function}.  We will present two ways off doing this transformation, a non optimized and an optimized version. Last we will describe an example on how this can be done.\\
 
 
 \parahead{The prover computes} \begin{math}a_1=g^w \ (mod\ q)  \ and \ a_2=y_i^w \ (mod\ q),  w\in_R \Z_q \end{math}. Then the prover computes the hash \begin{math}C=H(X_i,Y_i,a_1,a_2) \end{math}. Then the prover computes  \begin{math}r=w-p(i)  \cdot  C \ (mod\ q)\end{math}. Last the prover publish \begin{math}a_1, a_2,r,C\end{math}. \\
@@ -51,7 +51,7 @@ In section  ~\ref{sec:dleq_voter_verifier} we elaborated an interactive $DLEQ$ p
 Note in above that there is no interaction between the prover and the verifier. \\
 
 \noindent 
-\textbf{DLEQ optimized}\\
+\textbf{$DLEQ$ optimized}\\
 In the following we will show how one can improve the amount of computation of the challenge \textit{C}. Instead of computing the challenge \textit{n} times, one can compute it once and reuse the challenge.
 
 \begin{enumerate}
@@ -68,8 +68,8 @@ $a_{1,2},a_{2,2},...,a_{1,n},a_{2,n})$
 \end{enumerate}
 
 \noindent 
-\textbf{DLEQ computation for 3 voters}\\
-Hence the hash contains all the  \begin{math}a_i \end{math} the prover will compute this proof once for all  \begin{math}p(i) \end{math} which improve efficiency. This means that if there are 3 voters, then the above computation has to be done 3 times for every tallier, but same hash can be computed once for every tallier. 
+\textbf{$DLEQ$ computation voter}\\
+Hence the hash contains all the  \begin{math}a_i \end{math} the prover will compute this proof once for all  \begin{math}p(i) \end{math} which improve efficiency. This means that if there are $3$ shares, then the above computation has to be done $3$ times, one for each tally, but same hash can be computed once for every tally. 
 
 
 
@@ -84,7 +84,7 @@ $a_{1,2},a_{2,2},...,a_{1,n},a_{2,n})$.
     \item The verification contains of the following computation:
     \begin{enumerate}        
         \item The verifier checks if: $a_{1,i} = g^{r,i} \cdot X_i^C \ (mod\ q) $
-        \item The verifier checks if:$a_{2,i} =y_i^{r_{i}}  \cdot  Y_i^C \ (mod\ q)  $ 
+        \item The verifier checks if: $a_{2,i} =y_i^{r_{i}}  \cdot  Y_i^C \ (mod\ q)  $ 
          \item The verifier checks if: $C=H(X_i,Y_i,...,X_n,Y_n,a_{1,1},a_{2,1},$\\
 $a_{1,2},a_{2,2},...,a_{1,n},a_{2,n})$
     \end{enumerate}
@@ -99,10 +99,10 @@ The same arguments holds for correctness, soundness and zero knowledge, which is
 
 
 %----------------------------------------------------------------------
-\section{DLEQ proof by the talliers}
+\section{$DLEQ$ proof by the talliers}
 \label{sec:dleq_proof_by_the_talliers}
 %----------------------------------------------------------------------
-The tallier will do computations on each of their shares. Each tallier uses the $DLEQ$ to prove that the decryption of their shares is done correctly. It proofs that the exponent are equal \begin{math}G = y_i^{x_i}  \ and \ Y_i=S_i^{x_i} \end{math} without revealing \begin{math}x_i \end{math} and if the prover was honest, then it should be the case that we get same computed values in the end meaning \begin{math}a_1=G^w = G^r \cdot y_i^C\end{math} and \begin{math}a_2=S_i^w = S_i^r \cdot Y_i^C\end{math}.\\
+The talliers will do computations on each of their shares. Each tally uses the $DLEQ$ to prove that the decryption of their shares is done correctly. It proofs that the exponent are equal \begin{math}G = y_i^{x_i}  \ and \ Y_i=S_i^{x_i} \end{math} without revealing \begin{math}x_i \end{math} and if the prover was honest, then it should be the case that we get same computed values in the end meaning \begin{math}a_1=G^w = G^r \cdot y_i^C\end{math} and \begin{math}a_2=S_i^w = S_i^r \cdot Y_i^C\end{math}.\\
 
 \noindent
 First we show the interactive proof and then transform it to a non-interactive proof. The input values are \begin{math}(G,\ y_i,\ S_i, Y_i)\end{math} where \begin{math}G = y_i^{x_i}\end{math} and  \begin{math} Y_i=S_i^{x_i}\end{math}. We have some initial values
@@ -112,7 +112,7 @@ First we show the interactive proof and then transform it to a non-interactive p
  
 \noindent 
 In step 1 the prover computes \begin{math}a_1=G^w,\ a_2=S_i^w\end{math}. In step 2
-the verifier creates a challenge \begin{math}C\end{math}. In step 3 the tallier computes \begin{math}r=w-C \cdot x_i\end{math}. In step 4 the verifier computes \begin{math}a_1=G^r \cdot y_i^C,\ a_2=S_i^r \cdot Y_i^C\end{math}.
+the verifier creates a challenge \begin{math}C\end{math}. In step 3 the tally computes \begin{math}r=w-C \cdot x_i\end{math}. In step 4 the verifier computes \begin{math}a_1=G^r \cdot y_i^C,\ a_2=S_i^r \cdot Y_i^C\end{math}.
  
  
  
@@ -150,7 +150,7 @@ the verifier creates a challenge \begin{math}C\end{math}. In step 3 the tallier 
 \end{figure} 
 
 \noindent
-Note the interaction in step 2 where the verifier create a challenge to the prover. Through Fiat–Shamir we transform an interactive proof of knowledge into a non-interactive proof of knowledge by replacing step 2 with a hashing algorithm  \begin{math}C=H(G,\ y_i,\ S_i,\ Y_i,\ a_1,\ a_2)\end{math}.\\
+Note the interaction in step 2 where the verifier creates a challenge to the prover. Through Fiat–Shamir we transform an interactive proof of knowledge into a non-interactive proof of knowledge by replacing step 2 with a hash algorithm  \begin{math}C=H(G,\ y_i,\ S_i,\ Y_i,\ a_1,\ a_2)\end{math}.\\
  
  \noindent
 \textbf{Mathematical justification}\\
@@ -173,7 +173,7 @@ To show soundness and zero knowledge the same process from section \ref{sec:dleq
 \section{Simple review of calculations in the protocol}
 \label{sec:simple_review_of_calculations_in_the_protocol}
 %----------------------------------------------------------------------
-We will present a simplified example of the calculations through the protocol, which illustrate casting the votes and tallying the final counts of the votes. The structure follows the protocol as described in section \ref{sec:the_protocol}. This example does not contain calculations of the proof. These are described in section \ref{sec:proofs}. In this calculation there are $3$ voters ($m$) and $3$ talliers ($n$). The example shows  3 voters which cast their votes and how 3 Tallier are able to reconstruct the sum of all votes.\\
+We will present a simplified example of the calculations through the protocol, which illustrate casting the votes and tallying the final counts of the votes. The structure follows the protocol as described in section \ref{sec:the_protocol}. This example does not contain calculations of the proof. These are described in section \ref{sec:proofs}. In this calculation there are $3$ voters ($m$) and $3$ talliers ($n$). The example shows  3 voters which cast their votes and how 3 talliers are able to reconstruct the sum of all votes.\\
 
 \noindent
 \textbf{The bulletin board publishes all system parameters which is the public elements a prime $q$,  the generators $g$ and $G$ and a security parameter $t$.}
@@ -203,16 +203,16 @@ Lambda  $\lambda_1, \ \lambda_2,\ \lambda_3$                      & $3,-3,1$    
 \hline
 \multicolumn{3}{|l|}{\textbf{Talliers}}        \\ \hline
 \textbf{} & Public key $y_i$ & Private key $x_i$ \\ \hline
-Tallier 1 & 5               & 1                \\ \hline
-Tallier 2 & 3               & 2                \\ \hline
-Tallier 3 & 4               & 3                \\ \hline
+Tally 1 & 5               & 1                \\ \hline
+Tally 2 & 3               & 2                \\ \hline
+Tally 3 & 4               & 3                \\ \hline
 \end{tabular}
 \caption{Public and private keys for the talliers}
 \label{my-label}
 \end{table}
 
 \noindent
-\textbf{The voters casts their votes, either 0 or 1. Creates a random secret $s$ and a random polynomial of degree at most $t-1$ and computes the shares.}
+\textbf{The voters casts their votes, either 0 or 1. and creates a random secret $s$ and a random polynomial of degree at most $t-1$ and computes the shares.}
 
 \begin{table}[H]
 \centering
@@ -241,7 +241,7 @@ Random polynomial $p(x)$ & $4+3x+4x^2$ \\ \hline
 \begin{tabular}{|l|l|l|l|l|}
 \hline
 \multicolumn{5}{|l|}{\textbf{The voters creates their shares $p(x)$}}                                    \\ \hline
-\textbf{Voter/point}            & $p(0)$ & Tallier $1$ & Tallier $2$ & Tallier $3$ \\ \hline
+\textbf{Voter/point}            & $p(0)$ & Tally $1$ & Tally $2$ & Tally $3$ \\ \hline
 $p_1(x)= 2+2x+4x^2$ &  $2$    & $3$         & $2$         & $4$         \\ \hline
 $p_2(x)= 3+x+4x^2$  &  $3$    & $3$         & $1$         & $2$         \\ \hline
 $p_3(x)= 4+3x+4x^2$ &  $4$    & $1$         & $1$         & $4$         \\ \hline
@@ -257,8 +257,8 @@ $p_3(x)= 4+3x+4x^2$ &  $4$    & $1$         & $1$         & $4$         \\ \hlin
 \centering
 \begin{tabular}{|l|l|l|l|}
 \hline
-\multicolumn{4}{|l|}{\textbf{\begin{tabular}[c]{@{}l@{}}Encryption of the shares $Y_i= y^{p(i)}$ using \\ the Tallier public key\end{tabular}}} \\ \hline
-\textbf{Voter/Tallier}          & Tallier $1$                     & Tallier $2$                     & Tallier $3$                     \\ \hline
+\multicolumn{4}{|l|}{\textbf{\begin{tabular}[c]{@{}l@{}}Encryption of the shares $Y_i= y^{p(i)}$ using \\ the talliers public key\end{tabular}}} \\ \hline
+\textbf{Voter/Talliers}          & Tally $1$                     & Tally $2$                     & Tally $3$                     \\ \hline
 Voter $1$                         & $5^3=4$         & $3^2=9$         & $4^4=3$         \\ \hline
 Voter $2$                         & $5^3=4$         & $3^1=3$         & $4^2=5$         \\ \hline
 Voter $3$                         & $5^1=5$         & $3^1=3$         & $4^4=3$         \\ \hline
@@ -276,15 +276,15 @@ Voter $3$                         & $5^1=5$         & $3^1=3$         & $4^4=3$ 
 \begin{tabular}{|l|l|}
 \hline
 \multicolumn{2}{|l|}{\textbf{Tallier computes $Y^*$}}                        \\ \hline
-Tallier $1$ & $Y_1^* = (4 \cdot 4 \cdot 5) = 80 = 3 \ (mod \ 11)$                             \\ \hline
-Tallier $2$ & $Y_2^* = (9 \cdot 3 \cdot 3) = 81 = 4 \ (mod \ 11)$                             \\ \hline
-Tallier $3$ & $Y_3^* = (3 \cdot 5 \cdot 3) = 45 = 1 \ (mod \ 11)$                             \\ \hline
+Tally $1$ & $Y_1^* = (4 \cdot 4 \cdot 5) = 80 = 3 \ (mod \ 11)$                             \\ \hline
+Tally $2$ & $Y_2^* = (9 \cdot 3 \cdot 3) = 81 = 4 \ (mod \ 11)$                             \\ \hline
+Tally $3$ & $Y_3^* = (3 \cdot 5 \cdot 3) = 45 = 1 \ (mod \ 11)$                             \\ \hline
 \multicolumn{2}{|l|}{\textbf{Tallier computes $S^*$}}                        \\ \hline
-Tallier $1$ & $(x_1)^{-1} = 1 \cdot x = 1 \ (mod \ 5) = 1, \ S_1^* = 3^1 = 3 \ (mod \ 11)$ \\ \hline
-Tallier $2$ & $(x_2)^{-1} = 2 \cdot x = 1 \ (mod \ 5) = 3, \ S_2^* = 4^3 = 9 \ (mod \ 11) $ \\ \hline
-Tallier $3$ & $(x_3)^{-1} = 3 \cdot x = 1 \ (mod \ 5) = 2, \ S_3^* = 1^2 = 1 \ (mod \ 11) $ \\ \hline
+Tally $1$ & $(x_1)^{-1} = 1 \cdot x = 1 \ (mod \ 5) = 1, \ S_1^* = 3^1 = 3 \ (mod \ 11)$ \\ \hline
+Tally $2$ & $(x_2)^{-1} = 2 \cdot x = 1 \ (mod \ 5) = 3, \ S_2^* = 4^3 = 9 \ (mod \ 11) $ \\ \hline
+Tally $3$ & $(x_3)^{-1} = 3 \cdot x = 1 \ (mod \ 5) = 2, \ S_3^* = 1^2 = 1 \ (mod \ 11) $ \\ \hline
 \end{tabular}
-\caption{}
+\caption{The talliers computes $Y^*$ and $S^*$.}
 \label{my-label}
 \end{table}
 
@@ -302,7 +302,7 @@ $S_3^{* \cdot \lambda_3}$                                            & $1^{1 \ (
 \multicolumn{2}{|l|}{\textbf{Multiply $S^*$ which is the sum of the secrets}}                                                                            \\ \hline
 $G^{ \sum\limits_{j=1}^m s_j} = S_1^{* \cdot \lambda_1} \cdot  S_2^{* \cdot \lambda_2} \cdot S_3^{* \cdot \lambda_3}$ & $5 \cdot 4 \cdot 1 \ (mod \ 11) = 9$  \\ \hline
 \end{tabular}
-\caption{}
+\caption{A master authority multiples the decrypted shares.}
 \label{my-label}
 \end{table}
 
@@ -319,7 +319,7 @@ $U_3$ for voter $3$         & $5^{4+1 \ (mod \ 5)} = 5^0 = 1 \ ( mod \ 11)$ \\ \
 \multicolumn{2}{|l|}{\textbf{Multiply the $U_i$ which is the sum  of the secrets and the  votes}}                                                \\ \hline
 $\prod\limits_{j=1}^{m} U_{j} = U_1 \cdot  U_2 \cdot U_3 =   G^{ \sum\limits_{j=1}^m s_j +v_j}$ & $(4 \cdot 9 \cdot 1)\  (  mod \ 11) = 3$                                               \\ \hline
 \end{tabular}
-\caption{}
+\caption{A master authority multiplies all the votes.}
 \label{my-label}
 \end{table}
 
@@ -335,13 +335,13 @@ $G^{ \sum\limits_{j=1}^m s_j}$                                                  
 Inverse of $(G^{ \sum\limits_{j=1}^m s_j})^{-1}$                                        & $9 \cdot x=1 \ (mod \ 11) = 9 \cdot 5 = 45 \ (mod \ 11) = 1$                         \\ \hline
 $ G^{ \sum\limits_{j=1}^m s_j +v_j} / G^{ \sum\limits_{j=1}^m s_j}$                         & $3 \cdot 5 \ (mod \ 11) = 4$                                                           \\ \hline
 \end{tabular}
-\caption{}
+\caption{We can isolate the sum of all votes by multiplying with inverse. Hereafter one can use exhaustive search to extract the final tally.}
 \label{my-label}
 \end{table}
 
 
 \noindent
-The final computation is solving the following $G^x \ (mod \ 11) = 4$	where $x$ is the total vote count. Since  $5^3 \  (mod \ 11) = 4$ the total vote count is $3$, which is the correct vote count since we know that the three voters votet $1$ which gives a total of $3$ votes.
+The final computation is solving the following $G^x \ (mod \ 11) = 4$	where $x$ is the total vote count. Since  $5^3 \  (mod \ 11) = 4$ the total vote count is $3$, which is the correct vote count since we know that the three voters voted $1$ which gives a total of $3$ votes.
 
 
 
@@ -349,7 +349,7 @@ The final computation is solving the following $G^x \ (mod \ 11) = 4$	where $x$ 
 \section{Simple review of calculation of $DLEQ$ between voter and verifier}
 \label{sec:simple_review_of_calculation_of_dleq_between_voter_and_verifier}
 %----------------------------------------------------------------------
-We will present a simplified example of the calculations through the $DLEQ$, which proofs that the shares are constructed correctly and consistent as described in section \ref{sec:dleq_voter_verifier}.  The calculation will be based on the values  from appendix \ref{sec:simple_review_of_calculations_in_the_protocol}. We will use voter 1 with a polynomial $2+2x+4x^2$ and we will use Tallier 1 as the verifier. This means we will also  use calculation with these values $y_1 = 5, \ Y_1= 4, \ y_2 = 3, \ Y_2= 9, \ y_3 = 4, \ Y_3= 3$ since the $DLEQ$ needs the variables $g,X_i,y_i,Y_i$. Since the example is based on $3$ shares, there will be $3$ corresponding $DLEQ$ proves. To compute $X_1, \ X_2, \ X_3$ we first need to compute the $C_j$.
+We will present a simplified example of the calculations through the $DLEQ$, which proofs that the shares are constructed correctly and consistent as described in section \ref{sec:dleq_voter_verifier}.  The calculation will be based on the values  from appendix \ref{sec:simple_review_of_calculations_in_the_protocol}. We will use voter 1 with a polynomial $2+2x+4x^2$ and we will use tally $1$, $2$ and $3$ as the verifiers. This means we will also  use calculation with these values $y_1 = 5, \ Y_1= 4, \ y_2 = 3, \ Y_2= 9, \ y_3 = 4, \ Y_3= 3$ since the $DLEQ$ needs the variables $g,X_i,y_i,Y_i$. Since the example is based on $3$ shares, there will be $3$ corresponding $DLEQ$ proves. To compute $X_1, \ X_2, \ X_3$ we first need to compute the $C_j$.
 
 
 
@@ -520,7 +520,7 @@ $C^{2^{3}}_2$           & $3^{2} = 9 = 4$          & $5^{4} = 9 \ (mod \ 11)$   
 \section{Simple review of calculation of $PROOF_u$ between voter and verifier}
 \label{sec:simple_review_of_calculation_of_proof_u_between_voter_and_verifier}
 %----------------------------------------------------------------------
-We will present a simplified example of the calculations through the $PROOF_u$. As described in section  \ref{sec:proof_u} the $PROOF_U$ proofs that the vote  either is $0$ or $1$ without revealing the actual value of the vote. The calculation will be based on the values  from appendix \ref{sec:simple_review_of_calculations_in_the_protocol}. The example will show a voter which votes $1$. We use voter 1 vote $v=1$ and his secret $s=2$ in this example.
+We will present a simplified example of the calculations through the proof $PROOF_u$. As described in section  \ref{sec:proof_u} the $PROOF_U$ proofs that the vote  either is $0$ or $1$ without revealing the actual value of the vote. The calculation will be based on the values  from appendix \ref{sec:simple_review_of_calculations_in_the_protocol}. The example will show a voter which votes $1$. We use voter 1 with vote $v=1$ and his secret $s=2$ in this example.
 
 
 \begin{figure}[H]
@@ -592,7 +592,7 @@ We will present a simplified example of the calculations through the $PROOF_u$. 
 \begin{center}
 \begin{tabular}{|p{0.3cm}|p{2.5cm}|p{8cm}|}
   \hline
-  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \#  6: An internal crash occurs and the Bulletinboard is out of reach during normal operation. The response is that the error is logged and the system is running in degraded mode. The system should be up running within 5 minutes.\\
+  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \#  6: An internal crash occurs and the bulletin board is out of reach during normal operation. The response is that the error is logged and the system is running in degraded mode. The system should be up running within 5 minutes.\\
   \hline
   \multicolumn{2}{|p{3cm}|}{\bfseries Relevant Quality Attributes:} & Availibility\\
   \hline
@@ -601,7 +601,7 @@ We will present a simplified example of the calculations through the $PROOF_u$. 
   \cline{2-3}
   & {\bfseries Stimulus:} & Crash \\
   \cline{2-3}
-  & {\bfseries Artifact} &  Bulletinboard \\
+  & {\bfseries Artifact} &  Bulletin board \\
   \cline{2-3}
   & {\bfseries Environment:} &  Normal operation \\
   \cline{2-3}
@@ -627,7 +627,7 @@ We will present a simplified example of the calculations through the $PROOF_u$. 
 \begin{center}
 \begin{tabular}{|p{0.3cm}|p{2.5cm}|p{8cm}|}
   \hline
-  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \#  7: 5 mill. users intiate votes to the Bulletinboard under normal operation. The votes are processed and saved with average latency of 2 seconds.\\
+  \multicolumn{2}{|p{3cm}|}{\bfseries Scenario(s):} & \#  7: 5 mill. users intiate votes to the bulletin board under normal operation. The votes are processed and saved with average latency of 2 seconds.\\
   \hline
   \multicolumn{2}{|p{3cm}|}{\bfseries Relevant Quality Attributes:} & Performence\\
   \hline
@@ -636,7 +636,7 @@ We will present a simplified example of the calculations through the $PROOF_u$. 
   \cline{2-3}
   & {\bfseries Stimulus:} & Initiate their votes \\
   \cline{2-3}
-  & {\bfseries Artifact} &  Bulletinboard \\
+  & {\bfseries Artifact} &  Bulletin board \\
   \cline{2-3}
   & {\bfseries Environment:} &  Normal operation \\
   \cline{2-3}

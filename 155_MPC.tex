@@ -17,7 +17,7 @@ An extension to the VSS protocol is PVSS protocol where the goal is not just tha
 The reason for this is that we cannot rely on every participants in a MPC protocol to behave as intended. Some participants could be corrupted, we divide these adversaries into two main groups \cite{IntroCrypto}. 
 
 \begin{itemize}
-\item \textbf{Passive corruption} is that a server (semihonest) gets access to information which the server is not entitled to, e.g. if a voter ask another voter about his information and tries to compare the information and get some more information in that way. By using secret sharing we can prevent passive corruption, because the scheme guaranties that if \textit{t}-servers are corrupted then they will not be able to gain anything.
+\item \textbf{Passive corruption} is that a participant (semihonest) gets access to information which the participant is not entitled to, e.g. if a voter ask another voter about his information and tries to compare the information and get some more information in that way. By using secret sharing we can prevent passive corruption, because the scheme guaranties that if \textit{t}-participants are corrupted then they will not be able to gain anything.
 
-\item \textbf{Active corruption} happens when the voters (malicious) try to send values that they are not supposed to send - so the voters deviate from the protocol. The PVSS prevent these attacks.
+\item \textbf{Active corruption} happens when the participant (malicious) try to send values that they are not supposed to send - so the voters deviate from the protocol. The PVSS prevent these attacks.
 \end{itemize}

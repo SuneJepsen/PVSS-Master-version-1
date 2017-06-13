@@ -8,7 +8,7 @@ The following section will be about the cryptographic assumptions which are used
 In cryptography, a zero-knowledge proof is a protocol by which one party (the prover) can prove to another party (the verifier) that a given statement is true, without revealing any information apart from the fact that the statement is indeed true.\\
 
 \noindent
-Zero knowledge proof is a important part of the PVSS protocol. It is used for verifying the correctness of the data. Intuitively Zero knowledge proof is a protocol between two parties a prover and a verifier where the prover tries to convince the verifier about some statement, for which he uses additional knowledge. In the last step if the protocol, the verifier either accepts or rejects the proof. A zero-knowledge proof must satisfy following three properties:
+Zero knowledge proof is a important part of the PVSS protocol. It is used for verifying the correctness of the data. Intuitively Zero knowledge proof is a protocol between two parties a prover and a verifier. The prover tries to convince the verifier about some statement, for which he uses additional knowledge. In the last step in the protocol, the verifier either accepts or rejects the proof. A zero-knowledge proof must satisfy following three properties:
 
 %-----------------------------------------------zero knowledge
 \begin{itemize}
@@ -38,7 +38,7 @@ A function $f()$ is a one-way function if:      \\
 \noindent
 An example of a one-way function is $n = pq$ where $p$ and $q$ are primes, it is easy to compute $n$ given $p$ and $q$ but hard to find $p$ and $q$ given only $n$. 
 Inverting this function requires finding the factors of $n$.
-An other example of a one-way function is Discrete logarithm. \\
+Another example of a one-way function is Discrete logarithm. \\
 
 
 \parahead{Discrete logarithm (DL)} A discrete logarithm is a integer $a$ exponent that solves $g^a=c$, where $g$ is a generator and $c$ is a element of a cyclic group. Given $a$ its easy to compute, but given only $g$ and $c$ its very hard to find $a$. We define discrete logarithm as \\
@@ -79,7 +79,7 @@ We use the DL problem in the following
 \fi
 
 \parahead{Diffie-Hellman problem (DHP)}
-One of the best known application of the DL problem is in the Diffie-Hellman problem an in particular in the Diffie-Hellman key exchange. Though the Diffie-Hellman key exchange is not used in the PVSS protocol we will use it to illustrate the DHP.
+One of the best known application of the DL problem is in the Diffie-Hellman problem an in particular in the Diffie-Hellman key exchange. Though the Diffie-Hellman key exchange is not used in the PVSS protocol we will use it to illustrate the discrete logarithm problem.
 
 
 \begin{figure}[H]
@@ -128,7 +128,7 @@ As shown in step 1 Alice is independently from Bob choosing an random element fr
 If we look at the exchange from Eve's point of view, we can see that Eve knows the public elements G and g aswell as A and B from step 1 and 2. If Eve can compute $C = g^{ab}$ then Eve would be able to decrypt any message sent between Alice and Bob. We define this problem as. \\
 
 \begin{defi}[Computational Diffie-Hellman (CDH) problem]
-Given a group $G$, generator $g$ and $A = g^a$, $B = g^b$, where $a,b$ is are randomly independently chosen from $\Zp$, compute $C=g^{ab}$ 
+Given a group $G$, generator $g$ and $A = g^a$, $B = g^b$, where $a,b$ is are randomly independently chosen from $\Zq$, compute $C=g^{ab}$ 
 \end{defi}
 
 \noindent
@@ -143,7 +143,7 @@ It is not known if the opposite direction is true in general, but in some groups
 
 \parahead{Decisional Diffie-Hellman (DDH) problem} The CDH problem have another property namely if given a group element and the claim that this solves a CDH instance, then is not easy to verify that the solution is correct unless we can solve the CDH problem. 
 \noindent
-We would need to decide if, given $g^a, g^b, g^c$, if it holds that $c = ab \ mod \ p$. we define this as. \\
+We would need to decide if, given $g^a, g^b, g^c$, if it holds that $c = ab \ mod \ q$. We define this as. \\
 
 \iffalse
     \begin{defi}[Decisional Diffie-Hellman (DDH) problem]
@@ -154,9 +154,10 @@ We would need to decide if, given $g^a, g^b, g^c$, if it holds that $c = ab \ mo
 \fi 
 
 \begin{defi}[Decisional Diffie-Hellman (DDH) problem] 
-    Given a group $G$, a generator $g$ and $A = g^a$, $B = g^b$ and $C = g^c$, where $a$ and $b$ are randomly and independently chosen from $\Z_p$ and where $c$ is chosen either as $c = ab$ or uniformly random from $\Zp$. Now guess if $c$ is the product of $ab$ or randomly chosen.   
+    Given a group $G$, a generator $g$ and $A = g^a$, $B = g^b$ and $C = g^c$, where $a$ and $b$ are randomly and independently chosen from $\Z_q$ and where $c$ is chosen either as $c = ab$ or uniformly random from $\Zq$. Now guess if $c$ is the product of $ab$ or randomly chosen.   
 \end{defi}
 
+\noindent
 Looking at the key-exchange protocol again, then if Eve calculate a value C and present this to Alice with the claim that this is a valid $C$, then Alice could easily tell if this is true or false as Alice is able to compute $C = g^{ab}$ and could then just simply compare the two values. However if reversed as in Alice gives Eve a value $C$ and the claim that this is valid, then Eve cannot verify this unless Eve is able to solve the CDH problem, this lead us to.
 
 \begin{lemma}
@@ -164,7 +165,7 @@ The DDH problem is no harder then CDH problem
 \end{lemma}
 
 \parahead{In the PVSS protocol}  
-
+\noindent
 The security of the PVSS protocol can be reduced down to the hardness of the DL problem. Which means that if there can be found a efficient algorithm to solve the DL problem with large expoents then the entire PVSS protocol is insecure. In the next subsection we will look at known algorithms for solving the DL problem. 
 
 %------------------------------------------------------------------------------------
@@ -195,27 +196,27 @@ Below we have listed some of the known algorithms. These algorithms all takes th
     There are several known square-root attacks, one of them is the \textbf{[Baby-steps Giant-steps algorithm]} which we will look at in details below. \\          
     
     \item \textbf{Index-Calculus attacks} \\
-    Index-Calculus attacks are the best known attack against DL problem, but it only
-    works in certain groups, in particularly $\Z_p^*$. \\
-    
-    This means in practice that $p$ needs to between $ 2^{1024} $ to $ 2^{2048}$
+    Index-Calculus attacks are the best known attack against the DL problem, but it only
+    works in certain groups, here amongst $\Z_q^*$. The topic of this algorithm is beyond the
+    scope of this thesis. As such we will not elaborate on this any further other then stating, that according to \cite{Paar} one would need a set $q$ of bit length at least $1024$ to achieve
+    an $80$ bit security
 \end{enumerate}
 
 
 %----------------------------------------------------------------
 \parahead{Baby-steps Giant-steps algorithm} 
 %----------------------------------------------------------------
-We will here look in details how the Baby-steps Giant-steps algorithm works. For simplicity and as our implantation of the PVSS protocol operates in $\Zp^*$ we will only look at the algorithm in this group. \\
+We will here look in details how the Baby-steps Giant-steps algorithm works. For simplicity and as our implantation of the PVSS protocol operates in $\Zq^*$ we will only look at the algorithm in this group. \\
 
 \noindent
 The idea of the algorithm is to divide the group into smaller sub-groups. Given a cyclic group $G$, a generator $g$ and an element $c \in g$, we can then think of all the elements in $G$ as points in a circle 
 
 \begin{center}
-    $1 = g^0, g^1, g^2,...,g^{q-2}, g^{q-1}, g^q = 1$
+    $1 = g^0, g^1, g^2,...,g^{n-2}, g^{n-1}, g^n = 1$
 \end{center}
 
 \noindent
-We then divide then circle into intervals of $u = \lceil \sqrt{p} \rceil$ sizes, each interval is the Giant step whereas the elements in the intervals is the baby steps which there are at most $u$ of. We can now look at the exponent $a$ as the product of $a = ui + j$ where $0 \leq i,j \leq u$. This allows us to restate the problem as such
+We then divide the circle into intervals of $u = \lceil \sqrt{q} \rceil$ sizes, each interval is the Giant step whereas the elements in the intervals is the baby steps which there are at most $u$ of. We can now look at the exponent $a$ as the product of $a = ui + j$ where $0 \leq i,j \leq u$. This allows us to restate the problem as such
 \begin{align*}
     c           &= g^a                  \\
     c           &= g^{ui + j}           \\ 
@@ -235,11 +236,11 @@ The goal now, is to find an integer $j$ and $i$ such that $c( g^{-u} )^i = g^{j}
 \KwOut{An integer $a$ such that $g^a = c$}
 
 \Begin{
-    $u = \lceil \sqrt{p} \rceil$ \\
+    $u = \lceil \sqrt{q} \rceil$ \\
     \For{$j=0$ to $u-1$}{     
-    Compute $g^j \ mod \ p$ and store the pair ($j$,$g^j$) with $g^j$ as key, in a table $t$
+    Compute $g^j \ mod \ q$ and store the pair ($j$,$g^j$) with $g^j$ as key, in a table $t$
     }
-    Compute $g^{-u} \ mod \ p$ \\
+    Compute $g^{-u} \ mod \ q$ \\
     \For{$i=0$ to $u-1$}{
     Compute $x = c(g^{-u})^i$
     
@@ -254,20 +255,20 @@ The goal now, is to find an integer $j$ and $i$ such that $c( g^{-u} )^i = g^{j}
 By example we valid the algorithm. Let $p = 31$, $g=3$ and $c = 6$.
 
 \begin{enumerate}
-\item $u = \lceil \sqrt{p} \rceil = 6$
+\item $u = \lceil \sqrt{q} \rceil = 6$
 \item Computing $1,g,g^1,...,g^5$ gives us  \\
 
 \begin{tabular}{|l|c|c|c|c|c|c|}
     \hline  
-    $0 \leq i \leq u-1$             &   $g^0$   &   $g^1$     &   $g^2$     &   $g^3$     &   $g^4$     &   $g^5$     \\
+    $0 \leq j \leq u-1$             &   $g^0$   &   $g^1$     &   $g^2$     &   $g^3$     &   $g^4$     &   $g^5$     \\
     \hline  
-    $g^i \ mod \ p$ &   $1$       &   \textcolor{red}{$3$}       &   $9$       &   $27$      &   $17$      &   $26$      \\
+    $g^j \ mod \ q$ &   $1$       &   \textcolor{red}{$3$}       &   $9$       &   $27$      &   $17$      &   $26$      \\
     \hline 
 \end{tabular}
 
-\item Next we compute $g^{-u} = 3^{-6}$, we can use the euclidean algorithm to find $g^{-1} = 3^{-1} = 21$. using this result we get $3^{-6} = 21^6 = 2 \ mod \ 31$. 
+\item Next we compute $g^{-u} = 3^{-6}$, we can use the euclidean algorithm to find $g^{-1} = 3^{-1} = 21$. Using this result we get $3^{-6} = 21^6 = 2 \ mod \ 31$. 
 
-\item Using the result for the previous step we can efficiently compute $c(g^{-u})^j$ for an increasing $j$ until we find a match with the result from step 2. \\
+\item Using the result for the previous step we can efficiently compute $c(g^{-u})^i$ for an increasing $i$ until we find a match with the result from step 2. \\
 
 \iffalse
 \begin{align*}
@@ -281,20 +282,20 @@ By example we valid the algorithm. Let $p = 31$, $g=3$ and $c = 6$.
 
 \begin{tabular}{|l|c|c|c|c|c|}
     \hline  
-    $0 \leq j \leq u-1$    &   $6 \cdot 2^0$   &   $6 \cdot 2^1$     &   $6 \cdot 2^2$     &   $6 \cdot 2^3$     &   $6 \cdot 2^4$        \\
+    $0 \leq i \leq u-1$    &   $6 \cdot 2^0$   &   $6 \cdot 2^1$     &   $6 \cdot 2^2$     &   $6 \cdot 2^3$     &   $6 \cdot 2^4$        \\
     \hline  
-    $c(g^{-u})^2 = 6 \cdot 2^j \ mod \ 31$ &   $6$   &   $12$   &   $24$   &   $17$      &   \textcolor{red}{$3$}       \\
+    $c(g^{-u})^2 = 6 \cdot 2^i \ mod \ 31$ &   $6$   &   $12$   &   $24$   &   $17$      &   \textcolor{red}{$3$}       \\
     \hline 
 \end{tabular}
 
-We found a match as $c(g^{-u})^4 = g^1 \ mod \ p$. 
+We found a match as $c(g^{-u})^4 = g^1 \ mod \ q$. 
 \item We can then compute $a = g^{iu+j} = g^{4u+1} = g^{4 \cdot 6 + 1} = g^{25} = 3^{25} = \underline{\underline{6}} \ mod \ 31$
 \end{enumerate}
 
 
 
 %------------------------------------------------------------------------------------
-\subsection{Hash function}
+\subsection{Hash function} \label{sec:hash_function}
 %------------------------------------------------------------------------------------
 Hash functions is a function that takes a message of arbitrary size and outputs a digest hash value of a fixed size. The hash functions used in this project are collision resistant hash function, which means that they are considered as one-way function. we define collision resistant hash function, denote just as hash functions onward, as.
 
