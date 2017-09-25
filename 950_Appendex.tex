@@ -582,7 +582,7 @@ We will present a simplified example of the calculations through the proof $PROO
 
 
 
-\chapter{QAS}
+\chapter{Quality attribute scenario}
 %----------------------------------------------------------------------
 \section{QAS - Availibility}
 \label{sec:the_remaining_qas:Availibility}
@@ -680,4 +680,123 @@ We will present a simplified example of the calculations through the proof $PROO
 \caption{Modifiability QAS}
 \end{center}
 \end{table}
+
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+\chapter{Installation guides}
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+%----------------------------------------------------------------------
+
+%----------------------------------------------------------------------
+\section{Technology stack}
+%----------------------------------------------------------------------
+We have used the following technologies:
+
+\begin{enumerate}
+    \item IDE: Microsoft Visual studio
+    \item Languages: ASP.NET, Javascript and C\#
+    \item Database: Mongo database
+    \item Testning: Jasmine
+    \item Modern browser
+\end{enumerate}
+
+
+
+
+
+%----------------------------------------------------------------------
+\section{Installation guide for Visual studio and IIS express}
+\label{sec:installation_guide_visual_studio}
+%----------------------------------------------------------------------
+
+
+\begin{enumerate}   
+    \item  \href{https://www.visualstudio.com/vs/visual-studio-express/}{Download Visual studio}: \\ https://www.visualstudio.com/vs/visual-studio-express/ 
+    
+    \item \href{https://docs.microsoft.com/en-us/visualstudio/install/install-visual-studio}{Consult microsoft  for installations guide for Visual studio}:\\
+    https://docs.microsoft.com/en-us/visualstudio/install/install-visual-studio
+    
+    \item If the IIS express do not install with installation of Visual studio then follow this installation guide. \\ 
+    
+    \href{https://www.microsoft.com/en-us/download/details.aspx?id=48264 }{Download IIS express}: \\
+    https://www.microsoft\\.com/en-us/download/details.aspx?id=48264        
+\end{enumerate}
+
+
+%----------------------------------------------------------------------
+\section{Running the code}
+\label{sec:running_the_code}
+%----------------------------------------------------------------------
+
+\subsection{Installing the electronic voting application}
+
+
+
+
+\begin{enumerate}
+    \item Unzip the file containing the project PublicVerifiableSecretSharing.zip into a local folder
+    
+    \item Start the project by clicking the PublicVerifiableSecretSharing.sln inside the
+    project folder just unzipped. 
+    
+    \item Set PVSS.Client.Web as StartUp project, as illustrated below 
+
+    \begin{figure}[H]
+        \centering
+        \makebox[\textwidth]{\includegraphics[scale=0.5]{Visual_Studio_small.png}}
+        \caption{Visual Studio - set start project}
+    \end{figure}     
+    
+    \item Start the application by press F10 inside Visual Studio. 
+    
+    \textit{This will start both the Client web server and BulletinBoard webAPI. In the bottom right corner an icon of IIS Express should be visible, by right click this icon, it should be visuable that both web service is running }
+    
+    \begin{figure}[H]
+        \centering
+        \makebox[\textwidth]{\includegraphics[scale=0.5]{IIS_Express.png}}
+        \caption{Homepage}
+    \end{figure}     
+    
+    \item When starting the application the following screen should be presented in your default browser as illustrated below. Alternatively if the programs runs in the visual studio, then paste this url http://localhost:5751/ into a browser. 
+    
+    \begin{figure}[H]
+        \centering
+        \makebox[\textwidth]{\includegraphics[scale=0.5]{Index_page.png}}
+        \caption{Homepage}
+    \end{figure} 
+    
+    
+    \item By clicking the button [Run test] an election will start with 3 voters. 
+    
+    \textit{Hereafter a log of all the actions in the electronic voting scheme will be listed below. It is possible to change what the voters vote by clicking on the radio buttons. By default all voters votes "yes". }  
+    
+    \begin{figure}[H]
+        \centering
+        \makebox[\textwidth]{\includegraphics[scale=0.5]{Index_page_with_result.png}}
+        \caption{Homepage with result}
+    \end{figure} 
+    
+    \item Navigate to Jasmine tests by clicking the [Go to test overview] on the homepage
+    
+    \textit{This page shows the test results of the unit tests define in PVSS.Client\\.Web.jasmine.spec}
+
+    \begin{figure}[H]
+        \centering
+        \makebox[\textwidth]{\includegraphics[scale=0.5]{SpecRunner_page.png}}
+        \caption{Jasmine testpage}
+    \end{figure} 
+    
+\end{enumerate}
+
+
+
+
+
+ 
+ 
+
+
+
 
